@@ -1,5 +1,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Barakah Garden</title>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#3F7D58">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Barakah Garden">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
 
@@ -312,6 +320,9 @@
   .top-tag{position:absolute;top:10px;right:10px;background:var(--sun);color:#fff;font-size:9.5px;font-weight:800;border-radius:6px;padding:1px 6px;}
 
   .hero-edit{display:flex;gap:12px;align-items:center;}
+  .photo-btn{flex:1;min-width:120px;text-align:center;cursor:pointer;padding:9px 8px;font-size:12.5px;}
+  .sched-btn{margin-top:3px;font-size:11.5px;font-weight:700;color:var(--teal);text-align:left;padding:0;}
+  .day-chip,.kid-chip{padding:7px 10px;font-size:12.5px;}
 
   @media (prefers-reduced-motion: reduce){*{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}}
 </style>
@@ -339,7 +350,8 @@
     azkar:   {title:'Azkar',        icon:'📿'},
     charity: {title:'Charity',      icon:'🤲'},
     habits:  {title:'Daily Habits', icon:'🌱'},
-    bonus:   {title:'Bonus',        icon:'⭐'}
+    bonus:   {title:'Bonus',        icon:'⭐'},
+    quran:   {title:'Quran',        icon:'📖'}
   };
   var SECTION_ORDER = ['prayers','azkar','charity','habits'];
 
@@ -407,6 +419,15 @@
   var STAGE_LABELS = ['Seed','Sprout','Sapling','Young Tree','Full Tree','Blooming Tree'];
   var STAGE_THRESHOLDS = [0,50,150,400,900,1800];
   var PERFECT_DAY_BONUS = 15;
+  var QURAN_PAGES = 604;          // pages in a standard mushaf
+  var KHATM_BONUS = 100;          // bonus points for finishing the whole Quran
+  var DAY_NAMES = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  var DAY_PRESETS = [
+    {key:'every',   label:'Every day',            days:null},
+    {key:'school',  label:'School days (Sun\u2013Thu)', days:[0,1,2,3,4]},
+    {key:'weekend', label:'Weekend (Fri\u2013Sat)',      days:[5,6]},
+    {key:'friday',  label:'Fridays only',         days:[5]}
+  ];
   var db = null, auth = null, docRef = null;
 
   /* ============ helpers ============ */
@@ -474,7 +495,7 @@
       accent: accent,
       role: role,
       points: 0,
-      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0},
+      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0},
       totalLifetime: 0,
       todayLog: {date: todayStr(), done:{}, pending:{}, perfectGiven:false},
       savings: 0,
@@ -483,7 +504,10 @@
       convertRequests: [], // points→money requests waiting for a parent
       streak: {count:0, last:null},  // Perfect Days in a row
       starsWon: 0,         // Star of the Week trophies
-      goalId: null         // reward they're saving for (defaults to the top reward)
+      goalId: null,        // reward they're saving for (defaults to the top reward)
+      excused: {},         // { 'YYYY-MM-DD': true } sick / travel days that don't break the streak
+      quran: {page:0, khatms:0, pagesTotal:0},
+      quranRequests: []    // pages read, waiting for a parent
     };
   }
   function defaultData(){
@@ -525,7 +549,7 @@
       if(p.role !== 'parent' && p.role !== 'kid') p.role = 'kid';
       if(typeof p.points !== 'number' || isNaN(p.points)) p.points = 0;
       if(!p.lifetime || typeof p.lifetime !== 'object') p.lifetime = {};
-      ['prayers','azkar','charity','habits','bonus'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
+      ['prayers','azkar','charity','habits','bonus','quran'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
       if(typeof p.totalLifetime !== 'number' || isNaN(p.totalLifetime)) p.totalLifetime = 0;
       if(!p.todayLog || typeof p.todayLog !== 'object') p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       if(!p.todayLog.done || typeof p.todayLog.done !== 'object') p.todayLog.done = {};
@@ -535,6 +559,12 @@
       if(!p.dayPts || typeof p.dayPts !== 'object') p.dayPts = {};
       if(!Array.isArray(p.convertRequests)) p.convertRequests = [];
       if(!p.streak || typeof p.streak !== 'object') p.streak = {count:0, last:null};
+      if(!p.excused || typeof p.excused !== 'object') p.excused = {};
+      if(p.photo && (typeof p.photo !== 'string' || p.photo.indexOf('data:image/') !== 0)) delete p.photo;
+      if(typeof p.photoMask !== 'boolean') p.photoMask = false;
+      if(!p.quran || typeof p.quran !== 'object') p.quran = {page:0, khatms:0, pagesTotal:0};
+      ['page','khatms','pagesTotal'].forEach(function(k){ if(typeof p.quran[k] !== 'number' || isNaN(p.quran[k])) p.quran[k] = 0; });
+      if(!Array.isArray(p.quranRequests)) p.quranRequests = [];
       if(typeof p.starsWon !== 'number' || isNaN(p.starsWon)) p.starsWon = 0;
       if(p.goalId === undefined) p.goalId = null;
       if(p.hero){
@@ -555,6 +585,8 @@
     }
     applyHeroPresets(d);   // one-time: hero looks for kids who don't have one yet
     if(!Array.isArray(d.history)) d.history = [];
+    // every history entry needs an id so two phones' history can be merged
+    d.history.forEach(function(h, i){ if(!h.id) h.id = 'h_old_'+(h.ts||0)+'_'+i; if(!h.ts) h.ts = 0; });
     if(!d.tallyV1){
       // one-time upgrade: rebuild each kid's daily tally from whatever history is still kept
       d.history.forEach(function(h){
@@ -575,7 +607,12 @@
       if(!it.label) it.label = 'Task';
       if(!it.icon) it.icon = '\u2728';
       if(it.scope !== 'kids') it.scope = 'all';
+      if(!Array.isArray(it.days) || !it.days.length || it.days.length >= 7) it.days = null;
+      else it.days = it.days.filter(function(x){ return x>=0 && x<=6; });
+      if(!Array.isArray(it.forKids) || !it.forKids.length) it.forKids = null;
+      if(!it.kidPoints || typeof it.kidPoints !== 'object') it.kidPoints = {};
     });
+    if(typeof d.quranPtsPerPage !== 'number' || isNaN(d.quranPtsPerPage) || d.quranPtsPerPage < 0) d.quranPtsPerPage = 2;
     if(!Array.isArray(d.rewards) || d.rewards.length===0) d.rewards = defaultData().rewards;
     if(!d.rewardPackV2){
       // one-time upgrade: add the new reward ideas to an existing family
@@ -662,43 +699,164 @@
   function pendingConvertPts(p){ return (p.convertRequests||[]).reduce(function(s,r){ return s + r.pts; }, 0); }
   function spendablePoints(p){ return Math.max(0, p.points - pendingConvertPts(p)); }
 
-  /* ============ storage (YOUR Firebase project, live-synced) ============ */
-  var suppressNextEcho = false;
+  /* ============ storage (YOUR Firebase project, live-synced) ============
+     v11: every save is a small PATCH applied to the latest copy on the server
+     inside a Firestore transaction. Two phones saving at the same moment no
+     longer overwrite each other: lists merge by id, and counters (points,
+     money, growth) merge as +/- amounts instead of being replaced. */
+  var baseData = null;          // last copy we know the server has
+  var inFlight = 0;             // saves still running
+  var saveChain = Promise.resolve();
+  var COUNTER_KEYS = {points:1, totalLifetime:1, savings:1, charityGiven:1, starsWon:1};
+  var COUNTER_PARENTS = {lifetime:1, dayPts:1};
 
-  async function persist(){
-    if(!docRef) return;
-    try{
-      suppressNextEcho = true;
-      await docRef.set({ json: JSON.stringify(state.data), updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
-    }catch(e){
-      console.error('save failed', e);
-      showToast('Could not save \u2014 check your connection', 'error');
+  function deepClone(o){ return JSON.parse(JSON.stringify(o)); }
+  function isIdArray(a, b){
+    var all = (a||[]).concat(b||[]);
+    return all.length > 0 && all.every(function(x){ return x && typeof x === 'object' && !Array.isArray(x) && x.id != null; });
+  }
+  function diffData(a, b, path, ops){
+    path = path || []; ops = ops || [];
+    if(Array.isArray(a) && Array.isArray(b) && isIdArray(a, b)){
+      var aIds = {}; a.forEach(function(x){ aIds[x.id] = x; });
+      var bIds = {}; b.forEach(function(x){ bIds[x.id] = x; });
+      b.forEach(function(x, i){
+        if(!aIds[x.id]) ops.push({t:'add', path:path, item:deepClone(x), front: i===0 && a.length>0});
+        else diffData(aIds[x.id], x, path.concat([{id:x.id}]), ops);
+      });
+      a.forEach(function(x){ if(!bIds[x.id]) ops.push({t:'remove', path:path, id:x.id}); });
+      return ops;
     }
+    var aObj = a && typeof a === 'object' && !Array.isArray(a), bObj = b && typeof b === 'object' && !Array.isArray(b);
+    if(aObj && bObj){
+      Object.keys(b).forEach(function(k){
+        if(!(k in a)) ops.push({t:'set', path:path.concat([k]), value:deepClone(b[k])});
+        else diffData(a[k], b[k], path.concat([k]), ops);
+      });
+      Object.keys(a).forEach(function(k){ if(!(k in b)) ops.push({t:'del', path:path.concat([k])}); });
+      return ops;
+    }
+    if(JSON.stringify(a) === JSON.stringify(b)) return ops;
+    var last = path[path.length-1], parent = path[path.length-2];
+    var isCounter = typeof a === 'number' && typeof b === 'number' && typeof last === 'string' &&
+      (COUNTER_KEYS[last] || (typeof parent === 'string' && COUNTER_PARENTS[parent]));
+    if(isCounter) ops.push({t:'inc', path:path, by: b - a});
+    else ops.push({t:'set', path:path, value: b===undefined ? null : deepClone(b)});
+    return ops;
+  }
+  // walk to the container that holds the last step of a path (creating objects on the way)
+  function walk(obj, path, create){
+    var cur = obj;
+    for(var i=0;i<path.length-1;i++){
+      var step = path[i], next;
+      if(step && typeof step === 'object'){
+        if(!Array.isArray(cur)) return null;
+        next = cur.filter(function(x){ return x && x.id === step.id; })[0];
+        if(!next) return null;             // removed on another device — skip
+      } else {
+        next = cur[step];
+        if(next == null || typeof next !== 'object'){ if(!create) return null; next = cur[step] = {}; }
+      }
+      cur = next;
+    }
+    return cur;
+  }
+  function applyOps(obj, ops){
+    ops.forEach(function(op){
+      if(op.t==='add' || op.t==='remove'){
+        var holder = op.path.length ? walk(obj, op.path, true) : null;
+        var key = op.path[op.path.length-1];
+        if(!holder) return;
+        var list = holder[key];
+        if(!Array.isArray(list)) list = holder[key] = [];
+        if(op.t==='add'){
+          if(list.some(function(x){ return x && x.id===op.item.id; })) return;
+          if(op.front) list.unshift(op.item); else list.push(op.item);
+        } else {
+          holder[key] = list.filter(function(x){ return !(x && x.id===op.id); });
+        }
+        return;
+      }
+      var c = walk(obj, op.path, op.t!=='del');
+      if(!c) return;
+      var k = op.path[op.path.length-1];
+      if(k && typeof k === 'object') return;
+      if(op.t==='del'){ delete c[k]; }
+      else if(op.t==='set'){ c[k] = op.value; }
+      else if(op.t==='inc'){
+        var v = (typeof c[k] === 'number' ? c[k] : 0) + op.by;
+        if(k==='savings' || k==='charityGiven') v = Math.round(v*100)/100;
+        if(k==='points' || k==='savings') v = Math.max(0, v);
+        c[k] = v;
+      }
+    });
+    if(Array.isArray(obj.history)){
+      obj.history.sort(function(x,y){ return (y.ts||0) - (x.ts||0); });
+      if(obj.history.length > HISTORY_CAP) obj.history.length = HISTORY_CAP;
+    }
+    return obj;
+  }
+  function needsAward(d){ return !d.lastStarWeek || d.lastStarWeek < weekStartKey(); }
+
+  function persist(){
+    if(!docRef || !state.data) return;
+    var ops = diffData(baseData || {}, state.data);
+    if(!ops.length && !needsAward(state.data)) return;
+    baseData = deepClone(state.data);       // optimistic: next save only sends new changes
+    inFlight++;
+    saveChain = saveChain.then(function(){ return commitOps(ops, 0); })
+      .then(function(server){
+        inFlight--;
+        if(server && inFlight === 0) adoptServer(server, true);
+      }, function(e){
+        inFlight--;
+        console.error('save failed', e);
+        showToast('Could not save — check your connection', 'error');
+      });
+  }
+  function commitOps(ops, attempt){
+    return db.runTransaction(function(t){
+      return t.get(docRef).then(function(snap){
+        var raw = snap.exists && snap.data() && snap.data().json;
+        var server = raw ? migrateData(JSON.parse(raw)) : {};
+        applyOps(server, ops);
+        server = migrateData(server);
+        awardFinishedWeeks(server);
+        t.set(docRef, { json: JSON.stringify(server), updatedAt: firebase.firestore.FieldValue.serverTimestamp() });
+        return server;
+      });
+    }).then(function(server){ maybeBackup(server); return server; })
+      .catch(function(e){
+        if(attempt < 2) return new Promise(function(res){ setTimeout(res, 1200*(attempt+1)); }).then(function(){ return commitOps(ops, attempt+1); });
+        throw e;
+      });
+  }
+  // take the server's copy as the truth (without yanking someone mid-typing)
+  function adoptServer(server, quiet){
+    baseData = deepClone(server);
+    state.data = migrateData(deepClone(server));
+    var ae = document.activeElement;
+    var typing = ae && (ae.tagName==='INPUT' || ae.tagName==='TEXTAREA');
+    if(!typing) render();
   }
 
   function attachListener(){
     docRef = db.collection('families').doc(FAMILY_ID);
     docRef.onSnapshot(function(snap){
+      if(inFlight > 0) return;              // our own save will bring the newest copy
       if(!snap.exists){
         // first time anyone has opened this family's data — create it
+        baseData = {};
         state.data = defaultData();
-        awardFinishedWeeks();
         render();
         persist();
         return;
       }
       var raw = snap.data() && snap.data().json;
       if(!raw) return;
-      state.data = migrateData(JSON.parse(raw));
-      // hand out Star of the Week trophies for any week that has finished
-      if(awardFinishedWeeks()) persist();
-      // if this update is just the echo of our own write, or the person is
-      // mid-typing, update the data quietly without yanking the screen
-      var ae = document.activeElement;
-      var typing = ae && (ae.tagName==='INPUT' || ae.tagName==='TEXTAREA');
-      if(suppressNextEcho){ suppressNextEcho = false; if(typing) return; }
-      if(typing) return;
-      render();
+      adoptServer(JSON.parse(raw));
+      // hand out Star of the Week trophies for any finished week (done safely on the server copy)
+      if(needsAward(state.data)) persist();
     }, function(err){
       console.error(err);
       showFatalError('Could not connect to your Firebase database. Check that Firestore is enabled and your security rules allow signed-in access.');
@@ -708,8 +866,39 @@
   function manualRefresh(){
     if(!docRef){ return; }
     docRef.get({source:'server'}).then(function(snap){
-      if(snap.exists && snap.data().json){ state.data = migrateData(JSON.parse(snap.data().json)); render(); showToast('Up to date \u2705'); }
+      if(snap.exists && snap.data().json){ adoptServer(JSON.parse(snap.data().json)); showToast('Up to date ✅'); }
     }).catch(function(e){ console.error(e); showToast('Refresh failed','error'); });
+  }
+
+  /* ============ backups ============
+     Once a week (first save of each Sun–Sat week) a full copy is stored next to
+     the family data as families/<FAMILY_ID>__backup_<week start>. Parents can
+     restore one, or download / upload a backup file, in Parent Mode > Settings. */
+  function backupDocId(weekKey){ return FAMILY_ID + '__backup_' + weekKey; }
+  var backupDoneFor = null;
+  function maybeBackup(server){
+    var wk = weekStartKey();
+    if(backupDoneFor === wk || server.lastBackupWeek === wk) return;
+    backupDoneFor = wk;
+    db.collection('families').doc(backupDocId(wk))
+      .set({ json: JSON.stringify(server), createdAt: firebase.firestore.FieldValue.serverTimestamp(), week: wk })
+      .then(function(){ state.data.lastBackupWeek = wk; persist(); })
+      .catch(function(e){ console.warn('weekly backup skipped', e); });
+  }
+  function listBackups(){
+    var keys = []; var k = weekStartKey();
+    for(var i=0;i<10;i++){ keys.push(k); k = addDaysKey(k, -7); }
+    return Promise.all(keys.map(function(wk){
+      return db.collection('families').doc(backupDocId(wk)).get()
+        .then(function(s){ return s.exists ? {week:wk, json:s.data().json} : null; })
+        .catch(function(){ return null; });
+    })).then(function(rows){ return rows.filter(Boolean); });
+  }
+  // replace everything with a backup (used by restore + import)
+  function restoreData(obj){
+    var clean = migrateData(obj);
+    return docRef.set({ json: JSON.stringify(clean), updatedAt: firebase.firestore.FieldValue.serverTimestamp() })
+      .then(function(){ adoptServer(clean); });
   }
 
   function showFatalError(msg){
@@ -765,6 +954,77 @@
       '<ellipse cx="80" cy="142" rx="54" ry="8" fill="#3F7D58" opacity="0.18"/>'+ trunk + canopy + blossoms + '</svg>';
   }
 
+  /* ============ photo upload + crop ============ */
+  var cropImg = null;
+  var cropState = {zoom:1, x:0, y:0, mask:false};
+  function drawCrop(canvas, size, forSave){
+    var ctx = canvas.getContext('2d');
+    var W = size, img = cropImg;
+    var base = Math.max(W / img.width, W / img.height);   // "cover" the circle
+    var sc = base * cropState.zoom;
+    var dw = img.width * sc, dh = img.height * sc;
+    var k = W / 260;                                       // preview offsets are in 260px units
+    var dx = (W - dw) / 2 + cropState.x * k, dy = (W - dh) / 2 + cropState.y * k;
+    ctx.clearRect(0,0,W,W);
+    ctx.drawImage(img, dx, dy, dw, dh);
+    if(!forSave){
+      // eye guide (matches where the hero mask sits)
+      ctx.save(); ctx.setLineDash([6,6]); ctx.strokeStyle = 'rgba(255,255,255,0.95)'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(30, W*0.39); ctx.lineTo(W-30, W*0.39); ctx.stroke(); ctx.restore();
+      if(cropState.mask){
+        ctx.save(); ctx.scale(W/120, W/120); ctx.globalAlpha = 0.85; ctx.fillStyle = '#1F2E23';
+        ctx.fill(new Path2D('M24 44 Q42 33 60 42 Q78 33 96 44 Q93 58 79 57 Q67 56 60 50 Q53 56 41 57 Q27 58 24 44 Z M35 48 a8.5 5.5 0 1 0 17 0 a8.5 5.5 0 1 0 -17 0 Z M68 48 a8.5 5.5 0 1 0 17 0 a8.5 5.5 0 1 0 -17 0 Z'), 'evenodd');
+        ctx.restore();
+      }
+    }
+  }
+  function clampCrop(){
+    var W = 260, base = Math.max(W / cropImg.width, W / cropImg.height), sc = base * cropState.zoom;
+    var mx = Math.max(0, (cropImg.width*sc - W)/2), my = Math.max(0, (cropImg.height*sc - W)/2);
+    cropState.x = clamp(cropState.x, -mx, mx); cropState.y = clamp(cropState.y, -my, my);
+  }
+  function setupCrop(){
+    var cv = document.getElementById('cropCanvas');
+    if(!cv || !cropImg) return;
+    drawCrop(cv, 260, false);
+    var drag = null;
+    cv.addEventListener('pointerdown', function(e){ drag = {x:e.clientX, y:e.clientY, ox:cropState.x, oy:cropState.y}; cv.setPointerCapture(e.pointerId); });
+    cv.addEventListener('pointermove', function(e){
+      if(!drag) return;
+      var r = cv.getBoundingClientRect(), f = 260 / r.width;
+      cropState.x = drag.ox + (e.clientX - drag.x) * f; cropState.y = drag.oy + (e.clientY - drag.y) * f;
+      clampCrop(); drawCrop(cv, 260, false);
+    });
+    cv.addEventListener('pointerup', function(){ drag = null; });
+    var z = document.getElementById('cropZoom');
+    if(z) z.addEventListener('input', function(){ cropState.zoom = parseFloat(z.value)||1; clampCrop(); drawCrop(cv, 260, false); });
+    var mk = document.getElementById('cropMask');
+    if(mk) mk.addEventListener('change', function(){ cropState.mask = mk.checked; drawCrop(cv, 260, false); });
+  }
+  function exportCrop(){
+    var out = document.createElement('canvas'); out.width = out.height = 200;
+    drawCrop(out, 200, true);
+    var q = 0.82, url = out.toDataURL('image/jpeg', q);
+    while(url.length > 35000 && q > 0.4){ q -= 0.1; url = out.toDataURL('image/jpeg', q); }   // keep the family data small
+    return url;
+  }
+  function loadPhotoFile(file, personId){
+    if(!file || !/^image\//.test(file.type||'image/')){ showToast('Please choose a photo','error'); return; }
+    var reader = new FileReader();
+    reader.onload = function(){
+      var img = new Image();
+      img.onload = function(){
+        cropImg = img;
+        var p = getPerson(personId);
+        cropState = {zoom:1, x:0, y:0, mask: p ? !!p.photoMask : false};
+        state.modal = {type:'crop', personId: personId}; render();
+      };
+      img.onerror = function(){ showToast('That photo can\u2019t be opened \u2014 try a JPG or PNG','error'); };
+      img.src = reader.result;
+    };
+    reader.readAsDataURL(file);
+  }
+
   /* ============ heroes (original hero-style avatars for kids) ============ */
   var CAPES = {midnight:'#1B2440', gold:'#F5B93E', teal:'#3F8A8C', crimson:'#B23A28', plum:'#6A4C73', emerald:'#2F7A55'};
   var CAPE_KEYS = Object.keys(CAPES);
@@ -808,7 +1068,32 @@
     return '#'+[f(r),f(g),f(b)].map(function(c){ var s=c.toString(16); return s.length<2?'0'+s:s; }).join('');
   }
   var heroSeq = 0;
+  // A real photo in a superhero frame: cape-coloured ring, emblem badge,
+  // optional hero mask over the eyes (parents line the eyes up when cropping).
+  function photoHeroSVG(p, size){
+    var h = p.hero || defaultHero();
+    var accent = ACCENTS[p.accent] || '#3F7D58';
+    var cape = CAPES[h.cape] || CAPES.gold;
+    var emblemColor = h.cape==='gold' ? '#FFF1B8' : '#F5B93E';
+    var mask = shade(accent, 0.6);
+    var cid = 'hc'+(heroSeq++);
+    var emb = (HERO_EMBLEMS[h.emblem] || HERO_EMBLEMS.star).path.replace('<path ','<path fill="'+emblemColor+'" ');
+    var showBadge = size >= 40;
+    return '<svg class="hero" width="'+size+'" height="'+size+'" viewBox="0 0 120 120" role="img" aria-label="'+escapeHtml(p.name)+'">'+
+      '<defs><clipPath id="'+cid+'"><circle cx="60" cy="60" r="57"/></clipPath></defs>'+
+      '<g clip-path="url(#'+cid+')">'+
+        '<rect width="120" height="120" fill="'+accent+'"/>'+
+        '<image href="'+p.photo+'" x="0" y="0" width="120" height="120" preserveAspectRatio="xMidYMid slice"/>'+
+        (p.photoMask ? '<path d="M24 44 Q42 33 60 42 Q78 33 96 44 Q93 58 79 57 Q67 56 60 50 Q53 56 41 57 Q27 58 24 44 Z M35 48 a8.5 5.5 0 1 0 17 0 a8.5 5.5 0 1 0 -17 0 Z M68 48 a8.5 5.5 0 1 0 17 0 a8.5 5.5 0 1 0 -17 0 Z" fill-rule="evenodd" fill="'+mask+'" opacity="0.92"/>'+
+          '' : '')+
+      '</g>'+
+      '<circle cx="60" cy="60" r="57" fill="none" stroke="'+cape+'" stroke-width="6"/>'+
+      (showBadge ? '<circle cx="98" cy="98" r="17" fill="'+cape+'" stroke="#fff" stroke-width="3"/>'+
+        '<g transform="translate('+(98-60*0.75)+' '+(98-68*0.75)+') scale(0.75)">'+emb+'</g>' : '')+
+    '</svg>';
+  }
   function heroSVG(p, size){
+    if(p.photo) return photoHeroSVG(p, size);
     var h = p.hero || defaultHero();
     var accent = ACCENTS[p.accent] || '#3F7D58';
     var suit = shade(accent, 0.2), mask = shade(accent, 0.6);
@@ -874,18 +1159,26 @@
   /* ============ streak + stars won ============ */
   function addDaysKey(key, n){ var a = key.split('-'); return dateKey(new Date(+a[0], +a[1]-1, +a[2]+n).getTime()); }
   function yesterdayKey(){ return addDaysKey(todayStr(), -1); }
+  // the last day before `key` that wasn't excused (sick / travel days are skipped)
+  function prevActiveDay(p, key){
+    var k = addDaysKey(key, -1), ex = p.excused || {}, guard = 0;
+    while(ex[k] && guard++ < 60) k = addDaysKey(k, -1);
+    return k;
+  }
   function streakOf(p){
     var s = p.streak || {};
     if(!s.last) return 0;
-    return (s.last===todayStr() || s.last===yesterdayKey()) ? (s.count||0) : 0;
+    var t = todayStr();
+    return (s.last===t || s.last===prevActiveDay(p, t)) ? (s.count||0) : 0;
   }
   function bumpStreak(p){
     var s = p.streak, t = todayStr();
     if(s.last === t) return;
     s.prevLast = s.last || null; s.prevCount = s.count || 0;
-    s.count = (s.last === yesterdayKey()) ? (s.count||0) + 1 : 1;
+    s.count = (s.last && s.last === prevActiveDay(p, t)) ? (s.count||0) + 1 : 1;
     s.last = t;
   }
+  function isExcused(p, key){ return !!(p.excused && p.excused[key || todayStr()]); }
   function undoStreak(p){
     var s = p.streak;
     if(s.last !== todayStr()) return;
@@ -893,8 +1186,9 @@
   }
   // Each finished Sun–Sat week, the top kid(s) get a Star of the Week trophy.
   // Starts counting from the week this version was first opened.
-  function awardFinishedWeeks(){
-    var d = state.data, cur = weekStartKey(), changed = false;
+  function awardFinishedWeeks(d){
+    d = d || state.data;
+    var cur = weekStartKey(), changed = false;
     if(!d.lastStarWeek){ d.lastStarWeek = cur; return true; }
     var guard = 0;
     while(d.lastStarWeek < cur && guard++ < 60){
@@ -907,7 +1201,8 @@
       if(top > 0){
         rows.filter(function(r){ return r.t===top; }).forEach(function(r){
           r.p.starsWon = (r.p.starsWon||0) + 1;
-          addHistory({personId:r.p.id, kind:'bonus', category:'bonus', label:'🏆 Star of the Week ('+top+' pts)', points:0});
+          if(!Array.isArray(d.history)) d.history = [];
+          d.history.unshift({id:uid('h'), ts:Date.now(), personId:r.p.id, kind:'bonus', category:'bonus', label:'🏆 Star of the Week ('+top+' pts)', points:0});
         });
       }
       d.lastStarWeek = end; changed = true;
@@ -934,9 +1229,27 @@
   function renderLoading(){
     return '<div class="loading-screen"><span class="em">🌱</span><p class="disp" style="font-size:18px;color:var(--moss-dark);">Growing your garden...</p></div>';
   }
+  // Tasks can be limited to certain weekdays and (for kids) to certain kids.
+  function itemOnDay(it, dow){ return !it.days || it.days.indexOf(dow) !== -1; }
+  function itemForPerson(it, p){
+    if(p.role === 'kid') return !it.forKids || it.forKids.indexOf(p.id) !== -1;
+    return it.scope !== 'kids';
+  }
   function visibleItemsFor(p){
-    if(p.role === 'kid') return state.data.dailyItems;
-    return state.data.dailyItems.filter(function(it){ return it.scope !== 'kids'; });
+    var dow = new Date().getDay();
+    return state.data.dailyItems.filter(function(it){ return itemForPerson(it, p) && itemOnDay(it, dow); });
+  }
+  function pointsFor(it, p){
+    return (p && it.kidPoints && typeof it.kidPoints[p.id] === 'number') ? it.kidPoints[p.id] : it.points;
+  }
+  function daysLabel(it){
+    if(!it.days) return 'Every day';
+    var pre = DAY_PRESETS.filter(function(x){ return x.days && x.days.join() === it.days.slice().sort().join(); })[0];
+    return pre ? pre.label : it.days.slice().sort().map(function(d){ return DAY_NAMES[d]; }).join(', ');
+  }
+  function kidsLabel(it){
+    if(!it.forKids) return 'All kids';
+    return it.forKids.map(function(id){ var k = getPerson(id); return k ? k.name : null; }).filter(Boolean).join(', ') || 'No kids';
   }
   function kidsList(){ return state.data.people.filter(function(p){ return p.role==='kid'; }); }
   function currentKid(){
@@ -1008,7 +1321,8 @@
     var html = '<div class="screen">'+
       '<div class="home-header">'+
         '<div><p class="eyebrow">Assalamu alaikum! '+getGreeting()+' ☀️</p><h1 class="disp">Barakah Garden</h1></div>'+
-        '<button class="btn-ghost" data-action="manual-sync" aria-label="Refresh">🔄</button>'+
+        '<div class="header-btns">'+(isStandalone() ? '' : '<button class="btn-ghost" data-action="install-app">\uD83D\uDCF2 Install</button>')+
+        '<button class="btn-ghost" data-action="manual-sync" aria-label="Refresh">\uD83D\uDD04</button></div>'+
       '</div>'+
       '<div class="star-row">'+
         starCard('week', '🌟 Star of the Week', week, 'this week · ends '+weekEndLabel())+
@@ -1051,12 +1365,28 @@
       '<p class="stage-progress-note" style="margin-top:6px;">'+(ready ? 'Claiming it also grows your 🔥 streak!' : 'Unlocks when every quest today is approved ✅')+'</p>'+
     '</div>';
   }
+  function renderQuranCard(p){
+    var q = p.quran || {page:0,khatms:0,pagesTotal:0};
+    var pct = Math.round(q.page / QURAN_PAGES * 100);
+    var waiting = (p.quranRequests||[]).reduce(function(s,r){ return s + r.pages; }, 0);
+    return '<div class="card quran-card" style="margin-top:12px;">'+
+      '<div class="goal"><span class="gi">\uD83D\uDCD6</span><div class="gt">'+
+        '<p class="gn">My Quran journey'+(q.khatms ? ' \u00B7 \uD83C\uDF89 '+q.khatms+' khatm'+(q.khatms>1?'s':'') : '')+'</p>'+
+        '<p class="gs">Page '+q.page+' of '+QURAN_PAGES+' \u00B7 '+fmtNum(q.pagesTotal)+' pages read in total</p>'+
+        '<div class="bar"><i style="width:'+pct+'%;background:var(--moss);"></i></div></div></div>'+
+      (waiting ? '<p class="stage-progress-note" style="margin-top:6px;color:#B8860B;">\u23F3 '+waiting+' pages waiting for a parent</p>' : '')+
+      '<button class="btn-secondary" style="width:100%;margin-top:10px;" data-action="open-quran" data-person="'+p.id+'">\uD83D\uDCD6 I read Quran today (+'+state.data.quranPtsPerPage+' pts per page)</button>'+
+    '</div>';
+  }
   function renderQuests(p){
     var log = todayLogFor(p), items = visibleItemsFor(p);
     var done = items.filter(function(it){ return log.done[it.id]; }).length;
     var pend = Object.keys(log.pending||{}).length;
     var pct = items.length ? done/items.length : 0, C = 2*Math.PI*25;
+    var dayName = new Date().toLocaleDateString(undefined, {weekday:'long'});
     var html = renderKidSwitch() + renderProfile(p, true)+
+      (isExcused(p) ? '<div class="note-box" style="background:#EAF3FF;">\uD83D\uDE37 Today is a rest day \u2014 your \uD83D\uDD25 streak is safe. Get well soon!</div>' : '')+
+      '<p class="eyebrow" style="margin:0 2px 6px;">\uD83D\uDCC5 '+dayName+'\u2019s quests</p>'+
       '<div class="card ring-row">'+
         '<svg class="ring" viewBox="0 0 62 62" aria-label="'+done+' of '+items.length+' quests done"><circle cx="31" cy="31" r="25" fill="none" stroke="#DCE9D6" stroke-width="7"/>'+
           '<circle cx="31" cy="31" r="25" fill="none" stroke="'+ACCENTS[p.accent]+'" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+(C*pct).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 31 31)"/>'+
@@ -1072,10 +1402,11 @@
           var isDone = !!log.done[it.id], isPend = !isDone && !!log.pending[it.id];
           return '<button class="check-item '+(isDone?'done':isPend?'pending':'')+'" data-action="toggle-item" data-person="'+p.id+'" data-item="'+it.id+'">'+
             '<span class="check-icon">'+it.icon+'</span><span class="check-label">'+escapeHtml(it.label)+'</span>'+
-            '<span class="check-pts">'+(isDone?'✓':isPend?'⏳':'+'+it.points)+'</span></button>';
+            '<span class="check-pts">'+(isDone?'✓':isPend?'⏳':'+'+pointsFor(it, p))+'</span></button>';
         }).join('')+'</div>';
     });
-    html += '<div style="height:12px;"></div>' + renderPerfectDayCard(p);
+    if(!items.length) html += '<div class="empty-state"><span class="em">\uD83C\uDF34</span>No quests today \u2014 enjoy your day!</div>';
+    html += '<div style="height:12px;"></div>' + renderPerfectDayCard(p) + renderQuranCard(p);
     return html;
   }
 
@@ -1136,7 +1467,7 @@
     labelsSvg + '</svg>';
     var N = land(li+1);
     var badges = []; for(var b=0;b<=li+2;b++) badges.push({d:land(b), got:b<=li});
-    var chips = SECTION_ORDER.concat(['bonus']).map(function(c){
+    var chips = SECTION_ORDER.concat(['quran','bonus']).map(function(c){
       var meta = SECTION_META[c];
       return '<div class="chip">'+meta.icon+' '+meta.title+' <b>'+(p.lifetime[c]||0)+'</b></div>';
     }).join('');
@@ -1341,6 +1672,7 @@
     state.data.people.forEach(function(p){
       n += Object.keys(todayLogFor(p).pending||{}).length;
       n += (p.convertRequests||[]).length;
+      n += (p.quranRequests||[]).length;
     });
     n += state.data.owed.length;
     return n;
@@ -1392,6 +1724,19 @@
       }).join('') + '</div>';
     }
 
+    // Quran reading
+    var qRows = [];
+    state.data.people.forEach(function(p){ (p.quranRequests||[]).forEach(function(rq){ qRows.push({p:p, rq:rq}); }); });
+    if(qRows.length){
+      extra += '<div class="card"><p class="field-label">\uD83D\uDCD6 Quran reading</p>'+ qRows.map(function(c){
+        return '<div class="list-row"><div style="font-size:19px;">\uD83D\uDCD6</div>'+
+          '<div class="grow"><div class="name">'+escapeHtml(c.p.name)+' read '+c.rq.pages+' page'+(c.rq.pages>1?'s':'')+'</div>'+
+          '<div class="sub">+'+(c.rq.pages*state.data.quranPtsPerPage)+' pts \u00B7 '+timeAgo(c.rq.ts)+'</div></div>'+
+          '<button class="icon-btn" style="color:var(--moss);" data-action="approve-quran" data-person="'+c.p.id+'" data-req="'+c.rq.id+'">\u2713</button>'+
+          '<button class="icon-btn" style="color:var(--coral);" data-action="decline-quran" data-person="'+c.p.id+'" data-req="'+c.rq.id+'">\u2715</button></div>';
+      }).join('') + '</div>';
+    }
+
     // rewards kids redeemed that still need handing over
     if(state.data.owed.length){
       extra += '<div class="card"><p class="field-label">\ud83c\udf81 Rewards to hand over</p>'+ state.data.owed.map(function(o){
@@ -1418,7 +1763,7 @@
         (open ? doneRows.map(function(r){
           return '<div class="list-row"><div style="font-size:19px;">'+r.item.icon+'</div>'+
             '<div class="grow"><div class="name">'+escapeHtml(r.p.name)+' '+r.p.avatar+'</div>'+
-            '<div class="sub">'+escapeHtml(r.item.label)+' \u00b7 +'+r.item.points+' pts</div></div>'+
+            '<div class="sub">'+escapeHtml(r.item.label)+' \u00b7 +'+pointsFor(r.item, r.p)+' pts</div></div>'+
             '<button class="btn-secondary" style="padding:7px 10px;font-size:12.5px;color:var(--coral);" data-action="undo-item" data-person="'+r.p.id+'" data-item="'+r.item.id+'">\u21a9 Undo</button></div>';
         }).join('') : '')+
       '</div>';
@@ -1431,7 +1776,7 @@
       return '<div class="list-row">'+
         '<div style="font-size:19px;">'+r.item.icon+'</div>'+
         '<div class="grow"><div class="name">'+escapeHtml(r.p.name)+' '+r.p.avatar+'</div>'+
-        '<div class="sub">'+escapeHtml(r.item.label)+' \u00B7 +'+r.item.points+' pts</div></div>'+
+        '<div class="sub">'+escapeHtml(r.item.label)+' \u00B7 +'+pointsFor(r.item, r.p)+' pts</div></div>'+
         '<button class="icon-btn" style="color:var(--moss);" data-action="approve-item" data-person="'+r.p.id+'" data-item="'+r.item.id+'">\u2713</button>'+
         '<button class="icon-btn" style="color:var(--coral);" data-action="decline-item" data-person="'+r.p.id+'" data-item="'+r.item.id+'">\u2715</button>'+
       '</div>';
@@ -1449,12 +1794,18 @@
     function opt(field, value, label, active){
       return '<button class="seg-btn '+(active?'active':'')+'" data-action="member-hero" data-person="'+p.id+'" data-field="'+field+'" data-value="'+value+'">'+label+'</button>';
     }
+    var photoCtl = '<div class="seg-row" style="margin:10px 0 0;">'+
+        '<label class="btn-secondary photo-btn">\uD83D\uDCF7 '+(p.photo?'Change photo':'Upload photo')+
+          '<input type="file" accept="image/*" style="display:none;" data-change="photo-file" data-person="'+p.id+'"></label>'+
+        (p.photo ? '<button class="btn-secondary photo-btn" data-action="photo-mask" data-person="'+p.id+'">\uD83E\uDD78 Hero mask: '+(p.photoMask?'On':'Off')+'</button>'+
+                   '<button class="btn-secondary photo-btn" style="color:var(--coral);" data-action="photo-remove" data-person="'+p.id+'">Use cartoon hero</button>' : '')+
+      '</div>';
     return '<p class="field-label">Hero picture</p>'+
       '<div class="hero-edit">'+heroSVG(p, 84)+
         '<div style="flex:1;min-width:0;">'+
           '<input class="text-input" id="heroTitle_'+p.id+'" type="text" maxlength="30" value="'+escapeHtml(h.title||'')+'" placeholder="'+(adult?'e.g. Father':'Hero name, e.g. The Night Guardian')+'" style="margin-bottom:6px;">'+
           '<button class="btn-secondary" style="width:100%;padding:8px;" data-action="member-save-hero-title" data-person="'+p.id+'">Save hero name</button>'+
-        '</div></div>'+
+        '</div></div>'+ photoCtl +
       (h.gender ? '' : '<div class="note-box" style="margin:10px 0 0;background:#FFF1D6;">👉 Is '+escapeHtml(p.name)+' '+L.ask+'? Choose below so the right hero picture is used.</div>')+
       '<p class="field-label" style="margin-top:12px;">'+L.q+'</p>'+
       '<div class="toggle-row">'+
@@ -1506,7 +1857,9 @@
       html += '<div class="card"><p class="field-label">'+meta.icon+' '+meta.title+'</p>';
       if(!items.length) html += '<p style="color:var(--ink-soft);font-size:13px;">No activities in this category yet.</p>';
       items.forEach(function(it){
-        html += '<div class="list-row"><div class="grow"><div class="name">'+it.icon+' '+escapeHtml(it.label)+(it.scope==='kids'?' <span style="font-size:10.5px;color:var(--berry);font-weight:800;">KIDS ONLY</span>':'')+'</div></div>'+
+        var extraPts = Object.keys(it.kidPoints||{}).length ? ' \u00B7 custom points' : '';
+        html += '<div class="list-row"><div class="grow"><div class="name">'+it.icon+' '+escapeHtml(it.label)+(it.scope==='kids'?' <span style="font-size:10.5px;color:var(--berry);font-weight:800;">KIDS ONLY</span>':'')+'</div>'+
+          '<button class="sched-btn" data-action="open-schedule" data-item="'+it.id+'">\uD83D\uDCC5 '+escapeHtml(daysLabel(it))+' \u00B7 \uD83D\uDC67 '+escapeHtml(kidsLabel(it))+extraPts+' \u270E</button></div>'+
           '<div class="stepper sm"><button data-action="item-pts-dec" data-item="'+it.id+'">\u2212</button>'+
           '<span class="val disp">'+it.points+'</span>'+
           '<button data-action="item-pts-inc" data-item="'+it.id+'">+</button></div>'+
@@ -1514,7 +1867,7 @@
       });
       html += '</div>';
     });
-    html += '<div class="note-box">Perfect Day bonus: once every task for the day is approved, the kid’s <b>Claim Perfect Day Bonus</b> button unlocks for an extra <b>'+PERFECT_DAY_BONUS+' pts</b> (once a day).</div>';
+    html += '<div class="note-box">Perfect Day bonus: once every task <b>scheduled for that day</b> is approved, the kid’s <b>Claim Perfect Day Bonus</b> button unlocks for an extra <b>'+PERFECT_DAY_BONUS+' pts</b> (once a day).</div>';
 
     var catBtns = SECTION_ORDER.map(function(c){
       var meta = SECTION_META[c];
@@ -1528,6 +1881,9 @@
       '<div class="toggle-row">'+
         '<button class="toggle-btn '+(ni.scope==='kids'?'active':'')+'" data-action="newitem-set-scope" data-scope="kids">Kids only</button>'+
         '<button class="toggle-btn '+(ni.scope==='all'?'active':'')+'" data-action="newitem-set-scope" data-scope="all">Everyone</button>'+
+      '</div>'+
+      '<p class="field-label">Which days?</p><div class="seg-row">'+
+        DAY_PRESETS.map(function(pr){ return '<button class="seg-btn '+((ni.daysKey||'every')===pr.key?'active':'')+'" data-action="newitem-set-days" data-days="'+pr.key+'">'+pr.label+'</button>'; }).join('')+
       '</div>'+
       '<p class="field-label">Points</p>'+
       '<div class="stepper"><button data-action="newitem-pts-dec">\u2212</button><span class="val disp">'+ni.points+'</span><button data-action="newitem-pts-inc">+</button></div>'+
@@ -1588,7 +1944,18 @@
       '<div class="seg-row" style="margin-bottom:0;">'+
         '<button class="btn-secondary" style="flex:1;" data-action="open-money-form" data-person="'+a.personId+'" data-kind="savings">+ Add Money</button>'+
         '<button class="btn-secondary" style="flex:1;" data-action="open-money-form" data-person="'+a.personId+'" data-kind="charity_money">+ Add Charity</button>'+
-      '</div></div>';
+      '</div></div>'+ renderExcuseCard(getPerson(a.personId));
+  }
+  function renderExcuseCard(k){
+    if(!k) return '';
+    var t = todayStr(), y = yesterdayKey();
+    function btn(key, label){
+      var on = isExcused(k, key);
+      return '<button class="btn-secondary" style="flex:1;'+(on?'background:#EAF3FF;border-color:#4E85B0;':'')+'" data-action="toggle-excuse" data-person="'+k.id+'" data-day="'+key+'">'+(on?'\u2705 ':'')+label+'</button>';
+    }
+    return '<div class="card"><p class="field-label">\uD83D\uDE37 Streak protection for '+escapeHtml(k.name)+'</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">Sick, travelling, or a family day? Mark it as a rest day and '+escapeHtml(k.name)+'\u2019s \uD83D\uDD25 streak ('+streakOf(k)+' days) won\u2019t break.</p>'+
+      '<div class="seg-row" style="margin-bottom:0;">'+btn(t, 'Rest day: today')+btn(y, 'Rest day: yesterday')+'</div></div>';
   }
   function ensureAdjustUi(){
     if(!state.ui.adjust){
@@ -1597,6 +1964,23 @@
     }
   }
 
+  function renderBackupCard(){
+    var b = state.ui.backups;
+    var list = '';
+    if(b === 'loading') list = '<p class="stage-progress-note">Looking for backups\u2026</p>';
+    else if(Array.isArray(b)) list = b.length ? b.map(function(x){
+        return '<div class="list-row"><div class="grow"><div class="name">\uD83D\uDDC4\uFE0F Week of '+escapeHtml(x.week)+'</div></div>'+
+          '<button class="btn-secondary" style="padding:7px 10px;font-size:12.5px;" data-action="ask-restore" data-week="'+x.week+'">Restore</button></div>';
+      }).join('') : '<p class="stage-progress-note">No backups found yet \u2014 the first one is made automatically this week.</p>';
+    return '<div class="card"><p class="field-label">\uD83D\uDDC4\uFE0F Backups</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">A full copy is saved automatically once a week. You can also download a backup file to keep on your phone or computer.'+(state.data.lastBackupWeek?' Last automatic backup: week of '+escapeHtml(state.data.lastBackupWeek)+'.':'')+'</p>'+
+      '<div class="seg-row">'+
+        '<button class="btn-secondary" style="flex:1;" data-action="show-backups">See weekly backups</button>'+
+        '<button class="btn-secondary" style="flex:1;" data-action="export-data">\u2B07\uFE0F Download backup</button>'+
+      '</div>'+ list +
+      '<label class="btn-secondary" style="display:block;text-align:center;margin-top:8px;cursor:pointer;">\u2B06\uFE0F Restore from a backup file<input type="file" id="importFile" accept="application/json,.json" style="display:none;" data-change="import-file"></label>'+
+    '</div>';
+  }
   function renderParentSettings(){
     return '<div class="card"><p class="field-label">Currency label</p>'+
         '<input class="text-input" id="currencyInput" type="text" maxlength="6" value="'+escapeHtml(state.data.currency)+'">'+
@@ -1605,6 +1989,10 @@
         '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">How many points equal '+escapeHtml(state.data.currency)+' 1 when kids convert. Also sets the money price of rewards that don’t have their own.</p>'+
         '<div class="stepper"><button data-action="rate-dec">−</button><span class="val disp">'+state.data.pointsPerCurrency+'</span><button data-action="rate-inc">+</button></div>'+
         '<p class="stage-progress-note" style="text-align:center;">'+ptsLabel(state.data.pointsPerCurrency)+' = '+escapeHtml(state.data.currency)+' 1 · 2,000 pts = '+escapeHtml(state.data.currency)+' '+fmtMoney(pointsToCash(2000))+'</p></div>'+
+      '<div class="card"><p class="field-label">\uD83D\uDCD6 Quran points</p>'+
+        '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">Points per page read (approved by a parent). Finishing the whole Quran (khatm) adds a +'+KHATM_BONUS+' bonus.</p>'+
+        '<div class="stepper"><button data-action="quranrate-dec">\u2212</button><span class="val disp">'+state.data.quranPtsPerPage+'</span><button data-action="quranrate-inc">+</button></div></div>'+
+      renderBackupCard()+
       '<div class="card"><p class="field-label">Change PIN</p>'+
         '<input class="text-input" id="newPin1" type="text" inputmode="numeric" maxlength="4" placeholder="New 4-digit PIN">'+
         '<input class="text-input" id="newPin2" type="text" inputmode="numeric" maxlength="4" placeholder="Confirm new PIN">'+
@@ -1643,6 +2031,73 @@
         '<button class="btn-secondary" style="width:100%;margin-bottom:12px;" data-action="convert-all" data-person="'+kid.id+'">Use all my points ('+spendablePoints(kid)+')</button>'+
         '<div class="modal-actions"><button class="btn-ghost" data-action="close-modal">Cancel</button>'+
         '<button class="btn-primary" data-action="do-convert" data-person="'+kid.id+'">Send to parent</button></div>'+
+      '</div></div>';
+    }
+    if(m.type==='installHelp'){
+      var ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      return '<div class="modal-overlay" data-action="close-modal"><div class="modal-card" data-action="stop">'+
+        '<h3 class="disp">\uD83D\uDCF2 Install Barakah Garden</h3>'+
+        (ios ? '<p><b>On iPhone / iPad (Safari):</b><br>1. Tap the <b>Share</b> button (square with an arrow).<br>2. Scroll down and tap <b>Add to Home Screen</b>.<br>3. Tap <b>Add</b>.</p>'
+             : '<p><b>On Android (Chrome):</b><br>1. Tap the <b>\u22EE</b> menu (top right).<br>2. Tap <b>Install app</b> (or <b>Add to Home screen</b>).<br>3. Tap <b>Install</b>.</p>')+
+        '<p>The app then opens from its own icon, full screen, like any other app. It updates by itself whenever a new version is uploaded.</p>'+
+        '<div class="modal-actions"><button class="btn-primary" data-action="close-modal">Got it</button></div>'+
+      '</div></div>';
+    }
+    if(m.type==='crop'){
+      var cp = getPerson(m.personId);
+      if(!cp || !cropImg){ state.modal=null; return ''; }
+      return '<div class="modal-overlay"><div class="modal-card" data-action="stop" style="text-align:center;">'+
+        '<h3 class="disp">Frame the photo</h3>'+
+        '<p style="margin-bottom:10px;">Drag to move, use the slider to zoom. Line the <b>eyes</b> up with the dotted line so the hero mask fits.</p>'+
+        '<canvas id="cropCanvas" width="260" height="260" style="width:260px;height:260px;max-width:100%;border-radius:50%;touch-action:none;cursor:grab;background:#EEE;"></canvas>'+
+        '<input id="cropZoom" type="range" min="1" max="4" step="0.01" value="'+(cropState.zoom||1)+'" style="width:100%;margin:12px 0;">'+
+        '<label style="display:flex;align-items:center;gap:8px;justify-content:center;font-size:13px;font-weight:700;margin-bottom:12px;">'+
+          '<input type="checkbox" id="cropMask" '+(cropState.mask?'checked':'')+'> Add hero mask over the eyes</label>'+
+        '<div class="modal-actions"><button class="btn-ghost" data-action="crop-cancel">Cancel</button>'+
+        '<button class="btn-primary" data-action="crop-save" data-person="'+cp.id+'">Save photo</button></div>'+
+      '</div></div>';
+    }
+    if(m.type==='quranLog'){
+      var qk = getPerson(m.personId);
+      if(!qk){ state.modal=null; return ''; }
+      return '<div class="modal-overlay" data-action="close-modal"><div class="modal-card" data-action="stop">'+
+        '<h3 class="disp">\uD83D\uDCD6 I read Quran</h3>'+
+        '<p>How many pages did '+escapeHtml(qk.name)+' read? A parent will approve it. Each page = '+state.data.quranPtsPerPage+' pts.</p>'+
+        '<input class="text-input" id="quranPagesInput" type="number" min="1" max="60" placeholder="Pages, e.g. 2">'+
+        '<div class="modal-actions"><button class="btn-ghost" data-action="close-modal">Cancel</button>'+
+        '<button class="btn-primary" data-action="submit-quran" data-person="'+qk.id+'">Send to parent</button></div>'+
+      '</div></div>';
+    }
+    if(m.type==='schedule'){
+      var it = getItem(m.itemId);
+      if(!it){ state.modal=null; return ''; }
+      var kids = kidsList();
+      var dayChips = DAY_NAMES.map(function(n,i){ var on = !it.days || it.days.indexOf(i)!==-1;
+        return '<button class="seg-btn day-chip '+(on?'active':'')+'" data-action="sched-toggle" data-day="'+i+'">'+n+'</button>'; }).join('');
+      var kidChips = kids.map(function(k){ var on = !it.forKids || it.forKids.indexOf(k.id)!==-1;
+        return '<button class="seg-btn kid-chip '+(on?'active':'')+'" data-action="sched-toggle" data-kid="'+k.id+'">'+escapeHtml(k.name)+'</button>'; }).join('');
+      var ptsRows = kids.map(function(k){
+        var v = (it.kidPoints && typeof it.kidPoints[k.id]==='number') ? it.kidPoints[k.id] : '';
+        return '<div class="list-row" style="padding:6px 0;"><div class="grow"><div class="name">'+escapeHtml(k.name)+'</div></div>'+
+          '<input class="text-input kp-input" data-kid="'+k.id+'" type="number" min="0" max="100" value="'+v+'" placeholder="'+it.points+'" style="width:84px;margin:0;padding:8px 10px;"></div>';
+      }).join('');
+      return '<div class="modal-overlay" data-action="close-modal"><div class="modal-card" data-action="stop" style="max-height:88vh;overflow-y:auto;">'+
+        '<h3 class="disp">'+it.icon+' '+escapeHtml(it.label)+'</h3>'+
+        '<p class="field-label">Which days?</p>'+
+        '<div class="seg-row" style="margin-bottom:6px;">'+DAY_PRESETS.map(function(pr){ return '<button class="seg-btn" style="font-size:11.5px;padding:6px 9px;" data-action="sched-preset" data-days="'+pr.key+'">'+pr.label+'</button>'; }).join('')+'</div>'+
+        '<div class="seg-row">'+dayChips+'</div>'+
+        '<p class="field-label">Which kids?</p><div class="seg-row">'+kidChips+'</div>'+
+        '<p class="field-label">Points per kid <span style="text-transform:none;font-weight:700;">(blank = '+it.points+')</span></p>'+ptsRows+
+        '<div class="modal-actions" style="margin-top:14px;"><button class="btn-ghost" data-action="close-modal">Cancel</button>'+
+        '<button class="btn-primary" data-action="save-schedule" data-item="'+it.id+'">Save</button></div>'+
+      '</div></div>';
+    }
+    if(m.type==='confirmRestore'){
+      return '<div class="modal-overlay" data-action="close-modal"><div class="modal-card" data-action="stop">'+
+        '<h3 class="disp">Restore this backup?</h3>'+
+        '<p>Everything will go back to how it was '+(m.week ? 'in the week of <b>'+escapeHtml(m.week)+'</b>' : 'in the backup file')+'. Changes made since then will be replaced on every phone.</p>'+
+        '<div class="modal-actions"><button class="btn-ghost" data-action="close-modal">Cancel</button>'+
+        '<button class="btn-primary" data-action="do-restore">Restore</button></div>'+
       '</div></div>';
     }
     if(m.type==='newKid'){
@@ -1736,6 +2191,7 @@
     document.getElementById('app').innerHTML = html;
     if(render.lastKey === key) window.scrollTo(0, y); else window.scrollTo(0, 0);
     render.lastKey = key;
+    if(state.modal && state.modal.type==='crop') setupCrop();
   }
 
   /* ============ actions ============ */
@@ -1777,15 +2233,20 @@
   // approved, the kid's "Claim Perfect Day Bonus" button unlocks.
   function awardItem(p, item, log){
     log.done[item.id] = true;
-    earn(p, item.points, item.section);
-    addHistory({personId:p.id, kind:'daily', category:item.section, label:item.label, points:item.points});
+    var pts = pointsFor(item, p);
+    log.awarded = log.awarded || {};
+    log.awarded[item.id] = pts;            // remember what was given, for an exact undo
+    earn(p, pts, item.section);
+    addHistory({personId:p.id, kind:'daily', category:item.section, label:item.label, points:pts});
   }
   // Used by a parent's Undo. If the Perfect Day bonus was already claimed
   // and the day is no longer complete, that bonus is taken back too.
   function unawardItem(p, item, log){
     delete log.done[item.id];
-    unearn(p, item.points, item.section);
-    addHistory({personId:p.id, kind:'daily', category:item.section, label:item.label+' (undone)', points:-item.points});
+    var pts = (log.awarded && typeof log.awarded[item.id]==='number') ? log.awarded[item.id] : pointsFor(item, p);
+    if(log.awarded) delete log.awarded[item.id];
+    unearn(p, pts, item.section);
+    addHistory({personId:p.id, kind:'daily', category:item.section, label:item.label+' (undone)', points:-pts});
     if(log.perfectGiven && !allTasksDone(p)){
       log.perfectGiven = false;
       undoStreak(p);
@@ -1800,7 +2261,7 @@
     var log = todayLogFor(p);
     if(!log.done[item.id]) return;
     unawardItem(p, item, log);
-    showToast('Undone: '+item.label+' for '+p.name+' (\u2212'+item.points+')');
+    showToast('Undone: '+item.label+' for '+p.name);
     persist(); render();
   };
   actions['toggle-approved'] = function(){ state.ui.showApproved = !state.ui.showApproved; render(); };
@@ -1862,7 +2323,7 @@
     if(!log.pending[item.id]) return;
     delete log.pending[item.id];
     awardItem(p, item, log);
-    showToast('Approved: '+item.label+' for '+p.name+' (+'+item.points+')');
+    showToast('Approved: '+item.label+' for '+p.name+' (+'+pointsFor(item, p)+')');
     persist(); render();
   };
   actions['decline-item'] = function(el){
@@ -2071,9 +2532,139 @@
     if(!label){ showToast('Type an activity name first','error'); return; }
     var icon = (iconEl && iconEl.value.trim()) || '\u2728';
     var ni = state.ui.newItem;
-    state.data.dailyItems.push({id: uid('item'), section: ni.section, label: label, icon: icon, points: ni.points, scope: ni.scope==='all'?'all':'kids'});
-    state.ui.newItem = {label:'', icon:'', section: ni.section, points:5, scope: ni.scope};
+    var pre = DAY_PRESETS.filter(function(x){ return x.key===(ni.daysKey||'every'); })[0];
+    state.data.dailyItems.push({id: uid('item'), section: ni.section, label: label, icon: icon, points: ni.points, scope: ni.scope==='all'?'all':'kids',
+      days: pre && pre.days ? pre.days.slice() : null, forKids: null, kidPoints: {}});
+    state.ui.newItem = {label:'', icon:'', section: ni.section, points:5, scope: ni.scope, daysKey: ni.daysKey};
     showToast('Activity added \u2728'); persist(); render();
+  };
+
+  actions['crop-cancel'] = function(){ cropImg = null; state.modal = null; render(); };
+  actions['crop-save'] = function(el){
+    var p = getPerson(el.dataset.person);
+    if(!p || !cropImg){ state.modal = null; render(); return; }
+    var mk = document.getElementById('cropMask');
+    p.photo = exportCrop();
+    p.photoMask = mk ? mk.checked : cropState.mask;
+    cropImg = null; state.modal = null;
+    showToast(p.name+'\u2019s hero photo saved \uD83E\uDDB8'); persist(); render();
+  };
+  actions['photo-mask'] = function(el){ var p = getPerson(el.dataset.person); if(p){ p.photoMask = !p.photoMask; persist(); render(); } };
+  actions['photo-remove'] = function(el){ var p = getPerson(el.dataset.person); if(p){ delete p.photo; p.photoMask = false; showToast('Back to the cartoon hero'); persist(); render(); } };
+  actions['newitem-set-days'] = function(el){ ensureNewItemUi(); var l = document.getElementById('newItemLabelInput'); if(l) state.ui.newItem.label = l.value; state.ui.newItem.daysKey = el.dataset.days; render(); };
+
+  // schedule editor (days / kids / points per kid) — toggles change the chips in place
+  actions['open-schedule'] = function(el){ state.modal = {type:'schedule', itemId: el.dataset.item}; render(); };
+  actions['sched-toggle'] = function(el){ el.classList.toggle('active'); };
+  actions['sched-preset'] = function(el){
+    var pre = DAY_PRESETS.filter(function(x){ return x.key===el.dataset.days; })[0];
+    document.querySelectorAll('.day-chip').forEach(function(b){
+      var d = +b.dataset.day; b.classList.toggle('active', !pre.days || pre.days.indexOf(d)!==-1);
+    });
+  };
+  actions['save-schedule'] = function(el){
+    var it = getItem(el.dataset.item);
+    if(!it){ state.modal=null; render(); return; }
+    var days = []; document.querySelectorAll('.day-chip.active').forEach(function(b){ days.push(+b.dataset.day); });
+    if(!days.length){ showToast('Pick at least one day','error'); return; }
+    var kids = []; document.querySelectorAll('.kid-chip.active').forEach(function(b){ kids.push(b.dataset.kid); });
+    var allKids = kidsList();
+    if(allKids.length && !kids.length){ showToast('Pick at least one kid','error'); return; }
+    var kp = {};
+    document.querySelectorAll('.kp-input').forEach(function(inp){
+      var v = inp.value.trim(); if(v==='') return;
+      var n = Math.floor(parseFloat(v)); if(!isNaN(n) && n>=0) kp[inp.dataset.kid] = clamp(n,0,100);
+    });
+    it.days = days.length >= 7 ? null : days.sort();
+    it.forKids = kids.length >= allKids.length ? null : kids;
+    it.kidPoints = kp;
+    state.modal = null;
+    showToast('Saved \u2014 '+daysLabel(it)+' \u00B7 '+kidsLabel(it)); persist(); render();
+  };
+
+  // streak protection
+  actions['toggle-excuse'] = function(el){
+    var p = getPerson(el.dataset.person), key = el.dataset.day;
+    if(!p || !key) return;
+    if(!p.excused) p.excused = {};
+    if(p.excused[key]) delete p.excused[key]; else p.excused[key] = true;
+    // keep ~60 days of rest days
+    Object.keys(p.excused).sort().slice(0, -60).forEach(function(k){ delete p.excused[k]; });
+    showToast(p.excused[key] ? 'Rest day saved \u2014 '+p.name+'\u2019s streak is safe \uD83D\uDE37' : 'Rest day removed');
+    persist(); render();
+  };
+
+  // Quran tracker
+  actions['open-quran'] = function(el){ state.modal = {type:'quranLog', personId: el.dataset.person}; render(); };
+  actions['submit-quran'] = function(el){
+    var p = getPerson(el.dataset.person), inp = document.getElementById('quranPagesInput');
+    var n = inp ? Math.floor(parseFloat(inp.value)) : NaN;
+    if(!p){ state.modal=null; render(); return; }
+    if(!n || isNaN(n) || n < 1){ showToast('How many pages? Enter a number','error'); return; }
+    if(n > 60){ showToast('That\u2019s a lot! Max 60 pages at a time','error'); return; }
+    p.quranRequests.push({id:uid('qr'), pages:n, ts:Date.now()});
+    state.modal = null;
+    showToast('Sent to a parent for approval \u23F3'); persist(); render();
+  };
+  actions['approve-quran'] = function(el){
+    var p = getPerson(el.dataset.person);
+    if(!p) return;
+    var rq = p.quranRequests.filter(function(r){ return r.id===el.dataset.req; })[0];
+    if(!rq) return;
+    p.quranRequests = p.quranRequests.filter(function(r){ return r.id!==rq.id; });
+    var pts = rq.pages * state.data.quranPtsPerPage;
+    if(pts) earn(p, pts, 'quran');
+    addHistory({personId:p.id, kind:'daily', category:'quran', label:'Read '+rq.pages+' page'+(rq.pages>1?'s':'')+' of Quran', points:pts});
+    p.quran.pagesTotal += rq.pages;
+    p.quran.page += rq.pages;
+    var khatm = false;
+    while(p.quran.page >= QURAN_PAGES){
+      p.quran.page -= QURAN_PAGES; p.quran.khatms += 1; khatm = true;
+      earn(p, KHATM_BONUS, 'quran');
+      addHistory({personId:p.id, kind:'bonus', category:'quran', label:'\uD83C\uDF89 Completed the whole Quran (khatm)!', points:KHATM_BONUS});
+    }
+    if(khatm){ burstConfetti(); showToast('MashaAllah! '+p.name+' completed the Quran! +'+KHATM_BONUS+' \uD83C\uDF89'); }
+    else showToast('Approved: '+rq.pages+' pages for '+p.name+' (+'+pts+')');
+    persist(); render();
+  };
+  actions['decline-quran'] = function(el){
+    var p = getPerson(el.dataset.person);
+    if(!p) return;
+    p.quranRequests = p.quranRequests.filter(function(r){ return r.id!==el.dataset.req; });
+    showToast('Declined'); persist(); render();
+  };
+  actions['quranrate-inc'] = function(){ state.data.quranPtsPerPage = clamp(state.data.quranPtsPerPage+1, 0, 20); persist(); render(); };
+  actions['quranrate-dec'] = function(){ state.data.quranPtsPerPage = clamp(state.data.quranPtsPerPage-1, 0, 20); persist(); render(); };
+
+  // backups
+  actions['show-backups'] = function(){
+    state.ui.backups = 'loading'; render();
+    listBackups().then(function(rows){ state.ui.backups = rows; state.ui.backupRows = rows; render(); })
+      .catch(function(){ state.ui.backups = []; render(); });
+  };
+  actions['export-data'] = function(){
+    var blob = new Blob([JSON.stringify(state.data, null, 1)], {type:'application/json'});
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'barakah-garden-backup-'+todayStr()+'.json';
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); }, 1000);
+    showToast('Backup downloaded \u2B07\uFE0F');
+  };
+  actions['ask-restore'] = function(el){
+    var row = (state.ui.backupRows||[]).filter(function(r){ return r.week===el.dataset.week; })[0];
+    if(!row) return;
+    state.ui.restoreJson = row.json;
+    state.modal = {type:'confirmRestore', week: row.week}; render();
+  };
+  actions['do-restore'] = function(){
+    var raw = state.ui.restoreJson;
+    state.modal = null;
+    if(!raw){ render(); return; }
+    try{
+      restoreData(JSON.parse(raw)).then(function(){ showToast('Backup restored \u2705'); })
+        .catch(function(e){ console.error(e); showToast('Restore failed','error'); });
+    }catch(e){ showToast('That backup file can\u2019t be read','error'); render(); }
   };
 
   actions['adjust-pick-person'] = function(el){ ensureAdjustUi(); state.ui.adjust.personId = el.dataset.person; render(); };
@@ -2166,9 +2757,10 @@
     var p = getPerson(el.dataset.person);
     if(p){
       p.points=0; p.totalLifetime=0; p.savings=0; p.charityGiven=0;
-      ['prayers','azkar','charity','habits','bonus'].forEach(function(c){ p.lifetime[c]=0; });
+      ['prayers','azkar','charity','habits','bonus','quran'].forEach(function(c){ p.lifetime[c]=0; });
       p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       p.dayPts = {}; p.convertRequests = []; p.streak = {count:0, last:null}; p.starsWon = 0; p.goalId = null;
+      p.excused = {}; p.quran = {page:0, khatms:0, pagesTotal:0}; p.quranRequests = [];
       state.data.history = state.data.history.filter(function(h){ return h.personId !== p.id; });
       state.data.owed = state.data.owed.filter(function(o){ return o.personId !== p.id; });
     }
@@ -2204,12 +2796,43 @@
   };
 
   /* ============ event delegation ============ */
+  document.getElementById('app-root').addEventListener('change', function(e){
+    var el = e.target;
+    if(el && el.dataset.change === 'photo-file' && el.files && el.files[0]){
+      loadPhotoFile(el.files[0], el.dataset.person); el.value = ''; return;
+    }
+    if(!el || el.dataset.change !== 'import-file' || !el.files || !el.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function(){
+      try{
+        var obj = JSON.parse(reader.result);
+        if(!obj || !Array.isArray(obj.people)) throw new Error('not a backup');
+        state.ui.restoreJson = reader.result;
+        state.modal = {type:'confirmRestore', week:null}; render();
+      }catch(err){ showToast('That file isn\u2019t a Barakah Garden backup','error'); }
+    };
+    reader.readAsText(el.files[0]);
+    el.value = '';
+  });
   document.getElementById('app-root').addEventListener('click', function(e){
     var el = e.target.closest('[data-action]');
     if(!el) return;
     var fn = actions[el.dataset.action];
     if(fn) fn(el, e);
   });
+
+  /* ============ installable app (PWA) ============ */
+  var installPrompt = null;
+  function isStandalone(){ return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) || window.navigator.standalone === true; }
+  window.addEventListener('beforeinstallprompt', function(e){ e.preventDefault(); installPrompt = e; if(state.data) render(); });
+  window.addEventListener('appinstalled', function(){ installPrompt = null; showToast('Barakah Garden installed \uD83C\uDF89'); });
+  if('serviceWorker' in navigator && location.protocol === 'https:'){
+    window.addEventListener('load', function(){ navigator.serviceWorker.register('sw.js').catch(function(e){ console.warn('service worker not registered', e); }); });
+  }
+  actions['install-app'] = function(){
+    if(installPrompt){ installPrompt.prompt(); installPrompt.userChoice.then(function(){ installPrompt = null; render(); }); }
+    else { state.modal = {type:'installHelp'}; render(); }
+  };
 
   /* ============ init (Firebase) ============ */
   function init(){
