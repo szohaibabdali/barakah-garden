@@ -235,7 +235,7 @@
   .emoji-face{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:var(--cream);}
   .new{display:inline-block;background:var(--berry);color:#fff;font-size:9px;font-weight:800;border-radius:6px;padding:1px 5px;vertical-align:middle;letter-spacing:.03em;}
 
-  .tabbar{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:760px;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);
+  .tabbar{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:760px;z-index:40;display:grid;grid-template-columns:repeat(6,1fr);
     background:#fff;border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(31,46,35,0.08);padding:6px 8px calc(10px + env(safe-area-inset-bottom));border-radius:22px 22px 0 0;}
   .tabbtn{display:flex;flex-direction:column;align-items:center;gap:1px;padding:6px 0;border-radius:14px;font-size:11px;font-weight:800;color:var(--ink-soft);position:relative;}
   .tabbtn .ic{font-size:22px;line-height:1.1;filter:grayscale(0.6);opacity:.75;transition:transform .15s ease;}
@@ -320,6 +320,126 @@
   .top-tag{position:absolute;top:10px;right:10px;background:var(--sun);color:#fff;font-size:9.5px;font-weight:800;border-radius:6px;padding:1px 6px;}
 
   .hero-edit{display:flex;gap:12px;align-items:center;}
+  .tabbtn{font-size:10.5px;}
+  .game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+  .game-card{background:#fff;border-radius:18px;padding:14px 12px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:3px;text-align:left;border:2px solid transparent;}
+  .game-card:active{transform:scale(0.97);}
+  .gc-ic{font-size:30px;line-height:1.1;}
+  .gc-n{font-family:'Baloo 2',sans-serif;font-size:17px;font-weight:700;}
+  .gc-b{font-size:12px;color:var(--ink-soft);font-weight:600;min-height:32px;}
+  .gc-p{font-size:12px;font-weight:800;color:var(--berry);}
+  .game-chips{flex-wrap:wrap;}
+  .game-chips .kchip{flex:1 1 30%;}
+  .game-wrap{max-width:520px;margin:0 auto;}
+  .game-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
+  .gh-p{display:flex;align-items:center;gap:6px;background:#fff;border-radius:16px;padding:6px 10px 6px 6px;box-shadow:var(--shadow);font-weight:800;font-size:13px;border:3px solid transparent;flex:1;min-width:0;}
+  .gh-p span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .gh-p b{margin-left:auto;font-family:'Baloo 2',sans-serif;font-size:18px;color:var(--berry);}
+  .gh-p.turn{border-color:var(--sun);background:#FFF8E6;}
+  .gh-mid{display:flex;flex-direction:column;align-items:center;font-size:22px;max-width:34%;text-align:center;}
+  .gh-mid small{font-size:11px;font-weight:800;color:var(--ink-soft);line-height:1.2;}
+  .game-result{text-align:center;margin-top:12px;border:2px solid var(--sun);}
+  .ttt{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:330px;margin:0 auto;}
+  .ttt-c{aspect-ratio:1;background:#fff;border-radius:16px;font-size:44px;box-shadow:var(--shadow);}
+  .ttt-c.win{background:#FFF1C9;}
+  .c4{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;background:#2F5FA8;padding:8px;border-radius:16px;max-width:420px;margin:0 auto;}
+  .c4-c{aspect-ratio:1;display:flex;align-items:center;justify-content:center;padding:0;}
+  .disc{width:86%;height:86%;border-radius:50%;background:#E8EEF8;display:block;box-shadow:inset 0 2px 4px rgba(0,0,0,.25);}
+  .disc.red{background:#E2453C;} .disc.yel{background:#F5C518;}
+  .c4-c.win .disc{outline:3px solid #fff;}
+  .mem{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:400px;margin:0 auto;}
+  .mem-c{aspect-ratio:1;border-radius:14px;background:var(--moss);font-size:30px;box-shadow:var(--shadow);transition:transform .15s;}
+  .mem-c.open{background:#fff;}
+  .mem-c.done{background:#EAF6EC;opacity:.75;}
+  .duel{display:flex;flex-direction:column;gap:10px;}
+  .duel-pad{background:#fff;border-radius:18px;padding:10px;box-shadow:var(--shadow);border-top:5px solid var(--k);}
+  .duel-pad.flip{transform:rotate(180deg);}
+  .duel-name{display:flex;align-items:center;gap:6px;font-weight:800;font-size:13px;margin-bottom:8px;}
+  .duel-name b{margin-left:auto;font-family:'Baloo 2',sans-serif;font-size:18px;color:var(--berry);}
+  .duel-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .duel-btn{background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:14px 6px;font-weight:800;font-size:15px;min-height:54px;}
+  .duel-btn:disabled{opacity:.55;}
+  .duel-btn.right{background:#EAF6EC;border-color:var(--moss);opacity:1;}
+  .duel-q{text-align:center;background:var(--cream);border-radius:18px;padding:10px;box-shadow:var(--shadow);}
+  .duel-q small{display:block;font-size:11.5px;font-weight:800;color:var(--ink-soft);}
+  .math-t{font-family:'Baloo 2',sans-serif;font-size:34px;font-weight:700;margin:2px 0;}
+  .quiz-t{font-weight:800;font-size:16px;margin:4px 0;}
+  .chess{display:grid;grid-template-columns:repeat(8,1fr);border-radius:10px;overflow:hidden;box-shadow:var(--shadow);max-width:440px;margin:0 auto;border:4px solid #6B4A2E;}
+  .ch-sq{aspect-ratio:1;position:relative;padding:0;display:flex;align-items:center;justify-content:center;}
+  .ch-sq.lt{background:#F0E3C6;} .ch-sq.dk{background:#B58863;}
+  .ch-sq.last{box-shadow:inset 0 0 0 100px rgba(245,185,62,.35);}
+  .ch-sq.sel{box-shadow:inset 0 0 0 100px rgba(63,125,88,.45);}
+  .ch-sq.chk{box-shadow:inset 0 0 0 100px rgba(226,69,60,.6);}
+  .pc{font-size:min(9vw,40px);line-height:1;font-family:'Segoe UI Symbol','DejaVu Sans','Noto Sans Symbols2',serif;}
+  .pc.w{color:#FFFFFF;text-shadow:0 0 2px #000,0 0 1px #000,1px 1px 0 #333,-1px -1px 0 #333,1px -1px 0 #333,-1px 1px 0 #333;}
+  .pc.b{color:#1F1A17;text-shadow:0 0 1px #fff;}
+  .ch-sq i.dot{position:absolute;width:28%;height:28%;border-radius:50%;background:rgba(31,46,35,.35);}
+  .ch-sq i.cap{position:absolute;inset:6%;border-radius:50%;border:4px solid rgba(31,46,35,.4);}
+  .ch-cap{min-height:24px;text-align:center;margin:4px 0;}
+  .ch-cap .pc{font-size:20px;}
+  .game-card{position:relative;}
+  .game-card.learn{border-color:#E3D2F5;background:linear-gradient(180deg,#fff,#FBF6FF);}
+  .game-card.locked{opacity:.55;}
+  .gc-lock{position:absolute;top:8px;right:8px;font-size:10px;font-weight:800;background:#F1F3F0;color:var(--ink-soft);border-radius:8px;padding:2px 6px;}
+  .game-card.tourney{border-color:var(--sun);background:#FFF8E6;}
+  .game-limits{margin-top:-4px;}
+  .live-card{border:2px solid #4E85B0;}
+  .live-wait{text-align:center;background:#EAF3FF;border-radius:12px;padding:8px;font-weight:800;font-size:13px;color:#2F5FA8;margin-bottom:8px;}
+  .game-head{flex-wrap:wrap;}
+  .gh-p{border-color:transparent;}
+  .gh-p.turn{border-color:var(--sun);}
+  .dots{display:grid;max-width:340px;aspect-ratio:1;margin:0 auto;background:#fff;border-radius:16px;padding:10px;box-shadow:var(--shadow);}
+  .db-dot{background:var(--ink);border-radius:50%;width:12px;height:12px;align-self:center;justify-self:center;}
+  .db-h{height:10px;align-self:center;background:#E7ECE6;border-radius:5px;padding:0;}
+  .db-v{width:10px;justify-self:center;background:#E7ECE6;border-radius:5px;padding:0;}
+  .db-h:not(.on):hover,.db-v:not(.on):hover{background:#C9D4CB;}
+  .db-box{display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',sans-serif;font-weight:700;font-size:20px;color:var(--ink);border-radius:6px;}
+  .mancala{display:flex;gap:6px;align-items:stretch;background:#B07A4A;border-radius:22px;padding:8px;box-shadow:var(--shadow);}
+  .mc-store{width:42px;flex-shrink:0;background:#8A5A33;border-radius:18px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#FFE9C7;font-weight:800;font-size:12px;}
+  .mc-store b{font-family:'Baloo 2',sans-serif;font-size:24px;}
+  .mc-rows{flex:1;min-width:0;display:flex;flex-direction:column;gap:6px;}
+  .mc-row{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:4px;}
+  .mc-row.top .mc-pit{transform:rotate(180deg);}
+  .mc-pit{aspect-ratio:1;background:#8A5A33;border-radius:50%;color:#FFE9C7;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2px;}
+  .mc-pit b{font-family:'Baloo 2',sans-serif;font-size:18px;line-height:1;}
+  .mc-pit .seeds{font-size:6px;letter-spacing:1px;line-height:1.1;max-width:90%;word-break:break-all;color:#F5D7A0;}
+  .mc-pit.can{box-shadow:0 0 0 3px var(--sun);}
+  .mc-pit.last{background:#A06B3D;}
+  .bs{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;max-width:330px;margin:0 auto;background:#2F6FD6;padding:6px;border-radius:14px;}
+  .bs-c{aspect-ratio:1;background:#7FB0F0;border-radius:8px;font-size:18px;padding:0;}
+  .bs-c.ship{background:#5C6F86;} .bs-c.hit{background:#E2453C;} .bs-c.miss{background:#C9DDF7;color:#5C6F86;}
+  .bs-small .bs{max-width:200px;} .bs-small .bs-c{font-size:12px;}
+  .pass-card{text-align:center;padding:26px 16px;}
+  .sl{display:grid;grid-template-columns:repeat(10,1fr);gap:2px;max-width:440px;margin:0 auto;background:#fff;padding:4px;border-radius:14px;box-shadow:var(--shadow);}
+  .sl-c{aspect-ratio:1;background:#F4F8EF;border-radius:4px;position:relative;font-size:9px;padding:1px;overflow:hidden;}
+  .sl-c:nth-child(odd){background:#EAF3E3;}
+  .sl-c.lad{background:#DFF2D8;} .sl-c.snk{background:#FBE1DC;}
+  .sl-c small{color:var(--ink-soft);font-weight:700;}
+  .sl-c em{display:block;font-style:normal;font-size:8px;font-weight:800;line-height:1;}
+  .toks{display:inline-flex;flex-wrap:wrap;gap:1px;}
+  .toks i,.ltk{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;color:#fff;font-size:8px;font-weight:800;font-style:normal;border:1px solid #fff;}
+  .sl-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;flex-wrap:wrap;}
+  .dice-btn{width:auto;padding:12px 18px;}
+  .ludo{display:grid;grid-template-columns:repeat(15,1fr);max-width:450px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:var(--shadow);}
+  .lc{aspect-ratio:1;display:flex;align-items:center;justify-content:center;flex-wrap:wrap;position:relative;}
+  .lc.track{border:1px solid #E1E6DF;background:#fff;}
+  .lc.center{background:#F5E6B8;}
+  .lc small{font-size:9px;opacity:.6;}
+  .ltk{width:72%;height:72%;font-size:9px;padding:0;}
+  .ltk.can{box-shadow:0 0 0 2px #fff,0 0 0 4px var(--ink);animation:pulse 1s infinite;}
+  .ckp{width:76%;height:76%;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25);}
+  .ckp.red{background:#D7443A;} .ckp.blk{background:#2A2A2A;}
+  .mem.words .mem-c{font-size:12px;font-weight:800;line-height:1.15;padding:4px;aspect-ratio:auto;min-height:72px;}
+  .mem.words .mem-c.nm{color:var(--berry);}
+  .react-btn{width:100%;min-height:120px;border-radius:16px;font-size:22px;font-weight:800;color:#fff;background:#D7443A;}
+  .react-btn.go{background:#2F9E5A;}
+  .react-btn.done,.react-btn:disabled{background:#C9D4CB;color:var(--ink);}
+  .odd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;}
+  .odd-c{aspect-ratio:1;font-size:26px;background:var(--cream);border-radius:10px;border:2px solid var(--line);}
+  .odd-c.right{background:#EAF6EC;border-color:var(--moss);}
+  .ar-t{font-family:'Amiri','Scheherazade New','Traditional Arabic','Noto Naskh Arabic',serif;font-size:26px;direction:rtl;margin:4px 0;line-height:1.6;}
+  .duel-btn.ar{font-family:'Amiri','Scheherazade New','Traditional Arabic','Noto Naskh Arabic',serif;font-size:17px;direction:rtl;line-height:1.5;}
+  .pass-shop{border:2px dashed var(--sun);}
   .photo-btn{flex:1;min-width:120px;text-align:center;cursor:pointer;padding:9px 8px;font-size:12.5px;}
   .sched-btn{margin-top:3px;font-size:11.5px;font-weight:700;color:var(--teal);text-align:left;padding:0;}
   .day-chip,.kid-chip{padding:7px 10px;font-size:12.5px;}
@@ -351,7 +471,8 @@
     charity: {title:'Charity',      icon:'🤲'},
     habits:  {title:'Daily Habits', icon:'🌱'},
     bonus:   {title:'Bonus',        icon:'⭐'},
-    quran:   {title:'Quran',        icon:'📖'}
+    quran:   {title:'Quran',        icon:'📖'},
+    games:   {title:'Games',        icon:'🎲'}
   };
   var SECTION_ORDER = ['prayers','azkar','charity','habits'];
 
@@ -495,7 +616,7 @@
       accent: accent,
       role: role,
       points: 0,
-      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0},
+      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0, games:0},
       totalLifetime: 0,
       todayLog: {date: todayStr(), done:{}, pending:{}, perfectGiven:false},
       savings: 0,
@@ -549,7 +670,7 @@
       if(p.role !== 'parent' && p.role !== 'kid') p.role = 'kid';
       if(typeof p.points !== 'number' || isNaN(p.points)) p.points = 0;
       if(!p.lifetime || typeof p.lifetime !== 'object') p.lifetime = {};
-      ['prayers','azkar','charity','habits','bonus','quran'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
+      ['prayers','azkar','charity','habits','bonus','quran','games'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
       if(typeof p.totalLifetime !== 'number' || isNaN(p.totalLifetime)) p.totalLifetime = 0;
       if(!p.todayLog || typeof p.todayLog !== 'object') p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       if(!p.todayLog.done || typeof p.todayLog.done !== 'object') p.todayLog.done = {};
@@ -565,6 +686,9 @@
       if(!p.quran || typeof p.quran !== 'object') p.quran = {page:0, khatms:0, pagesTotal:0};
       ['page','khatms','pagesTotal'].forEach(function(k){ if(typeof p.quran[k] !== 'number' || isNaN(p.quran[k])) p.quran[k] = 0; });
       if(!Array.isArray(p.quranRequests)) p.quranRequests = [];
+      if(!Array.isArray(p.gamesPlayed)) p.gamesPlayed = [];
+      if(!Array.isArray(p.passRequests)) p.passRequests = [];
+      if(typeof p.gamePasses !== 'number' || isNaN(p.gamePasses) || p.gamePasses < 0) p.gamePasses = 0;
       if(typeof p.starsWon !== 'number' || isNaN(p.starsWon)) p.starsWon = 0;
       if(p.goalId === undefined) p.goalId = null;
       if(p.hero){
@@ -613,6 +737,14 @@
       if(!it.kidPoints || typeof it.kidPoints !== 'object') it.kidPoints = {};
     });
     if(typeof d.quranPtsPerPage !== 'number' || isNaN(d.quranPtsPerPage) || d.quranPtsPerPage < 0) d.quranPtsPerPage = 2;
+    if(!d.gamePts || typeof d.gamePts !== 'object') d.gamePts = {};
+    Object.keys(DEFAULT_GAME_PTS).forEach(function(k){ if(typeof d.gamePts[k] !== 'number' || isNaN(d.gamePts[k])) d.gamePts[k] = DEFAULT_GAME_PTS[k]; });
+    if(typeof d.gameDailyCap !== 'number' || isNaN(d.gameDailyCap) || d.gameDailyCap < 0) d.gameDailyCap = 20;
+    if(typeof d.gamesOn !== 'boolean') d.gamesOn = true;
+    if(typeof d.gamesPerDay !== 'number' || isNaN(d.gamesPerDay) || d.gamesPerDay < 1) d.gamesPerDay = 3;
+    if(typeof d.brainFirst !== 'boolean') d.brainFirst = true;
+    if(typeof d.gamePassCost !== 'number' || isNaN(d.gamePassCost) || d.gamePassCost < 0) d.gamePassCost = 30;
+    if(!Array.isArray(d.liveGames)) d.liveGames = [];
     if(!Array.isArray(d.rewards) || d.rewards.length===0) d.rewards = defaultData().rewards;
     if(!d.rewardPackV2){
       // one-time upgrade: add the new reward ideas to an existing family
@@ -697,7 +829,7 @@
     tally(p, -pts);
   }
   function pendingConvertPts(p){ return (p.convertRequests||[]).reduce(function(s,r){ return s + r.pts; }, 0); }
-  function spendablePoints(p){ return Math.max(0, p.points - pendingConvertPts(p)); }
+  function spendablePoints(p){ return Math.max(0, p.points - pendingConvertPts(p) - pendingPassPts(p)); }
 
   /* ============ storage (YOUR Firebase project, live-synced) ============
      v11: every save is a small PATCH applied to the latest copy on the server
@@ -1467,7 +1599,7 @@
     labelsSvg + '</svg>';
     var N = land(li+1);
     var badges = []; for(var b=0;b<=li+2;b++) badges.push({d:land(b), got:b<=li});
-    var chips = SECTION_ORDER.concat(['quran','bonus']).map(function(c){
+    var chips = SECTION_ORDER.concat(['quran','games','bonus']).map(function(c){
       var meta = SECTION_META[c];
       return '<div class="chip">'+meta.icon+' '+meta.title+' <b>'+(p.lifetime[c]||0)+'</b></div>';
     }).join('');
@@ -1506,6 +1638,7 @@
         }).join('')+'</div>'+
       '</div>';
     }
+    if(state.data.gamesOn) html += renderPassShop(p);
     if(!rewards.length){
       html += '<div class="empty-state"><span class="em">🎁</span>No rewards yet.<br>Ask a parent to add some in Parent Mode!</div>';
     }
@@ -1571,6 +1704,1451 @@
       '</div>'+ content + '</div>';
   }
 
+  /* ============ GAMES ============
+     Pass-and-play on one device, or live on two phones (turn-based board games).
+     A kid who wins earns points (stars + journey), up to a daily limit. */
+  var GAMES = {
+    chess:     {name:'Chess',            icon:'♞', cat:'board',   min:2, max:2, online:true,  blurb:'The classic. Checkmate the king to win.'},
+    checkers:  {name:'Checkers',         icon:'⚪', cat:'board',   min:2, max:2, online:true,  blurb:'Jump over pieces. Captures are a must!'},
+    ttt:       {name:'Tic-Tac-Toe',      icon:'❌', cat:'board',   min:2, max:2, online:true,  blurb:'Three in a row wins.'},
+    connect4:  {name:'Connect Four',     icon:'🔴', cat:'board', min:2, max:2, online:true, blurb:'Drop discs — four in a line wins.'},
+    dots:      {name:'Dots & Boxes',     icon:'🟦', cat:'board', min:2, max:2, online:true, blurb:'Close a box to score and go again.'},
+    mancala:   {name:'Mancala',          icon:'🥣', cat:'board', min:2, max:2, online:true, blurb:'Sow the seeds — most in your store wins.'},
+    battleship:{name:'Battleship',       icon:'🚢', cat:'board', min:2, max:2, online:true, blurb:'Find and sink the hidden ships.'},
+    snakes:    {name:'Snakes & Ladders', icon:'🐍', cat:'board', min:2, max:4, online:true, blurb:'2–4 players. Climb ladders, dodge snakes!'},
+    ludo:      {name:'Ludo',             icon:'🏁', cat:'board', min:2, max:4, online:true, blurb:'2–4 players. Race your tokens home.'},
+    memory:    {name:'Memory Match',     icon:'🧠', cat:'brain', min:2, max:2, blurb:'Take turns finding pairs. Most pairs wins.'},
+    math:      {name:'Math Duel',        icon:'➕', cat:'brain',   min:2, max:2, blurb:'Face to face — first to tap the right answer.'},
+    tables:    {name:'Times-Table Race', icon:'✖️', cat:'brain', min:2, max:2, blurb:'Race through the times tables.'},
+    words:     {name:'Word Scramble',    icon:'🔤', cat:'brain', min:2, max:2, blurb:'Unscramble the word first.'},
+    reaction:  {name:'Reaction Race',    icon:'⚡', cat:'brain',   min:2, max:2, blurb:'Tap when it turns green — not before!'},
+    oddone:    {name:'Spot the Odd One', icon:'🔍', cat:'brain', min:2, max:2, blurb:'Find the one that’s different.'},
+    quiz:      {name:'Quiz Duel',        icon:'💡', cat:'brain', min:2, max:2, blurb:'Islamic & general knowledge, face to face.'},
+    ayah:      {name:'Ayah Order',       icon:'📖', cat:'islamic', min:2, max:2, blurb:'Which ayah comes next? Short surahs.'},
+    prophets:  {name:'Prophets’ Quiz', icon:'🕌', cat:'islamic', min:2, max:2, blurb:'Stories of the prophets (AS).'},
+    arabic:    {name:'Arabic Letters',   icon:'أ', cat:'islamic', min:2, max:2, blurb:'Match each letter to its name.'},
+    names99:   {name:'99 Names Memory',  icon:'✨', cat:'islamic', min:2, max:2, blurb:'Match the Names of Allah to their meanings.'}
+  };
+  var GAME_CATS = [['brain','🧠 Brain duels \u00B7 recommended'],['islamic','🌙 Islamic learning \u00B7 recommended'],['board','🎲 Board games']];
+  var GAME_ORDER = Object.keys(GAMES);
+  var DEFAULT_GAME_PTS = {chess:10, checkers:6, ttt:2, connect4:3, dots:4, mancala:5, battleship:5, snakes:3, ludo:6,
+    memory:4, math:5, tables:4, words:4, reaction:3, oddone:3, quiz:5, ayah:5, prophets:5, arabic:4, names99:5};
+  var TOURNEY_BONUS = 10;
+  var DUEL_TYPES = {math:1, tables:1, words:1, reaction:1, oddone:1, quiz:1, ayah:1, prophets:1, arabic:1};
+  var G = null;            // the game being played right now
+  var gameTimer = null;
+  var gameActions = {};    // merged into actions once they exist
+
+  function gamePtsFor(type){ var t = state.data.gamePts || {}; return typeof t[type] === 'number' ? t[type] : DEFAULT_GAME_PTS[type]; }
+  function gamePtsToday(p){ return (p.gameDay && p.gameDay.date === todayStr()) ? (p.gameDay.pts||0) : 0; }
+  // award game points to a kid, respecting the daily limit; returns what was actually given
+  function earnGame(p, pts, label, uncapped){
+    if(!p || p.role !== 'kid' || pts <= 0) return 0;
+    var cap = state.data.gameDailyCap, used = gamePtsToday(p);
+    var give = uncapped ? pts : Math.max(0, Math.min(pts, cap - used));
+    if(!uncapped) p.gameDay = {date: todayStr(), pts: used + give};
+    if(give > 0) earn(p, give, 'games');
+    addHistory({personId:p.id, kind:'game', category:'games', label:label + (give < pts ? ' (daily game limit)' : ''), points:give});
+    return give;
+  }
+  function weekGameWins(){
+    var start = weekStartKey(), rows = {};
+    state.data.history.forEach(function(h){
+      if(h.kind!=='game' || !h.win || dateKey(h.ts) < start) return;
+      rows[h.personId] = (rows[h.personId]||0) + 1;
+    });
+    return rows;
+  }
+  function rnd(n){ return Math.floor(Math.random()*n); }
+  function shuffle(a){ for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  function gp(i){ return G ? getPerson(G.players[i]) : null; }
+  function nameOf(i){ var p = gp(i); return p ? escapeHtml(p.name) : 'Player '+(i+1); }
+  function nPlayers(){ return G.players.length; }
+  // who is looking at the screen: in a live game, this phone's player; otherwise whoever's turn it is
+  function viewer(){ return G.online ? meIdx()[0] : G.turnIdx; }
+  function myTurn(){ return !G.online || meIdx().indexOf(G.turnIdx) !== -1; }
+
+  /* ---------- lobby ---------- */
+  function renderGames(){
+    if(G) return (G.online && !meIdx().length) ? renderClaim() : renderGameBoard();
+    var html = '<div class="home-header"><div><p class="eyebrow">Play together, earn together</p><h1 class="disp">🎲 Games</h1></div></div>';
+    if(!state.data.gamesOn){
+      return html + '<div class="empty-state"><span class="em">🔒</span>Games are switched off right now.<br>A parent can turn them on in Parent Mode → Settings.</div>';
+    }
+    var setup = state.ui.gameSetup;
+    if(setup) return html + renderGameSetup(setup);
+    html += renderLiveInvites() + renderGameKidBar();
+    GAME_CATS.forEach(function(cat){
+      html += '<p class="section-title">'+cat[1]+'</p><div class="game-grid">'+GAME_ORDER.filter(function(t){ return GAMES[t].cat===cat[0]; }).map(function(t){
+        var gm = GAMES[t];
+        var lock = gameCardStatus(t);
+        return '<button class="game-card'+(gm.cat!=='board'?' learn':'')+(lock?' locked':'')+'" data-action="game-pick" data-game="'+t+'">'+lock+'<span class="gc-ic">'+gm.icon+'</span>'+
+          '<span class="gc-n">'+gm.name+'</span><span class="gc-b">'+gm.blurb+'</span>'+
+          '<span class="gc-p">Win +'+gamePtsFor(t)+' pts'+(gm.online?' · 📱📱':'')+'</span></button>';
+      }).join('')+'</div>';
+    });
+    html += '<p class="section-title">🏆 Family</p><div class="game-grid">'+
+      '<button class="game-card tourney" data-action="game-pick" data-game="tourney"><span class="gc-ic">🏆</span><span class="gc-n">Family Tournament</span>'+
+      '<span class="gc-b">Everyone plays everyone. The champion wins a bonus!</span><span class="gc-p">Champion +'+TOURNEY_BONUS+' pts</span></button></div>';
+    var wins = weekGameWins(), kids = kidsList();
+    html += '<p class="section-title">This week’s game wins</p><div class="board" style="justify-content:flex-start;">'+
+      kids.map(function(k){ return '<span>'+escapeHtml(k.name)+' <b>'+(wins[k.id]||0)+'</b> · today '+gamePtsToday(k)+'/'+state.data.gameDailyCap+' pts</span>'; }).join('')+'</div>'+
+      '<div class="note-box" style="margin-top:12px;">Game points count toward Star of the Week and the Journey, up to <b>'+state.data.gameDailyCap+' pts per kid per day</b>. 📱📱 = can be played live on two phones. Parents don’t earn points, but can play!</div>';
+    return html;
+  }
+
+  // whose limits the lobby shows (tap a kid to switch)
+  function renderGameKidBar(){
+    var kids = kidsList();
+    if(!kids.length) return '';
+    var k = getPerson(state.ui.gameKid);
+    if(!k || k.role!=='kid'){ k = kids[0]; state.ui.gameKid = k.id; }
+    var left = Math.max(0, state.data.gamesPerDay - playsToday(k));
+    var total = GAME_ORDER.length, done = playedList(k).length;
+    return '<div class="kid-switch">'+kids.map(function(x){
+        return '<button class="kchip '+(x.id===k.id?'active':'')+'" style="--k:'+ACCENTS[x.accent]+'" data-action="game-kid" data-person="'+x.id+'">'+faceFor(x,24)+'<span>'+escapeHtml(x.name)+'</span></button>';
+      }).join('')+'</div>'+
+      '<div class="note-box game-limits"><b>'+escapeHtml(k.name)+'</b>: '+left+' of '+state.data.gamesPerDay+' games left today \u00B7 tried '+done+' of '+total+' games'+
+      ((k.gamePasses||0) ? ' \u00B7 \uD83C\uDF9F\uFE0F '+k.gamePasses+' pass'+(k.gamePasses>1?'es':'') : '')+
+      (state.data.brainFirst && playsToday(k)===0 ? '<br>\uD83E\uDDE0 First game today must be a brain or Islamic game.' : '')+'</div>';
+  }
+  function renderGameSetup(setup){
+    var people = state.data.people, tour = setup.type==='tourney';
+    var gm = tour ? null : GAMES[setup.type];
+    var multi = tour || (gm && gm.max > 2);
+    var sel = setup.players || [];
+    var chips;
+    if(multi){
+      chips = '<p class="section-title">Players (tap in playing order, '+(tour?'2–4':gm.min+'–'+gm.max)+')</p><div class="kid-switch game-chips">'+people.map(function(p){
+        var at = sel.indexOf(p.id);
+        return '<button class="kchip '+(at>=0?'active':'')+'" style="--k:'+ACCENTS[p.accent]+'" data-action="game-toggle-player" data-person="'+p.id+'">'+faceFor(p,24)+'<span>'+(at>=0?(at+1)+'. ':'')+escapeHtml(p.name)+'</span></button>';
+      }).join('')+'</div>';
+    } else {
+      var labels = {chess:[' (White, moves first)',' (Black)'], ttt:[' (❌)',' (⭕)'], connect4:[' (🔴)',' (🟡)'], checkers:[' (🔴 moves first)',' (⚫)']}[setup.type] || ['',''];
+      chips = [0,1].map(function(i){
+        return '<p class="section-title">Player '+(i+1)+labels[i]+'</p><div class="kid-switch game-chips">'+people.map(function(p){
+          var on = sel[i]===p.id, other = sel[1-i]===p.id;
+          return '<button class="kchip '+(on?'active':'')+'" style="--k:'+ACCENTS[p.accent]+';'+(other?'opacity:.45;':'')+'" data-action="game-player" data-slot="'+i+'" data-person="'+p.id+'">'+faceFor(p,24)+'<span>'+escapeHtml(p.name)+'</span></button>';
+        }).join('')+'</div>';
+      }).join('');
+    }
+    var opts = '';
+    if(setup.type==='math') opts = '<p class="section-title">Level</p><div class="toggle-row">'+
+      [['easy','Easy (+ − to 20)'],['hard','Hard (× and to 100)']].map(function(l){ return '<button class="toggle-btn '+((setup.level||'easy')===l[0]?'active':'')+'" data-action="game-opt" data-k="level" data-v="'+l[0]+'">'+l[1]+'</button>'; }).join('')+'</div>';
+    if(setup.type==='quiz') opts = '<p class="section-title">Questions</p><div class="seg-row">'+
+      [['mixed','Mixed'],['islamic','Islamic'],['prophets','Prophets'],['general','General']].map(function(l){ return '<button class="seg-btn '+((setup.cat||'mixed')===l[0]?'active':'')+'" data-action="game-opt" data-k="cat" data-v="'+l[0]+'">'+l[1]+'</button>'; }).join('')+'</div>';
+    if(setup.type==='ludo') opts = '<p class="section-title">Tokens each</p><div class="toggle-row">'+
+      [['2','2 tokens (quick game)'],['4','4 tokens (full game)']].map(function(l){ return '<button class="toggle-btn '+(String(setup.tokens||2)===l[0]?'active':'')+'" data-action="game-opt" data-k="tokens" data-v="'+l[0]+'">'+l[1]+'</button>'; }).join('')+'</div>';
+    if(tour){
+      opts = '<p class="section-title">Which game?</p><div class="seg-row">'+GAME_ORDER.filter(function(t){ return GAMES[t].max===2; }).map(function(t){
+        return '<button class="seg-btn '+(setup.tgame===t?'active':'')+'" data-action="game-opt" data-k="tgame" data-v="'+t+'">'+GAMES[t].icon+' '+GAMES[t].name+'</button>'; }).join('')+'</div>';
+    }
+    var count = sel.filter(Boolean).length, distinct = sel.length===2 ? sel[0] && sel[1] && sel[0]!==sel[1] : true;
+    var ready = tour ? (count>=2 && count<=4 && setup.tgame) : (multi ? (count>=gm.min && count<=gm.max) : (count===2 && distinct));
+    var live = (!tour && gm.online && state.data.people.length) ?
+      '<p class="section-title">Where?</p><div class="toggle-row">'+
+        '<button class="toggle-btn '+(!setup.online?'active':'')+'" data-action="game-opt" data-k="online" data-v="">📱 One phone (take turns)</button>'+
+        '<button class="toggle-btn '+(setup.online?'active':'')+'" data-action="game-opt" data-k="online" data-v="1">📱📱 Two phones (live)</button></div>'+
+        (setup.online ? '<p class="quest-sub">This phone plays as <b>'+(getPerson(sel[0])?escapeHtml(getPerson(sel[0]).name):'Player 1')+'</b>. The others open Games on their phone and tap <b>Join</b>.</p>' : '') : '';
+    var title = tour ? '🏆 Family Tournament' : gm.icon+' '+gm.name;
+    var blurb = tour ? 'Everyone plays everyone once. Most wins = champion (+'+TOURNEY_BONUS+' pts, once a day). Each match win also earns that game’s points.'
+      : gm.blurb+' Winner gets <b>+'+gamePtsFor(setup.type)+' pts</b>.';
+    return '<div class="card game-setup"><p class="quest-head">'+title+'</p><p class="quest-sub" style="margin-bottom:6px;">'+blurb+'</p>'+
+      chips + opts + live +
+      '<div class="modal-actions" style="margin-top:14px;"><button class="btn-ghost" data-action="game-back">Back</button>'+
+      '<button class="btn-primary" data-action="game-start"'+(ready?'':' disabled style="opacity:.5;"')+'>'+(tour?'Start tournament':setup.online?'Start live game':'Start game')+'</button></div></div>';
+  }
+
+  /* ---------- shared board chrome ---------- */
+  function gameHeader(extra){
+    var turn = G.result ? -1 : G.turnIdx;
+    var html = '<div class="game-head">';
+    G.players.forEach(function(id, i){
+      var p = getPerson(id);
+      html += '<div class="gh-p '+(turn===i?'turn':'')+'" style="--k:'+(p?ACCENTS[p.accent]:'#999')+'">'+(p?faceFor(p,30):'')+'<span>'+(p?escapeHtml(p.name):'?')+(G.online && meIdx().indexOf(i)!==-1?' (you)':'')+'</span>'+(G.scores?'<b>'+G.scores[i]+'</b>':'')+'</div>';
+      if(i===0 && G.players.length===2) html += '<div class="gh-mid">'+(GAMES[G.type]?GAMES[G.type].icon:'')+'<small>'+(extra||'')+'</small></div>';
+    });
+    html += '</div>';
+    if(G.players.length > 2 && extra) html += '<p class="quest-sub" style="text-align:center;margin:-4px 0 8px;font-weight:800;">'+extra+'</p>';
+    if(G.online && !G.result && !myTurn()) html += '<p class="live-wait">⏳ Waiting for '+nameOf(G.turnIdx)+' to play on their phone…</p>';
+    if(G.tour) html += '<p class="quest-sub" style="text-align:center;margin-bottom:6px;">🏆 Tournament · match '+(G.tour.idx+1)+' of '+G.tour.matches.length+'</p>';
+    return html;
+  }
+  function turnText(){ return G.result ? '' : nameOf(G.turnIdx)+'’s turn'; }
+  function gameFooter(){
+    var b = '';
+    if(!G.result){
+      if((G.type==='chess' || G.type==='checkers') && !G.online) b += '<button class="btn-secondary" style="flex:1;" data-action="game-draw">🤝 Agree a draw</button>';
+      if(GAMES[G.type] && GAMES[G.type].cat==='board' && G.players.length===2) b += '<button class="btn-secondary" style="flex:1;" data-action="game-resign">🏳️ '+nameOf(G.online?meIdx()[0]:G.turnIdx)+' gives up</button>';
+    }
+    b += '<button class="btn-secondary" style="flex:1;" data-action="game-quit">'+(G.result?'Back to games':'Quit (no points)')+'</button>';
+    return '<div class="seg-row" style="margin-top:12px;">'+b+'</div>';
+  }
+  function resultCard(){
+    if(!G.result) return '';
+    var r = G.result, t = G.tour;
+    var btns = t ? (t.idx < t.matches.length-1 || !t.done ? '<button class="btn-primary" data-action="tour-next">'+(t.idx < t.matches.length-1 ? 'Next match ▶' : 'See champion 🏆')+'</button>' : '')
+      : (G.online ? '' : '<button class="btn-primary" data-action="game-again">🔁 Play again</button>');
+    return '<div class="card game-result"><p class="disp" style="font-size:24px;color:var(--berry);">'+r.title+'</p>'+
+      '<p class="quest-sub" style="margin:4px 0 12px;">'+r.sub+'</p>'+
+      '<div class="modal-actions"><button class="btn-ghost" data-action="game-quit">'+(t?'End tournament':'Back to games')+'</button>'+btns+'</div></div>';
+  }
+  // finish a game: winnerIdx = player index, or null for a draw
+  function finishGame(winnerIdx, how){
+    if(G.result) return;
+    var type = G.type, full = gamePtsFor(type), gm = GAMES[type];
+    var others = function(i){ return G.players.filter(function(_,j){ return j!==i; }).map(function(id){ var p = getPerson(id); return p ? p.name : '?'; }).join(', '); };
+    var title, sub;
+    if(winnerIdx === null){
+      var half = Math.floor(full/2), got = [];
+      G.players.forEach(function(id, i){
+        var p = getPerson(id);
+        if(p && p.role==='kid'){ var g = earnGame(p, half, '🤝 Draw at '+gm.name+' with '+others(i)); if(g) got.push(escapeHtml(p.name)+' +'+g); }
+      });
+      title = '🤝 It’s a draw!';
+      sub = (how ? how+' · ' : '') + (got.length ? got.join(', ')+' pts' : 'Well played, everyone.');
+    } else {
+      var w = gp(winnerIdx), given = 0;
+      if(w && w.role==='kid'){
+        given = earnGame(w, full, '🏆 Won '+gm.name+' vs '+others(winnerIdx));
+        state.data.history[0].win = true;
+      }
+      title = '🏆 '+(w?escapeHtml(w.name):'?')+' wins!';
+      sub = (how ? how+' · ' : '') + (w && w.role==='kid' ? (given ? '+'+given+' pts added to the tally' : 'Daily game points limit reached — great game anyway!') : 'Parents play for fun — no points.');
+      burstConfetti();
+    }
+    G.result = {title:title, sub:sub, winner:winnerIdx};
+    if(G.tour) G.tour.results[G.tour.idx] = winnerIdx===null ? null : G.players[winnerIdx];
+    persist();
+    pushLive(true);
+    render();
+  }
+  function nextTurn(){ G.turnIdx = (G.turnIdx + 1) % nPlayers(); }
+
+  /* ---------- tic-tac-toe ---------- */
+  var TTT_LINES = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+  function tttNew(){ return {cells:[null,null,null,null,null,null,null,null,null]}; }
+  function renderTTT(){
+    var html = gameHeader(turnText())+'<div class="ttt">';
+    G.s.cells.forEach(function(v,i){
+      var win = G.s.line && G.s.line.indexOf(i)!==-1;
+      html += '<button class="ttt-c '+(win?'win':'')+'" data-action="ttt-move" data-i="'+i+'">'+(v===0?'❌':v===1?'⭕':'')+'</button>';
+    });
+    return html + '</div>' + resultCard() + gameFooter();
+  }
+  function tttMove(i){
+    if(G.result || G.s.cells[i] !== null) return;
+    G.s.cells[i] = G.turnIdx;
+    var line = TTT_LINES.filter(function(l){ return l.every(function(k){ return G.s.cells[k]===G.turnIdx; }); })[0];
+    if(line){ G.s.line = line; return finishGame(G.turnIdx, 'Three in a row'); }
+    if(G.s.cells.every(function(v){ return v!==null; })) return finishGame(null, 'Board full');
+    nextTurn(); moved();
+  }
+
+  /* ---------- connect four ---------- */
+  function c4New(){ var g=[]; for(var r=0;r<6;r++){ g.push([null,null,null,null,null,null,null]); } return {g:g}; }
+  function renderC4(){
+    var html = gameHeader(G.result?'':nameOf(G.turnIdx)+' — tap a column')+'<div class="c4">';
+    for(var r=0;r<6;r++) for(var c=0;c<7;c++){
+      var v = G.s.g[r][c], win = G.s.win && G.s.win.some(function(x){ return x[0]===r && x[1]===c; });
+      html += '<button class="c4-c '+(win?'win':'')+'" data-action="c4-move" data-c="'+c+'"><span class="disc '+(v===0?'red':v===1?'yel':'')+'"></span></button>';
+    }
+    return html + '</div>' + resultCard() + gameFooter();
+  }
+  function c4Move(c){
+    if(G.result) return;
+    var g = G.s.g, r = 5;
+    while(r >= 0 && g[r][c] !== null) r--;
+    if(r < 0) return;
+    g[r][c] = G.turnIdx;
+    var dirs = [[0,1],[1,0],[1,1],[1,-1]];
+    for(var d=0; d<dirs.length; d++){
+      var line = [[r,c]];
+      [1,-1].forEach(function(sgn){
+        var rr = r + dirs[d][0]*sgn, cc = c + dirs[d][1]*sgn;
+        while(rr>=0 && rr<6 && cc>=0 && cc<7 && g[rr][cc]===G.turnIdx){ line.push([rr,cc]); rr += dirs[d][0]*sgn; cc += dirs[d][1]*sgn; }
+      });
+      if(line.length >= 4){ G.s.win = line; return finishGame(G.turnIdx, 'Four in a line'); }
+    }
+    if(g[0].every(function(v){ return v!==null; })) return finishGame(null, 'Board full');
+    nextTurn(); moved();
+  }
+
+  /* ---------- dots & boxes (4 x 4 boxes) ---------- */
+  var DB = 4;
+  function dotsNew(){
+    var h=[], v=[], box=[];
+    for(var r=0;r<=DB;r++){ h.push([]); for(var c=0;c<DB;c++) h[r].push(null); }
+    for(var r2=0;r2<DB;r2++){ v.push([]); for(var c2=0;c2<=DB;c2++) v[r2].push(null); box.push([null,null,null,null]); }
+    return {h:h, v:v, box:box};
+  }
+  function renderDots(){
+    var s = G.s, n = DB*2+1, html = gameHeader(turnText())+'<div class="dots" style="grid-template-columns:'+Array(n).fill(0).map(function(_,i){ return i%2?'1fr':'14px'; }).join(' ')+';grid-template-rows:'+Array(n).fill(0).map(function(_,i){ return i%2?'1fr':'14px'; }).join(' ')+';">';
+    function col(i){ var p = gp(i); return p ? ACCENTS[p.accent] : '#888'; }
+    for(var r=0;r<n;r++) for(var c=0;c<n;c++){
+      if(r%2===0 && c%2===0) html += '<span class="db-dot"></span>';
+      else if(r%2===0){ var o = s.h[r/2][(c-1)/2]; html += '<button class="db-h '+(o!==null?'on':'')+'" style="'+(o!==null?'background:'+col(o):'')+'" data-action="dots-line" data-k="h" data-r="'+(r/2)+'" data-c="'+((c-1)/2)+'"></button>'; }
+      else if(c%2===0){ var o2 = s.v[(r-1)/2][c/2]; html += '<button class="db-v '+(o2!==null?'on':'')+'" style="'+(o2!==null?'background:'+col(o2):'')+'" data-action="dots-line" data-k="v" data-r="'+((r-1)/2)+'" data-c="'+(c/2)+'"></button>'; }
+      else { var b = s.box[(r-1)/2][(c-1)/2]; html += '<span class="db-box" style="'+(b!==null?'background:'+col(b)+'33':'')+'">'+(b!==null && gp(b) ? escapeHtml(gp(b).name.charAt(0)) : '')+'</span>'; }
+    }
+    return html + '</div><p class="quest-sub" style="text-align:center;margin-top:6px;">Tap between two dots to draw a line. Close a box to score and go again.</p>' + resultCard() + gameFooter();
+  }
+  function dotsLine(k, r, c){
+    var s = G.s;
+    if(G.result) return;
+    var arr = k==='h' ? s.h : s.v;
+    if(!arr[r] || arr[r][c] === undefined || arr[r][c] !== null) return;
+    arr[r][c] = G.turnIdx;
+    var scored = 0;
+    function check(br, bc){
+      if(br<0 || bc<0 || br>=DB || bc>=DB || s.box[br][bc]!==null) return;
+      if(s.h[br][bc]!==null && s.h[br+1][bc]!==null && s.v[br][bc]!==null && s.v[br][bc+1]!==null){ s.box[br][bc] = G.turnIdx; G.scores[G.turnIdx]++; scored++; }
+    }
+    if(k==='h'){ check(r-1, c); check(r, c); } else { check(r, c-1); check(r, c); }
+    var full = s.box.every(function(row){ return row.every(function(b){ return b!==null; }); });
+    if(full){ var w = G.scores[0]===G.scores[1] ? null : (G.scores[0]>G.scores[1]?0:1); return finishGame(w, G.scores[0]+' boxes to '+G.scores[1]); }
+    if(!scored) nextTurn();
+    moved();
+  }
+
+  /* ---------- mancala (Kalah: 6 pits, 4 seeds) ---------- */
+  function mancalaNew(){ var p = []; for(var i=0;i<14;i++) p.push((i===6||i===13)?0:4); return {pits:p, last:null}; }
+  function renderMancala(){
+    var s = G.s, pits = s.pits;
+    function pit(i, own){
+      var can = !G.result && own===G.turnIdx && pits[i]>0;
+      return '<button class="mc-pit '+(can?'can':'')+(s.last===i?' last':'')+'" data-action="mc-sow" data-i="'+i+'">'+
+        '<b>'+pits[i]+'</b><span class="seeds">'+seedDots(pits[i])+'</span></button>';
+    }
+    function seedDots(n){ var o=''; for(var k=0;k<Math.min(n,12);k++) o += '●'; return o + (n>12?'+':''); }
+    var top = [12,11,10,9,8,7].map(function(i){ return pit(i,1); }).join('');
+    var bot = [0,1,2,3,4,5].map(function(i){ return pit(i,0); }).join('');
+    return gameHeader(turnText())+
+      '<p class="quest-sub" style="text-align:center;transform:rotate(180deg);">'+nameOf(1)+'’s side</p>'+
+      '<div class="mancala"><div class="mc-store">'+nameOf(1).charAt(0)+'<b>'+pits[13]+'</b></div>'+
+      '<div class="mc-rows"><div class="mc-row top">'+top+'</div><div class="mc-row">'+bot+'</div></div>'+
+      '<div class="mc-store">'+nameOf(0).charAt(0)+'<b>'+pits[6]+'</b></div></div>'+
+      '<p class="quest-sub" style="text-align:center;">'+nameOf(0)+'’s side · tap a pit on your side to sow its seeds to the right. Last seed in your store = go again!</p>'+
+      resultCard() + gameFooter();
+  }
+  function mcSow(i){
+    var s = G.s, pits = s.pits, me = G.turnIdx;
+    if(G.result) return;
+    var mine = me===0 ? (i>=0 && i<=5) : (i>=7 && i<=12);
+    if(!mine || pits[i]===0) return;
+    var seeds = pits[i], pos = i, myStore = me===0 ? 6 : 13, theirStore = me===0 ? 13 : 6;
+    pits[i] = 0;
+    while(seeds > 0){
+      pos = (pos + 1) % 14;
+      if(pos === theirStore) continue;
+      pits[pos]++; seeds--;
+    }
+    s.last = pos;
+    var onMySide = me===0 ? (pos>=0 && pos<=5) : (pos>=7 && pos<=12);
+    if(onMySide && pits[pos]===1 && pits[12-pos] > 0){
+      pits[myStore] += pits[12-pos] + 1; pits[12-pos] = 0; pits[pos] = 0;
+    }
+    var side0 = pits.slice(0,6).every(function(x){ return x===0; }), side1 = pits.slice(7,13).every(function(x){ return x===0; });
+    if(side0 || side1){
+      for(var k=0;k<6;k++){ pits[6] += pits[k]; pits[k] = 0; pits[13] += pits[k+7]; pits[k+7] = 0; }
+      var w = pits[6]===pits[13] ? null : (pits[6]>pits[13] ? 0 : 1);
+      return finishGame(w, pits[6]+' seeds to '+pits[13]);
+    }
+    if(pos !== myStore) nextTurn();
+    moved();
+  }
+
+  /* ---------- battleship (6 x 6, ships of 3, 2, 2) ---------- */
+  var BS = 6, BS_SHIPS = [3,2,2];
+  function bsFleet(){
+    var grid = [], ships = [];
+    for(var r=0;r<BS;r++) grid.push([0,0,0,0,0,0]);
+    BS_SHIPS.forEach(function(len, si){
+      for(var tries=0; tries<200; tries++){
+        var hor = rnd(2)===0, r = rnd(hor?BS:BS-len+1), c = rnd(hor?BS-len+1:BS), cells = [];
+        for(var k=0;k<len;k++) cells.push(hor ? [r, c+k] : [r+k, c]);
+        if(cells.every(function(x){ return grid[x[0]][x[1]]===0; })){ cells.forEach(function(x){ grid[x[0]][x[1]] = si+1; }); ships.push(cells); break; }
+      }
+    });
+    return {grid:grid, ships:ships};
+  }
+  function battleshipNew(){
+    return {fleet:[bsFleet(), bsFleet()], shots:[[],[]], ready:[false,false], phase:'place', pass:false, msg:''};
+  }
+  function bsShotAt(shots, r, c){ return shots.filter(function(x){ return x[0]===r && x[1]===c; })[0]; }
+  function bsGrid(owner, showShips, clickable){
+    var f = G.s.fleet[owner], shots = G.s.shots[1-owner], html = '<div class="bs">';
+    for(var r=0;r<BS;r++) for(var c=0;c<BS;c++){
+      var ship = f.grid[r][c], shot = bsShotAt(shots, r, c);
+      var cls = shot ? (ship ? 'hit' : 'miss') : (showShips && ship ? 'ship' : '');
+      html += '<button class="bs-c '+cls+'" '+(clickable?'data-action="bs-fire" data-r="'+r+'" data-c="'+c+'"':'disabled')+'>'+(shot ? (ship?'💥':'•') : (showShips && ship ? '🚢' : ''))+'</button>';
+    }
+    return html + '</div>';
+  }
+  function bsSunk(owner){ var f = G.s.fleet[owner], shots = G.s.shots[1-owner]; return f.ships.filter(function(sh){ return sh.every(function(x){ return bsShotAt(shots, x[0], x[1]); }); }).length; }
+  function renderBattleship(){
+    var s = G.s, me = viewer();
+    var html = gameHeader(G.result ? '' : s.phase==='place' ? 'Hide your ships' : nameOf(G.turnIdx)+' fires!');
+    if(G.result){
+      return html + '<p class="section-title">'+nameOf(0)+'’s ships</p>'+bsGrid(0,true,false)+'<p class="section-title">'+nameOf(1)+'’s ships</p>'+bsGrid(1,true,false)+resultCard()+gameFooter();
+    }
+    if(s.pass && !G.online){
+      return html + '<div class="card pass-card"><p class="disp" style="font-size:22px;">🙈 Pass the phone to '+nameOf(G.turnIdx)+'</p>'+
+        '<p class="quest-sub">No peeking! '+(s.msg?escapeHtml(s.msg):'')+'</p>'+
+        '<button class="btn-primary" style="margin-top:12px;" data-action="bs-unpass">I’m '+nameOf(G.turnIdx)+' — show my turn</button></div>'+gameFooter();
+    }
+    if(s.phase==='place'){
+      var who = G.online ? me : G.turnIdx;
+      if(s.ready[who]) return html + '<div class="card pass-card"><p class="quest-head">✅ Ships hidden!</p><p class="quest-sub">Waiting for '+nameOf(1-who)+' to hide theirs…</p></div>'+gameFooter();
+      return html + '<p class="quest-sub" style="text-align:center;">'+nameOf(who)+', these are your secret ships. Shuffle until you like them.</p>'+bsGrid(who,true,false)+
+        '<div class="seg-row" style="margin-top:10px;"><button class="btn-secondary" style="flex:1;" data-action="bs-shuffle">🔀 Shuffle ships</button>'+
+        '<button class="btn-primary" style="flex:1;" data-action="bs-ready">Ready ✔</button></div>'+gameFooter();
+    }
+    var shooter = G.online ? me : G.turnIdx, target = 1-shooter;
+    var canFire = !G.result && myTurn() && G.turnIdx===shooter;
+    return html + (s.msg ? '<p class="live-wait" style="background:#FFF8E6;">'+escapeHtml(s.msg)+'</p>' : '')+
+      '<p class="section-title">🎯 '+nameOf(target)+'’s sea · sunk '+bsSunk(target)+'/'+BS_SHIPS.length+'</p>'+bsGrid(target,false,canFire)+
+      '<p class="section-title">🛡️ Your ships · sunk '+bsSunk(shooter)+'/'+BS_SHIPS.length+'</p><div class="bs-small">'+bsGrid(shooter,true,false)+'</div>'+gameFooter();
+  }
+  function bsReady(){
+    var s = G.s, who = G.online ? viewer() : G.turnIdx;
+    s.ready[who] = true;
+    if(s.ready[0] && s.ready[1]){ s.phase = 'battle'; G.turnIdx = 0; s.pass = !G.online; s.msg = 'Battle starts! '+nameOf(0)+' fires first.'; }
+    else if(!G.online){ G.turnIdx = 1-who; s.pass = true; s.msg = nameOf(1-who)+', hide your ships.'; }
+    moved();
+  }
+  function bsFire(r, c){
+    var s = G.s, shooter = G.turnIdx, target = 1-shooter;
+    if(G.result || s.phase!=='battle' || bsShotAt(s.shots[shooter], r, c)) return;
+    s.shots[shooter].push([r,c]);
+    var hit = s.fleet[target].grid[r][c] > 0;
+    var total = BS_SHIPS.reduce(function(a,b){ return a+b; }, 0);
+    var hits = s.shots[shooter].filter(function(x){ return s.fleet[target].grid[x[0]][x[1]] > 0; }).length;
+    if(hits >= total) return finishGame(shooter, 'All ships sunk!');
+    if(hit){ s.msg = '💥 Hit! '+nameOf(shooter)+' fires again.'; }
+    else { s.msg = '🌊 Miss! '+nameOf(target)+'’s turn.'; nextTurn(); s.pass = !G.online; }
+    moved();
+  }
+
+  /* ---------- snakes & ladders (2-4 players) ---------- */
+  var SL_JUMPS = {1:38, 4:14, 9:31, 21:42, 28:84, 36:44, 51:67, 71:91, 80:100, 16:6, 47:26, 49:11, 56:53, 62:19, 64:60, 87:24, 93:73, 95:75, 98:78};
+  var TOKEN_COLORS = ['#E2453C','#2F9E5A','#F5B93E','#2F6FD6'];
+  function snakesNew(){ return {pos:G.players.map(function(){ return 0; }), dice:null, msg:''}; }
+  function renderSnakes(){
+    var s = G.s, html = gameHeader(G.result?'':nameOf(G.turnIdx)+' — roll the dice!')+'<div class="sl">';
+    for(var row=9; row>=0; row--){
+      for(var k=0;k<10;k++){
+        var col = row%2===0 ? k : 9-k, n = row*10 + col + 1, j = SL_JUMPS[n];
+        var toks = s.pos.map(function(p,i){ return p===n ? '<i style="background:'+TOKEN_COLORS[i]+'">'+escapeHtml((gp(i)?gp(i).name:'?').charAt(0))+'</i>' : ''; }).join('');
+        html += '<div class="sl-c '+(j? (j>n?'lad':'snk') : '')+'"><small>'+n+'</small>'+(j ? '<em>'+(j>n?'🪜':'🐍')+j+'</em>' : '')+'<span class="toks">'+toks+'</span></div>';
+      }
+    }
+    html += '</div>';
+    var off = s.pos.map(function(p,i){ return p===0 ? '<i style="background:'+TOKEN_COLORS[i]+'">'+escapeHtml((gp(i)?gp(i).name:'?').charAt(0))+'</i>' : ''; }).join('');
+    html += '<div class="sl-bar"><span class="toks">'+(off?'Start: '+off:'')+'</span>'+
+      (G.result ? '' : '<button class="btn-primary dice-btn" data-action="sl-roll"'+(myTurn()?'':' disabled')+'>🎲 '+(s.dice?'Rolled '+s.dice+' · ':'')+'Roll</button>')+'</div>'+
+      (s.msg ? '<p class="quest-sub" style="text-align:center;">'+escapeHtml(s.msg)+'</p>' : '');
+    return html + resultCard() + gameFooter();
+  }
+  function slRoll(){
+    var s = G.s, i = G.turnIdx;
+    if(G.result) return;
+    var d = 1 + rnd(6), from = s.pos[i], to = from + d, who = gp(i) ? gp(i).name : 'Player';
+    s.dice = d;
+    if(to > 100){ s.msg = who+' rolled '+d+' — needs exactly '+(100-from)+' to finish.'; nextTurn(); return moved(); }
+    var j = SL_JUMPS[to];
+    s.pos[i] = j || to;
+    s.msg = who+' rolled '+d+(j ? (j>to ? ' — 🪜 ladder up to '+j+'!' : ' — 🐍 snake down to '+j+'!') : ' — moved to '+to+'.');
+    if(s.pos[i] === 100) return finishGame(i, 'Reached 100 first');
+    if(d === 6) s.msg += ' Six — roll again!'; else nextTurn();
+    moved();
+  }
+
+  /* ---------- ludo (2-4 players, 2 or 4 tokens) ---------- */
+  // 52-square track on a 15x15 grid; each colour starts 13 squares apart
+  var LUDO_TRACK = [[6,1],[6,2],[6,3],[6,4],[6,5],[5,6],[4,6],[3,6],[2,6],[1,6],[0,6],[0,7],[0,8],[1,8],[2,8],[3,8],[4,8],[5,8],
+    [6,9],[6,10],[6,11],[6,12],[6,13],[6,14],[7,14],[8,14],[8,13],[8,12],[8,11],[8,10],[8,9],[9,8],[10,8],[11,8],[12,8],[13,8],[14,8],
+    [14,7],[14,6],[13,6],[12,6],[11,6],[10,6],[9,6],[8,5],[8,4],[8,3],[8,2],[8,1],[8,0],[7,0],[6,0]];
+  var LUDO_HOME = [ [[7,1],[7,2],[7,3],[7,4],[7,5]], [[1,7],[2,7],[3,7],[4,7],[5,7]], [[7,13],[7,12],[7,11],[7,10],[7,9]], [[13,7],[12,7],[11,7],[10,7],[9,7]] ];
+  var LUDO_BASE = [ [[2,2],[2,3],[3,2],[3,3]], [[2,11],[2,12],[3,11],[3,12]], [[11,11],[11,12],[12,11],[12,12]], [[11,2],[11,3],[12,2],[12,3]] ];
+  var LUDO_SAFE = [0,8,13,21,26,34,39,47];
+  var LUDO_COLORS = ['#E2453C','#2F9E5A','#F5B93E','#2F6FD6'];
+  function ludoNew(tokens){
+    var n = G.players.length;
+    var seats = n===2 ? [0,2] : n===3 ? [0,1,2] : [0,1,2,3];   // 2 players sit opposite
+    return {seats:seats, tok:G.players.map(function(){ var a=[]; for(var k=0;k<tokens;k++) a.push(-1); return a; }), dice:null, rolled:false, msg:''};
+  }
+  function ludoAbs(seat, rel){ return (rel + seat*13) % 52; }
+  function ludoCell(seat, rel, k){
+    if(rel < 0) return LUDO_BASE[seat][k];
+    if(rel <= 50) return LUDO_TRACK[ludoAbs(seat, rel)];
+    if(rel <= 55) return LUDO_HOME[seat][rel-51];
+    return [7,7];
+  }
+  function ludoMovable(i){
+    var s = G.s, d = s.dice;
+    return s.tok[i].map(function(rel, k){ return (rel < 0 ? d===6 : rel + d <= 56) ? k : -1; }).filter(function(k){ return k>=0; });
+  }
+  function renderLudo(){
+    var s = G.s, cells = {};
+    s.tok.forEach(function(arr, i){
+      arr.forEach(function(rel, k){
+        var xy = ludoCell(s.seats[i], rel, k), key = xy[0]+','+xy[1];
+        (cells[key] = cells[key] || []).push({i:i, k:k});
+      });
+    });
+    var movable = (!G.result && s.rolled && myTurn()) ? ludoMovable(G.turnIdx) : [];
+    var trackSet = {}; LUDO_TRACK.forEach(function(xy, a){ trackSet[xy[0]+','+xy[1]] = a; });
+    var homeSet = {}; LUDO_HOME.forEach(function(arr, seat){ arr.forEach(function(xy){ homeSet[xy[0]+','+xy[1]] = seat; }); });
+    var html = gameHeader(G.result ? '' : nameOf(G.turnIdx)+(s.rolled?' — pick a token to move':' — roll the dice'))+'<div class="ludo">';
+    for(var r=0;r<15;r++) for(var c=0;c<15;c++){
+      var key = r+','+c, cls = 'lc', style = '';
+      var baseSeat = (r<6&&c<6)?0:(r<6&&c>8)?1:(r>8&&c>8)?2:(r>8&&c<6)?3:-1;
+      if(baseSeat>=0){ cls += ' base'; style = 'background:'+LUDO_COLORS[baseSeat]+'33;'; }
+      else if(r>=6&&r<=8&&c>=6&&c<=8){ cls += ' center'; }
+      else if(trackSet[key] !== undefined){ cls += ' track'; var a = trackSet[key]; if(LUDO_SAFE.indexOf(a)!==-1) cls += ' safe'; if(a%13===0) style = 'background:'+LUDO_COLORS[a/13]+'66;'; }
+      else if(homeSet[key] !== undefined){ cls += ' track'; style = 'background:'+LUDO_COLORS[homeSet[key]]+'99;'; }
+      else cls += ' blank';
+      var here = cells[key] || [];
+      var toks = here.map(function(t){
+        var can = t.i===G.turnIdx && movable.indexOf(t.k)!==-1;
+        return '<button class="ltk '+(can?'can':'')+'" style="background:'+LUDO_COLORS[s.seats[t.i]]+'" '+(can?'data-action="ludo-move" data-k="'+t.k+'"':'disabled')+'>'+escapeHtml((gp(t.i)?gp(t.i).name:'?').charAt(0))+'</button>';
+      }).join('');
+      html += '<div class="'+cls+'" style="'+style+'">'+(cls.indexOf('safe')!==-1 && !toks ? '<small>⭐</small>' : '')+toks+'</div>';
+    }
+    html += '</div>';
+    html += '<div class="sl-bar"><span class="quest-sub">'+G.players.map(function(_,i){ return '<b style="color:'+LUDO_COLORS[s.seats[i]]+'">●</b> '+nameOf(i)+' '+s.tok[i].filter(function(x){ return x===56; }).length+'/'+s.tok[i].length+' home'; }).join(' · ')+'</span>'+
+      (G.result ? '' : '<button class="btn-primary dice-btn" data-action="ludo-roll"'+(s.rolled || !myTurn() ? ' disabled' : '')+'>🎲 '+(s.dice?s.dice+' · ':'')+(s.rolled?'Move a token':'Roll')+'</button>')+'</div>'+
+      (s.msg ? '<p class="quest-sub" style="text-align:center;">'+escapeHtml(s.msg)+'</p>' : '');
+    return html + resultCard() + gameFooter();
+  }
+  function ludoRoll(){
+    var s = G.s;
+    if(G.result || s.rolled) return;
+    s.dice = 1 + rnd(6); s.rolled = true;
+    var who = gp(G.turnIdx) ? gp(G.turnIdx).name : 'Player';
+    var mv = ludoMovable(G.turnIdx);
+    if(!mv.length){
+      s.msg = who+' rolled '+s.dice+' — no move possible.';
+      s.rolled = false;
+      if(s.dice !== 6) nextTurn();
+    } else if(mv.length === 1 && s.tok[G.turnIdx].every(function(rel){ return rel < 0; })){
+      return ludoMove(mv[0]);    // only one choice (leaving base) — move it automatically
+    } else s.msg = who+' rolled '+s.dice+'. Tap a glowing token.';
+    moved();
+  }
+  function ludoMove(k){
+    var s = G.s, i = G.turnIdx, seat = s.seats[i], rel = s.tok[i][k], d = s.dice;
+    if(G.result || !s.rolled || ludoMovable(i).indexOf(k)===-1) return;
+    var who = gp(i) ? gp(i).name : 'Player', bonus = false;
+    var nrel = rel < 0 ? 0 : rel + d;
+    s.tok[i][k] = nrel;
+    s.msg = who+(rel<0 ? ' brought a token out!' : ' moved '+d+'.');
+    if(nrel <= 50){
+      var abs = ludoAbs(seat, nrel);
+      if(LUDO_SAFE.indexOf(abs) === -1){
+        s.tok.forEach(function(arr, j){
+          if(j===i) return;
+          arr.forEach(function(orel, ok){
+            if(orel >= 0 && orel <= 50 && ludoAbs(s.seats[j], orel) === abs){ arr[ok] = -1; bonus = true; s.msg = who+' captured '+(gp(j)?gp(j).name:'a token')+'’s token! Go again.'; }
+          });
+        });
+      }
+    }
+    if(nrel === 56){ bonus = true; s.msg = who+' got a token home! 🏠'; }
+    if(s.tok[i].every(function(x){ return x===56; })) return finishGame(i, 'All tokens home');
+    s.rolled = false;
+    if(d !== 6 && !bonus) nextTurn();
+    moved();
+  }
+
+  /* ---------- memory match (emoji, or 99 Names of Allah) ---------- */
+  var MEM_EMOJI = ['🌙','⭐','🌴','🐪','🕌','🌸','🐠','🍎','🦉','🌈','🎁','🦋'];
+  var NAMES99 = [
+    ['Ar-Rahman','The Entirely Merciful'],['Ar-Rahim','The Especially Merciful'],['Al-Malik','The King'],['Al-Quddus','The Most Holy'],
+    ['As-Salam','The Source of Peace'],['Al-Aziz','The Almighty'],['Al-Khaliq','The Creator'],['Al-Ghaffar','The Ever-Forgiving'],
+    ['Ar-Razzaq','The Provider'],['Al-Alim','The All-Knowing'],['As-Sami','The All-Hearing'],['Al-Basir','The All-Seeing'],
+    ['Al-Hakim','The All-Wise'],['Al-Wadud','The Most Loving'],['Al-Karim','The Most Generous'],['Al-Hayy','The Ever-Living'],
+    ['Al-Ahad','The One'],['As-Samad','The Eternal Refuge'],['Al-Latif','The Most Gentle'],['Ash-Shakur','The Most Appreciative'],
+    ['Al-Hafiz','The Preserver'],['Al-Wahhab','The Bestower'],['Al-Fattah','The Opener'],['Al-Haqq','The Truth'],
+    ['Al-Wakil','The Trustee'],['An-Nur','The Light'],['Al-Hadi','The Guide'],['As-Sabur','The Most Patient']
+  ];
+  function memNew(kind){
+    var cards;
+    if(kind === 'names99'){
+      var picks = shuffle(NAMES99.slice()).slice(0, 8);
+      cards = [];
+      picks.forEach(function(n, i){ cards.push({e:n[0], pair:i, name:true}); cards.push({e:n[1], pair:i}); });
+    } else {
+      var em = shuffle(MEM_EMOJI.slice()).slice(0, 8);
+      cards = em.concat(em).map(function(e){ return {e:e, pair:e}; });
+    }
+    return {cards: shuffle(cards).map(function(c){ c.open = false; c.done = false; return c; }), first:null, lock:false, kind:kind||'emoji'};
+  }
+  function renderMemory(){
+    var words = G.s.kind === 'names99';
+    var html = gameHeader(turnText())+'<div class="mem '+(words?'words':'')+'">';
+    G.s.cards.forEach(function(cd,i){
+      var face = cd.open || cd.done;
+      html += '<button class="mem-c '+(face?'open':'')+' '+(cd.done?'done':'')+(cd.name?' nm':'')+'" data-action="mem-flip" data-i="'+i+'">'+(face?escapeHtml(cd.e):(words?'✨':'🌱'))+'</button>';
+    });
+    return html + '</div>' + (words ? '<p class="quest-sub" style="text-align:center;margin-top:6px;">Match each Name of Allah with its meaning.</p>' : '') + resultCard() + gameFooter();
+  }
+  function memFlip(i){
+    var s = G.s, cd = s.cards[i];
+    if(G.result || s.lock || cd.open || cd.done) return;
+    cd.open = true;
+    if(s.first === null){ s.first = i; render(); return; }
+    var a = s.cards[s.first];
+    if(a.pair === cd.pair){
+      a.done = cd.done = true; a.open = cd.open = false; s.first = null;
+      G.scores[G.turnIdx]++;
+      if(s.cards.every(function(x){ return x.done; })){
+        var w = G.scores[0]===G.scores[1] ? null : (G.scores[0]>G.scores[1] ? 0 : 1);
+        return finishGame(w, G.scores[0]+' pairs to '+G.scores[1]);
+      }
+      render(); return;
+    }
+    s.lock = true; render();
+    var me = G;
+    gameTimer = setTimeout(function(){
+      if(G !== me) return;
+      a.open = cd.open = false; s.first = null; s.lock = false;
+      nextTurn(); render();
+    }, 1100);
+  }
+
+  /* ---------- question banks ---------- */
+  var QUIZ_ISLAMIC = [
+    ['How many daily prayers are there?','5',['3','4','6']],
+    ['Who was the first prophet?','Adam (AS)',['Nuh (AS)','Ibrahim (AS)','Musa (AS)']],
+    ['In which month do Muslims fast?','Ramadan',['Shawwal','Muharram','Rajab']],
+    ['Where is the Kaaba?','Makkah',['Madinah','Jerusalem','Taif']],
+    ['What is the first surah of the Quran?','Al-Fatiha',['Al-Baqarah','Al-Ikhlas','An-Nas']],
+    ['How many surahs are in the Quran?','114',['99','100','120']],
+    ['Which Eid comes right after Ramadan?','Eid al-Fitr',['Eid al-Adha','Mawlid','Ashura']],
+    ['How many pillars of Islam are there?','5',['3','6','7']],
+    ['What is the direction Muslims face to pray called?','Qiblah',['Minbar','Mihrab','Adhan']],
+    ['Which angel brought the revelation to the Prophet ﷺ?','Jibreel (AS)',['Mikail (AS)','Israfil (AS)','Malik']],
+    ['What is the longest surah?','Al-Baqarah',['Al-Kahf','Yasin','Al-Imran']],
+    ['What is the shortest surah?','Al-Kawthar',['Al-Ikhlas','An-Nasr','Al-Asr']],
+    ['What is the call to prayer called?','Adhan',['Iqamah','Dua','Khutbah']],
+    ['How many rakʿahs are in Fajr?','2',['3','4','1']],
+    ['How many rakʿahs are in Maghrib?','3',['2','4','5']],
+    ['The obligatory charity in Islam is called…','Zakat',['Sadaqah','Hajj','Sawm']],
+    ['To which city did the Prophet ﷺ make Hijrah?','Madinah',['Makkah','Taif','Damascus']],
+    ['What is the name of the famous well in Makkah?','Zamzam',['Badr','Uhud','Hira']],
+    ['In which cave did the first revelation come?','Hira',['Thawr','Uhud','Kahf']],
+    ['Who was the first caliph?','Abu Bakr (RA)',['Umar (RA)','Uthman (RA)','Ali (RA)']],
+    ['Who was the first wife of the Prophet ﷺ?','Khadijah (RA)',['Aishah (RA)','Hafsah (RA)','Sawdah (RA)']],
+    ['The pilgrimage to Makkah is called…','Hajj',['Zakat','Sawm','Salah']]
+  ];
+  var QUIZ_PROPHETS = [
+    ['Which prophet built the Ark?','Nuh (AS)',['Yunus (AS)','Isa (AS)','Dawud (AS)']],
+    ['Which prophet was thrown into a fire that Allah made cool?','Ibrahim (AS)',['Musa (AS)','Yusuf (AS)','Lut (AS)']],
+    ['Which prophet could understand the speech of animals?','Sulaiman (AS)',['Dawud (AS)','Hud (AS)','Ilyas (AS)']],
+    ['Which prophet is known for great patience during illness?','Ayyub (AS)',['Yunus (AS)','Idris (AS)','Shuʿayb (AS)']],
+    ['Which prophet was put in a well by his brothers?','Yusuf (AS)',['Yaqub (AS)','Ismail (AS)','Yahya (AS)']],
+    ['Which prophet was given the Zabur (Psalms)?','Dawud (AS)',['Musa (AS)','Isa (AS)','Sulaiman (AS)']],
+    ['Which prophet was given the Injil?','Isa (AS)',['Musa (AS)','Dawud (AS)','Yahya (AS)']],
+    ['Which prophet was given the Tawrah?','Musa (AS)',['Isa (AS)','Ibrahim (AS)','Harun (AS)']],
+    ['Which prophet was born without a father?','Isa (AS)',['Yahya (AS)','Adam (AS)','Idris (AS)']],
+    ['Whose she-camel was a miracle from Allah?','Salih (AS)',['Hud (AS)','Lut (AS)','Shuʿayb (AS)']],
+    ['Which prophet was sent to the people of ʿAad?','Hud (AS)',['Salih (AS)','Nuh (AS)','Ilyas (AS)']],
+    ['Who was the father of Yusuf (AS)?','Yaqub (AS)',['Ishaq (AS)','Ibrahim (AS)','Ismail (AS)']],
+    ['Which prophet was the brother who helped Musa (AS)?','Harun (AS)',['Yusha (AS)','Shuʿayb (AS)','Lut (AS)']],
+    ['Which prophet defeated Jalut (Goliath)?','Dawud (AS)',['Sulaiman (AS)','Musa (AS)','Talut']],
+    ['Who was the father of Yahya (AS)?','Zakariyya (AS)',['Imran','Isa (AS)','Ilyas (AS)']],
+    ['Which prophet was sent to the people of Madyan?','Shuʿayb (AS)',['Hud (AS)','Salih (AS)','Lut (AS)']],
+    ['Which prophet parted the sea with his staff?','Musa (AS)',['Nuh (AS)','Isa (AS)','Ibrahim (AS)']],
+    ['Which prophet was swallowed by a big fish?','Yunus (AS)',['Yusuf (AS)','Musa (AS)','Ayyub (AS)']],
+    ['Who is the last prophet?','Muhammad ﷺ',['Isa (AS)','Musa (AS)','Ibrahim (AS)']],
+    ['Which prophet’s mother placed him in a basket on the river?','Musa (AS)',['Isa (AS)','Yusuf (AS)','Ismail (AS)']],
+    ['Which prophet explained the king’s dream about seven cows?','Yusuf (AS)',['Musa (AS)','Danyal','Sulaiman (AS)']],
+    ['Who built the Kaaba with his son Ismail (AS)?','Ibrahim (AS)',['Adam (AS)','Ishaq (AS)','Yaqub (AS)']],
+    ['Which prophet’s staff turned into a snake?','Musa (AS)',['Harun (AS)','Isa (AS)','Salih (AS)']],
+    ['Who was the first human and first prophet?','Adam (AS)',['Nuh (AS)','Idris (AS)','Shith (AS)']]
+  ];
+  var QUIZ_GENERAL = [
+    ['What is the capital of Qatar?','Doha',['Al Wakrah','Riyadh','Muscat']],
+    ['How many planets are in our solar system?','8',['7','9','10']],
+    ['What is the largest ocean?','Pacific',['Atlantic','Indian','Arctic']],
+    ['How many legs does a spider have?','8',['6','10','4']],
+    ['What is the fastest land animal?','Cheetah',['Lion','Horse','Gazelle']],
+    ['What is the largest planet?','Jupiter',['Saturn','Earth','Mars']],
+    ['How many colours are in a rainbow?','7',['5','6','8']],
+    ['At what temperature does water freeze?','0 °C',['10 °C','100 °C','−10 °C']],
+    ['Which animal is called the ship of the desert?','Camel',['Horse','Donkey','Elephant']],
+    ['How many days are in a leap year?','366',['365','364','360']],
+    ['What gas do plants take in from the air?','Carbon dioxide',['Oxygen','Helium','Nitrogen']],
+    ['What is the tallest building in the world?','Burj Khalifa',['Eiffel Tower','Big Ben','Aspire Tower']],
+    ['How many continents are there?','7',['5','6','8']],
+    ['Which planet is called the Red Planet?','Mars',['Venus','Jupiter','Mercury']],
+    ['What do bees make?','Honey',['Milk','Silk','Wax only']],
+    ['How many sides does a hexagon have?','6',['5','7','8']]
+  ];
+  var WORDS = ['APPLE','HOUSE','TIGER','CAMEL','PLANT','WATER','GREEN','HAPPY','CLOUD','RIVER','OCEAN','HORSE','ZEBRA','MANGO','LEMON','ROBOT',
+    'PIZZA','TRAIN','PLANE','BRAIN','SNAKE','CANDY','QUEEN','MOUSE','CHAIR','BREAD','SHEEP','TABLE','PENCIL','GARDEN','PRAYER','MOSQUE','FRIEND','ORANGE','RABBIT','DESERT','PLANET','SCHOOL','KITTEN','MONKEY'];
+  var ARABIC = [['ا','Alif'],['ب','Ba'],['ت','Ta'],['ث','Tha'],['ج','Jim'],['ح','Ḥa'],['خ','Kha'],['د','Dal'],
+    ['ذ','Dhal'],['ر','Ra'],['ز','Zay'],['س','Sin'],['ش','Shin'],['ص','Ṣad'],['ض','Ḍad'],['ط','Ṭa'],
+    ['ظ','Ẓa'],['ع','ʿAyn'],['غ','Ghayn'],['ف','Fa'],['ق','Qaf'],['ك','Kaf'],['ل','Lam'],['م','Mim'],
+    ['ن','Nun'],['ه','Ha'],['و','Waw'],['ي','Ya']];
+  // Short surahs (simple Arabic script, no tashkeel) for "which ayah comes next?"
+  var SURAHS = [
+    ['Al-Fatiha', ['بسم الله الرحمن الرحيم','الحمد لله رب العالمين','الرحمن الرحيم','مالك يوم الدين','إياك نعبد وإياك نستعين','اهدنا الصراط المستقيم','صراط الذين أنعمت عليهم غير المغضوب عليهم ولا الضالين']],
+    ['Al-Ikhlas', ['قل هو الله أحد','الله الصمد','لم يلد ولم يولد','ولم يكن له كفوا أحد']],
+    ['Al-Falaq', ['قل أعوذ برب الفلق','من شر ما خلق','ومن شر غاسق إذا وقب','ومن شر النفاثات في العقد','ومن شر حاسد إذا حسد']],
+    ['An-Nas', ['قل أعوذ برب الناس','ملك الناس','إله الناس','من شر الوسواس الخناس','الذي يوسوس في صدور الناس','من الجنة والناس']],
+    ['Al-Asr', ['والعصر','إن الإنسان لفي خسر','إلا الذين آمنوا وعملوا الصالحات وتواصوا بالحق وتواصوا بالصبر']],
+    ['Al-Kawthar', ['إنا أعطيناك الكوثر','فصل لربك وانحر','إن شانئك هو الأبتر']],
+    ['An-Nasr', ['إذا جاء نصر الله والفتح','ورأيت الناس يدخلون في دين الله أفواجا','فسبح بحمد ربك واستغفره إنه كان توابا']],
+    ['Quraysh', ['لإيلاف قريش','إيلافهم رحلة الشتاء والصيف','فليعبدوا رب هذا البيت','الذي أطعمهم من جوع وآمنهم من خوف']],
+    ['Al-Fil', ['ألم تر كيف فعل ربك بأصحاب الفيل','ألم يجعل كيدهم في تضليل','وأرسل عليهم طيرا أبابيل','ترميهم بحجارة من سجيل','فجعلهم كعصف مأكول']],
+    ['Al-Masad', ['تبت يدا أبي لهب وتب','ما أغنى عنه ماله وما كسب','سيصلى نارا ذات لهب','وامرأته حمالة الحطب','في جيدها حبل من مسد']]
+  ];
+  var ODD_PAIRS = [['😀','😃'],['🐶','🐱'],['🍎','🍅'],['⭐','🌟'],['🌙','🌛'],
+    ['🐟','🐠'],['🚗','🚕'],['⚽','🏀'],['🌸','🌺'],['🍌','🌽'],
+    ['🐢','🐊'],['🍩','🍪'],['🐝','🐞'],['🌵','🌴'],['🔴','🟠']];
+
+  /* ---------- duels (face to face, first correct tap wins the round) ---------- */
+  function mathQuestion(level){
+    var a, b, op, ans;
+    if(level === 'tables'){ a = 2+rnd(11); b = 2+rnd(11); op = '×'; ans = a*b; }
+    else if(level === 'hard'){
+      var k = rnd(3);
+      if(k===0){ a = 2+rnd(9); b = 2+rnd(9); op = '×'; ans = a*b; }
+      else if(k===1){ a = 10+rnd(80); b = 5+rnd(Math.max(1, 95-a)); op = '+'; ans = a+b; }
+      else { a = 20+rnd(80); b = 5+rnd(a-5); op = '−'; ans = a-b; }
+    } else {
+      if(rnd(2)){ a = 1+rnd(10); b = 1+rnd(10); op = '+'; ans = a+b; }
+      else { a = 5+rnd(15); b = 1+rnd(a); op = '−'; ans = a-b; }
+    }
+    var opts = [ans], guard = 0, spread = level==='easy' ? 4 : 10;
+    while(opts.length < 4 && guard++ < 60){
+      var w = level==='tables' && rnd(2) ? a*(b + (rnd(2)?1:-1)) : ans + (rnd(2)?1:-1) * (1+rnd(spread));
+      if(w >= 0 && opts.indexOf(w)===-1) opts.push(w);
+    }
+    while(opts.length < 4) opts.push(ans + opts.length + 10);
+    return {text: a+' '+op+' '+b+' = ?', ans: String(ans), options: shuffle(opts.map(String)), big:true};
+  }
+  function scramble(w){ var s = w; for(var t=0; t<10 && s===w; t++) s = shuffle(w.split('')).join(''); return s; }
+  function duelQuestion(){
+    var s = G.s, t = G.type, q;
+    if(t==='math') return mathQuestion(G.level||'easy');
+    if(t==='tables') return mathQuestion('tables');
+    if(t==='words'){
+      var w = s.deck[(s.round-1) % s.deck.length];
+      var others = shuffle(WORDS.filter(function(x){ return x!==w && x.length===w.length; })).slice(0,3);
+      while(others.length < 3) others.push(shuffle(WORDS.filter(function(x){ return x!==w && others.indexOf(x)===-1; }))[0]);
+      return {text: scramble(w).split('').join(' '), ans:w, options: shuffle([w].concat(others)), big:true, label:'Unscramble:'};
+    }
+    if(t==='arabic'){
+      var L = s.deck[(s.round-1) % s.deck.length], dist = shuffle(ARABIC.filter(function(x){ return x[0]!==L[0]; })).slice(0,3);
+      if(rnd(2)) return {text:L[0], ans:L[1], options: shuffle([L[1]].concat(dist.map(function(x){ return x[1]; }))), arabic:true, label:'What is this letter called?'};
+      return {text:L[1], ans:L[0], options: shuffle([L[0]].concat(dist.map(function(x){ return x[0]; }))), big:true, optArabic:true, label:'Which letter is this?'};
+    }
+    if(t==='ayah'){
+      var pick = s.deck[(s.round-1) % s.deck.length], su = SURAHS[pick[0]], ay = su[1], i = pick[1];
+      var pool = ay.filter(function(_,k){ return k!==i && k!==i+1; });
+      SURAHS.forEach(function(o, oi){ if(oi!==pick[0]) pool = pool.concat(o[1]); });
+      var wrong = []; pool = shuffle(pool);
+      for(var z=0; z<pool.length && wrong.length<3; z++){ if(wrong.indexOf(pool[z])===-1 && pool[z]!==ay[i+1]) wrong.push(pool[z]); }
+      return {text: ay[i], ans: ay[i+1], options: shuffle([ay[i+1]].concat(wrong)), arabic:true, optArabic:true, label:'Surah '+su[0]+' — which ayah comes next?'};
+    }
+    if(t==='oddone'){
+      var pr = s.deck[(s.round-1) % s.deck.length], odd = rnd(16), grid = [];
+      for(var g=0; g<16; g++) grid.push(g===odd ? pr[1] : pr[0]);
+      return {grid:grid, ans:String(odd), label:'Find the odd one out!'};
+    }
+    // quiz + prophets
+    q = s.deck[(s.round-1) % s.deck.length];
+    return {text:q[0], ans:q[1], options: shuffle([q[1]].concat(q[2]))};
+  }
+  function duelNew(){
+    var t = G.type, deck = null, total = 8;
+    if(t==='quiz'){ var cat = G.cat||'mixed'; deck = shuffle((cat==='islamic'?QUIZ_ISLAMIC:cat==='prophets'?QUIZ_PROPHETS:cat==='general'?QUIZ_GENERAL:QUIZ_ISLAMIC.concat(QUIZ_PROPHETS, QUIZ_GENERAL)).slice()); }
+    if(t==='prophets') deck = shuffle(QUIZ_PROPHETS.slice());
+    if(t==='words') deck = shuffle(WORDS.slice());
+    if(t==='arabic') deck = shuffle(ARABIC.slice());
+    if(t==='oddone'){ deck = shuffle(ODD_PAIRS.slice()).map(function(p){ return rnd(2) ? p : [p[1],p[0]]; }); total = 6; }
+    if(t==='ayah'){ deck = []; SURAHS.forEach(function(su, si){ for(var i=0;i<su[1].length-1;i++) deck.push([si,i]); }); deck = shuffle(deck); }
+    if(t==='math' || t==='tables') total = 10;
+    if(t==='reaction') total = 5;
+    return {round:0, total:total, q:null, locked:[false,false], winner:null, reveal:false, deck:deck, phase:'wait', note:''};
+  }
+  function duelNext(){
+    var s = G.s;
+    s.round++; s.locked = [false,false]; s.winner = null; s.reveal = false; s.note = '';
+    if(G.type==='reaction'){ startReaction(); return; }
+    s.q = duelQuestion();
+  }
+  function renderDuel(){
+    var s = G.s, q = s.q, reaction = G.type==='reaction';
+    function pad(i){
+      var locked = s.locked[i], body;
+      if(reaction){
+        body = '<button class="react-btn '+s.phase+'" data-action="duel-tap" data-p="'+i+'" data-v="go"'+(s.reveal||G.result?' disabled':'')+'>'+
+          (s.phase==='go' ? 'TAP!' : s.reveal ? (s.winner===i ? '🏆' : '') : 'Wait for green…')+'</button>';
+      } else if(q.grid){
+        body = '<div class="odd-grid">'+q.grid.map(function(e, gi){
+          var cls = s.reveal && String(gi)===q.ans ? 'right' : '';
+          return '<button class="odd-c '+cls+'" data-action="duel-tap" data-p="'+i+'" data-v="'+gi+'"'+(locked||s.reveal||G.result?' disabled':'')+'>'+e+'</button>';
+        }).join('')+'</div>';
+      } else {
+        body = '<div class="duel-opts">'+q.options.map(function(o){
+          var cls = s.reveal ? (o===q.ans ? 'right' : '') : '';
+          return '<button class="duel-btn '+cls+(q.optArabic?' ar':'')+'" data-action="duel-tap" data-p="'+i+'" data-v="'+escapeHtml(o)+'"'+(locked||s.reveal||G.result?' disabled':'')+'>'+escapeHtml(o)+'</button>';
+        }).join('')+'</div>';
+      }
+      return '<div class="duel-pad '+(i===1?'flip':'')+'" style="--k:'+(gp(i)?ACCENTS[gp(i).accent]:'#3F7D58')+'">'+
+        '<p class="duel-name">'+(gp(i)?faceFor(gp(i),26):'')+nameOf(i)+' <b>'+G.scores[i]+'</b>'+(locked&&!s.reveal?' · ❌ wait':'')+'</p>'+body+'</div>';
+    }
+    var mid = '';
+    if(!G.result){
+      var status = s.reveal ? (s.winner!==null ? '✅ '+nameOf(s.winner)+' got it!' : (q && q.ans && !q.grid ? 'Answer: '+escapeHtml(q.ans) : 'Nobody got it')) + (s.note ? ' '+escapeHtml(s.note) : '') : '';
+      if(reaction) mid = '<div class="duel-q"><small>Round '+s.round+' of '+s.total+'</small><p class="math-t">'+(s.phase==='go'?'🟢 GO!':'🔴 Wait…')+'</p><small>'+status+'</small></div>';
+      else mid = '<div class="duel-q"><small>Round '+s.round+' of '+s.total+(q.label?' · '+escapeHtml(q.label):'')+'</small>'+
+        (q.grid ? '' : '<p class="'+(q.arabic?'ar-t':q.big?'math-t':'quiz-t')+'">'+escapeHtml(q.text)+'</p>')+
+        (status ? '<small>'+status+'</small>' : '')+'</div>';
+    }
+    return '<div class="duel">'+(G.result ? '' : pad(1) + mid + pad(0))+'</div>'+
+      (G.result ? gameHeader('')+resultCard() : '<p class="quest-sub" style="text-align:center;margin-top:8px;">Sit face to face — '+nameOf(1)+' uses the top, '+nameOf(0)+' the bottom.'+(reaction?' Tapping too early loses the round!':' A wrong tap sits out that round.')+'</p>')+
+      gameFooter();
+  }
+  function startReaction(){
+    var s = G.s, me = G;
+    s.phase = 'wait';
+    clearTimeout(gameTimer);
+    gameTimer = setTimeout(function(){ if(G !== me || s.reveal) return; s.phase = 'go'; render(); }, 1500 + rnd(2500));
+  }
+  function duelEndRound(delay){
+    var s = G.s, me = G;
+    clearTimeout(gameTimer);
+    gameTimer = setTimeout(function(){
+      if(G !== me) return;
+      if(s.round >= s.total){
+        var w = G.scores[0]===G.scores[1] ? null : (G.scores[0]>G.scores[1] ? 0 : 1);
+        return finishGame(w, G.scores[0]+' to '+G.scores[1]);
+      }
+      duelNext(); render();
+    }, delay);
+  }
+  function duelTap(i, v){
+    var s = G.s;
+    if(G.result || s.reveal || s.locked[i]) return;
+    if(G.type==='reaction'){
+      if(s.phase==='go'){ s.winner = i; G.scores[i]++; }
+      else { s.winner = 1-i; G.scores[1-i]++; s.note = '('+nameOf(i)+' tapped too early!)'; }
+      s.reveal = true; s.phase = 'done'; render(); duelEndRound(1300); return;
+    }
+    if(v === s.q.ans){ s.winner = i; G.scores[i]++; s.reveal = true; }
+    else { s.locked[i] = true; if(s.locked[0] && s.locked[1]) s.reveal = true; }
+    render();
+    if(s.reveal) duelEndRound(s.winner!==null ? 1000 : 1700);
+  }
+
+  /* ---------- chess (full rules: check, mate, stalemate, castling, en passant, promotion) ---------- */
+  var CH_GLYPH = {K:'♚', Q:'♛', R:'♜', B:'♝', N:'♞', P:'♟'};
+  function chNew(){
+    var b = [], back = ['R','N','B','Q','K','B','N','R'];
+    for(var r=0;r<8;r++){ b.push([null,null,null,null,null,null,null,null]); }
+    for(var c=0;c<8;c++){ b[0][c]={c:'b',t:back[c]}; b[1][c]={c:'b',t:'P'}; b[6][c]={c:'w',t:'P'}; b[7][c]={c:'w',t:back[c]}; }
+    return {b:b, turn:'w', castle:{wK:true,wQ:true,bK:true,bQ:true}, ep:null, sel:null, targets:[], last:null, cap:{w:[],b:[]}};
+  }
+  function chClone(b){ return b.map(function(row){ return row.map(function(p){ return p ? {c:p.c, t:p.t} : null; }); }); }
+  function inB(r,c){ return r>=0 && r<8 && c>=0 && c<8; }
+  function chAttacked(b, r, c, by){
+    var pr = r + (by==='w' ? 1 : -1);
+    for(var dc=-1; dc<=1; dc+=2){ var pc = c+dc; if(inB(pr,pc) && b[pr][pc] && b[pr][pc].c===by && b[pr][pc].t==='P') return true; }
+    var KN = [[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]];
+    for(var i=0;i<8;i++){ var nr=r+KN[i][0], nc=c+KN[i][1]; if(inB(nr,nc) && b[nr][nc] && b[nr][nc].c===by && b[nr][nc].t==='N') return true; }
+    for(var dr=-1; dr<=1; dr++) for(var dc2=-1; dc2<=1; dc2++){
+      if(!dr && !dc2) continue;
+      var kr=r+dr, kc=c+dc2;
+      if(inB(kr,kc) && b[kr][kc] && b[kr][kc].c===by && b[kr][kc].t==='K') return true;
+      var diag = dr && dc2, rr=r+dr, cc=c+dc2;
+      while(inB(rr,cc)){
+        var p = b[rr][cc];
+        if(p){ if(p.c===by && (p.t==='Q' || (diag ? p.t==='B' : p.t==='R'))) return true; break; }
+        rr+=dr; cc+=dc2;
+      }
+    }
+    return false;
+  }
+  function chKing(b, col){ for(var r=0;r<8;r++) for(var c=0;c<8;c++){ var p=b[r][c]; if(p && p.c===col && p.t==='K') return [r,c]; } return null; }
+  function chInCheck(b, col){ var k = chKing(b, col); return k ? chAttacked(b, k[0], k[1], col==='w'?'b':'w') : false; }
+  function chPseudo(st, r, c){
+    var b = st.b, p = b[r][c], out = [];
+    if(!p) return out;
+    var me = p.c, op = me==='w'?'b':'w';
+    function add(tr,tc,extra){ var m = {fr:r,fc:c,tr:tr,tc:tc}; if(extra) for(var k in extra) m[k]=extra[k]; out.push(m); }
+    if(p.t==='P'){
+      var dir = me==='w' ? -1 : 1, start = me==='w' ? 6 : 1;
+      if(inB(r+dir,c) && !b[r+dir][c]){ add(r+dir,c); if(r===start && !b[r+2*dir][c]) add(r+2*dir,c,{dbl:true}); }
+      [-1,1].forEach(function(dc){
+        var tr=r+dir, tc=c+dc;
+        if(!inB(tr,tc)) return;
+        if(b[tr][tc] && b[tr][tc].c===op) add(tr,tc);
+        else if(st.ep && st.ep[0]===tr && st.ep[1]===tc) add(tr,tc,{ep:true});
+      });
+    } else if(p.t==='N' || p.t==='K'){
+      var steps = p.t==='N' ? [[1,2],[2,1],[-1,2],[-2,1],[1,-2],[2,-1],[-1,-2],[-2,-1]] : [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+      steps.forEach(function(s){ var tr=r+s[0], tc=c+s[1]; if(inB(tr,tc) && (!b[tr][tc] || b[tr][tc].c===op)) add(tr,tc); });
+      if(p.t==='K'){
+        var row = me==='w' ? 7 : 0;
+        if(r===row && c===4 && !chAttacked(b,row,4,op)){
+          if(st.castle[me+'K'] && !b[row][5] && !b[row][6] && b[row][7] && b[row][7].t==='R' && b[row][7].c===me && !chAttacked(b,row,5,op) && !chAttacked(b,row,6,op)) add(row,6,{castle:'K'});
+          if(st.castle[me+'Q'] && !b[row][3] && !b[row][2] && !b[row][1] && b[row][0] && b[row][0].t==='R' && b[row][0].c===me && !chAttacked(b,row,3,op) && !chAttacked(b,row,2,op)) add(row,2,{castle:'Q'});
+        }
+      }
+    } else {
+      var dirs = p.t==='B' ? [[1,1],[1,-1],[-1,1],[-1,-1]] : p.t==='R' ? [[1,0],[-1,0],[0,1],[0,-1]] : [[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+      dirs.forEach(function(d){
+        var tr=r+d[0], tc=c+d[1];
+        while(inB(tr,tc)){ if(!b[tr][tc]) add(tr,tc); else { if(b[tr][tc].c===op) add(tr,tc); break; } tr+=d[0]; tc+=d[1]; }
+      });
+    }
+    return out;
+  }
+  function chPlay(st, m){
+    var b = chClone(st.b), p = b[m.fr][m.fc], captured = b[m.tr][m.tc];
+    if(m.ep){ captured = b[m.fr][m.tc]; b[m.fr][m.tc] = null; }
+    b[m.tr][m.tc] = p; b[m.fr][m.fc] = null;
+    if(m.castle==='K'){ b[m.tr][5] = b[m.tr][7]; b[m.tr][7] = null; }
+    if(m.castle==='Q'){ b[m.tr][3] = b[m.tr][0]; b[m.tr][0] = null; }
+    if(p.t==='P' && (m.tr===0 || m.tr===7)) b[m.tr][m.tc] = {c:p.c, t:'Q'};
+    return {b:b, captured:captured};
+  }
+  function chLegal(st, r, c){
+    var p = st.b[r][c];
+    if(!p || p.c !== st.turn) return [];
+    return chPseudo(st, r, c).filter(function(m){ return !chInCheck(chPlay(st, m).b, p.c); });
+  }
+  function chAnyLegal(st){ for(var r=0;r<8;r++) for(var c=0;c<8;c++){ if(st.b[r][c] && st.b[r][c].c===st.turn && chLegal(st,r,c).length) return true; } return false; }
+  function chInsufficient(b){ var pcs=[]; b.forEach(function(row){ row.forEach(function(p){ if(p && p.t!=='K') pcs.push(p.t); }); }); return pcs.length===0 || (pcs.length===1 && (pcs[0]==='B'||pcs[0]==='N')); }
+  function chApply(m){
+    var st = G.s, p = st.b[m.fr][m.fc], res = chPlay(st, m);
+    if(res.captured) st.cap[res.captured.c].push(res.captured.t);
+    if(p.t==='K'){ st.castle[p.c+'K'] = false; st.castle[p.c+'Q'] = false; }
+    [[7,0,'wQ'],[7,7,'wK'],[0,0,'bQ'],[0,7,'bK']].forEach(function(x){ if((m.fr===x[0] && m.fc===x[1]) || (m.tr===x[0] && m.tc===x[1])) st.castle[x[2]] = false; });
+    st.ep = m.dbl ? [(m.fr+m.tr)/2, m.fc] : null;
+    st.b = res.b; st.last = m; st.sel = null; st.targets = [];
+    st.turn = st.turn==='w' ? 'b' : 'w';
+    G.turnIdx = st.turn==='w' ? 0 : 1;
+    if(!chAnyLegal(st)){
+      if(chInCheck(st.b, st.turn)) return finishGame(st.turn==='w' ? 1 : 0, 'Checkmate!');
+      return finishGame(null, 'Stalemate');
+    }
+    if(chInsufficient(st.b)) return finishGame(null, 'Only kings left');
+    moved();
+  }
+  function chTap(r, c){
+    var st = G.s;
+    if(G.result) return;
+    var hit = st.targets.filter(function(m){ return m.tr===r && m.tc===c; })[0];
+    if(hit) return chApply(hit);
+    var p = st.b[r][c];
+    if(p && p.c===st.turn){ st.sel = [r,c]; st.targets = chLegal(st, r, c); } else { st.sel = null; st.targets = []; }
+    render();
+  }
+  function renderChess(){
+    var st = G.s, check = !G.result && chInCheck(st.b, st.turn), kpos = check ? chKing(st.b, st.turn) : null;
+    var info = G.result ? '' : nameOf(G.turnIdx)+' ('+(st.turn==='w'?'White':'Black')+')'+(check?' — CHECK!':'');
+    var flip = G.online && meIdx().length===1 && meIdx()[0]===1;
+    var html = gameHeader(info)+'<div class="ch-cap">'+st.cap[flip?'w':'b'].map(function(t){ return '<span class="pc '+(flip?'w':'b')+'">'+CH_GLYPH[t]+'︎</span>'; }).join('')+'</div><div class="chess">';
+    for(var rr=0;rr<8;rr++) for(var cc=0;cc<8;cc++){
+      var r = flip ? 7-rr : rr, c = flip ? 7-cc : cc;
+      var p = st.b[r][c], dark = (r+c)%2===1;
+      var sel = st.sel && st.sel[0]===r && st.sel[1]===c, tgt = st.targets.some(function(m){ return m.tr===r && m.tc===c; });
+      var last = st.last && ((st.last.fr===r && st.last.fc===c) || (st.last.tr===r && st.last.tc===c)), chk = kpos && kpos[0]===r && kpos[1]===c;
+      html += '<button class="ch-sq '+(dark?'dk':'lt')+(sel?' sel':'')+(last?' last':'')+(chk?' chk':'')+'" data-action="ch-tap" data-r="'+r+'" data-c="'+c+'">'+
+        (p ? '<span class="pc '+p.c+'">'+CH_GLYPH[p.t]+'︎</span>' : '')+(tgt ? '<i class="'+(p?'cap':'dot')+'"></i>' : '')+'</button>';
+    }
+    html += '</div><div class="ch-cap">'+st.cap[flip?'b':'w'].map(function(t){ return '<span class="pc '+(flip?'b':'w')+'">'+CH_GLYPH[t]+'︎</span>'; }).join('')+'</div>';
+    return html + resultCard() + gameFooter();
+  }
+
+  /* ---------- checkers (8x8, captures are compulsory, multi-jumps, kings) ---------- */
+  function ckNew(){
+    var b = [];
+    for(var r=0;r<8;r++){ b.push([]); for(var c=0;c<8;c++){ var dark = (r+c)%2===1; b[r].push(dark && r<3 ? {p:1,k:false} : dark && r>4 ? {p:0,k:false} : null); } }
+    return {b:b, sel:null, targets:[], chain:null, last:null};
+  }
+  function ckPieceMoves(b, r, c, jumpsOnly){
+    var pc = b[r][c], out = [];
+    if(!pc) return out;
+    var dirs = pc.k ? [[1,1],[1,-1],[-1,1],[-1,-1]] : (pc.p===0 ? [[-1,1],[-1,-1]] : [[1,1],[1,-1]]);
+    dirs.forEach(function(d){
+      var r1=r+d[0], c1=c+d[1], r2=r+2*d[0], c2=c+2*d[1];
+      if(inB(r2,c2) && b[r1][c1] && b[r1][c1].p!==pc.p && !b[r2][c2]) out.push({fr:r,fc:c,tr:r2,tc:c2,cap:[r1,c1]});
+      else if(!jumpsOnly && inB(r1,c1) && !b[r1][c1]) out.push({fr:r,fc:c,tr:r1,tc:c1});
+    });
+    return out;
+  }
+  function ckAllMoves(st, idx){
+    var b = st.b, jumps = [], steps = [];
+    if(st.chain) return ckPieceMoves(b, st.chain[0], st.chain[1], true);
+    for(var r=0;r<8;r++) for(var c=0;c<8;c++){
+      if(b[r][c] && b[r][c].p===idx) ckPieceMoves(b, r, c, false).forEach(function(m){ (m.cap?jumps:steps).push(m); });
+    }
+    return jumps.length ? jumps : steps;
+  }
+  function ckTap(r, c){
+    var st = G.s, idx = G.turnIdx;
+    if(G.result) return;
+    var hit = st.targets.filter(function(m){ return m.tr===r && m.tc===c; })[0];
+    if(hit){
+      var b = st.b, pc = b[hit.fr][hit.fc];
+      b[hit.tr][hit.tc] = pc; b[hit.fr][hit.fc] = null;
+      if(hit.cap) b[hit.cap[0]][hit.cap[1]] = null;
+      var crowned = !pc.k && ((pc.p===0 && hit.tr===0) || (pc.p===1 && hit.tr===7));
+      if(crowned) pc.k = true;
+      st.last = hit; st.sel = null; st.targets = []; st.chain = null;
+      if(hit.cap && !crowned && ckPieceMoves(b, hit.tr, hit.tc, true).length){
+        st.chain = [hit.tr, hit.tc]; st.sel = [hit.tr, hit.tc]; st.targets = ckPieceMoves(b, hit.tr, hit.tc, true);
+        return moved();
+      }
+      nextTurn();
+      var oppHas = false;
+      for(var rr=0;rr<8;rr++) for(var cc=0;cc<8;cc++) if(b[rr][cc] && b[rr][cc].p===G.turnIdx) oppHas = true;
+      if(!oppHas || !ckAllMoves(st, G.turnIdx).length) return finishGame(idx, oppHas ? 'No moves left' : 'All pieces captured');
+      return moved();
+    }
+    if(st.chain) return;   // must keep jumping with the same piece
+    var pc2 = st.b[r][c];
+    if(pc2 && pc2.p===idx){
+      var all = ckAllMoves(st, idx);
+      st.sel = [r,c]; st.targets = all.filter(function(m){ return m.fr===r && m.fc===c; });
+      if(!st.targets.length && all.some(function(m){ return m.cap; })) showToast('You must capture when you can!','error');
+    } else { st.sel = null; st.targets = []; }
+    render();
+  }
+  function renderCheckers(){
+    var st = G.s, flip = G.online && meIdx().length===1 && meIdx()[0]===1;
+    var count = [0,0]; st.b.forEach(function(row){ row.forEach(function(pc){ if(pc) count[pc.p]++; }); });
+    var html = gameHeader(G.result ? '' : nameOf(G.turnIdx)+(st.chain?' — keep jumping!':'')+' · '+count[0]+' vs '+count[1])+'<div class="chess ck">';
+    for(var rr=0;rr<8;rr++) for(var cc=0;cc<8;cc++){
+      var r = flip ? 7-rr : rr, c = flip ? 7-cc : cc, pc = st.b[r][c], dark = (r+c)%2===1;
+      var sel = st.sel && st.sel[0]===r && st.sel[1]===c, tgt = st.targets.some(function(m){ return m.tr===r && m.tc===c; });
+      html += '<button class="ch-sq '+(dark?'dk':'lt')+(sel?' sel':'')+'" data-action="ck-tap" data-r="'+r+'" data-c="'+c+'">'+
+        (pc ? '<span class="ckp '+(pc.p===0?'red':'blk')+'">'+(pc.k?'👑':'')+'</span>' : '')+(tgt ? '<i class="dot"></i>' : '')+'</button>';
+    }
+    return html + '</div>' + resultCard() + gameFooter();
+  }
+
+  /* ---------- router ---------- */
+  function renderGameBoard(){
+    var t = G.type, body;
+    if(G.tour && G.tour.done) body = renderTourSummary();
+    else if(t==='chess') body = renderChess();
+    else if(t==='checkers') body = renderCheckers();
+    else if(t==='ttt') body = renderTTT();
+    else if(t==='connect4') body = renderC4();
+    else if(t==='dots') body = renderDots();
+    else if(t==='mancala') body = renderMancala();
+    else if(t==='battleship') body = renderBattleship();
+    else if(t==='snakes') body = renderSnakes();
+    else if(t==='ludo') body = renderLudo();
+    else if(t==='memory' || t==='names99') body = renderMemory();
+    else body = renderDuel();
+    return '<div class="game-wrap">'+body+'</div>';
+  }
+  function newGameState(type){
+    if(type==='chess') return chNew();
+    if(type==='checkers') return ckNew();
+    if(type==='ttt') return tttNew();
+    if(type==='connect4') return c4New();
+    if(type==='dots') return dotsNew();
+    if(type==='mancala') return mancalaNew();
+    if(type==='battleship') return battleshipNew();
+    if(type==='snakes') return snakesNew();
+    if(type==='ludo') return ludoNew(G.tokens || 2);
+    if(type==='memory') return memNew('emoji');
+    if(type==='names99') return memNew('names99');
+    return duelNew();
+  }
+  function launch(type, players, opts){
+    clearTimeout(gameTimer);
+    opts = opts || {};
+    var scored = {memory:1, names99:1, dots:1};
+    G = {type:type, players:players.slice(), turnIdx:0, result:null, level:opts.level, cat:opts.cat, tokens:opts.tokens,
+         scores: (scored[type] || DUEL_TYPES[type]) ? players.map(function(){ return 0; }) : null, tour: opts.tour || null,
+         online:false, me:[], ver:0};
+    G.s = newGameState(type);
+    if(DUEL_TYPES[type]) duelNext();
+    render();
+  }
+  // after a local move: share it (live games) and redraw
+  function moved(){ pushLive(false); render(); }
+
+  /* ---------- daily limit, rotation, brain-first, game passes ---------- */
+  function isLearning(type){ return GAMES[type] && (GAMES[type].cat==='brain' || GAMES[type].cat==='islamic'); }
+  function playsToday(p){ return (p.gamePlays && p.gamePlays.date===todayStr()) ? p.gamePlays.n : 0; }
+  function playedList(p){ return Array.isArray(p.gamesPlayed) ? p.gamesPlayed : []; }
+  // can this kid start `type` now? -> {ok, pass, reason}
+  function kidCanPlay(p, type){
+    if(!p || p.role!=='kid') return {ok:true};
+    var left = state.data.gamesPerDay - playsToday(p);
+    var reason = null;
+    if(left <= 0) reason = p.name+' has played '+state.data.gamesPerDay+' games today';
+    else if(playedList(p).indexOf(type) !== -1) reason = p.name+' already played '+GAMES[type].name+' — try every game first';
+    else if(state.data.brainFirst && playsToday(p)===0 && !isLearning(type)) reason = p.name+'’s first game today must be a brain or Islamic game';
+    if(!reason) return {ok:true};
+    if((p.gamePasses||0) > 0) return {ok:true, pass:true, reason:reason};
+    return {ok:false, reason:reason};
+  }
+  function recordPlay(p, type, usedPass){
+    if(!p || p.role!=='kid') return;
+    var n = playsToday(p);
+    p.gamePlays = {date: todayStr(), n: n+1};
+    var list = playedList(p).slice();
+    if(list.indexOf(type) === -1) list.push(type);
+    if(GAME_ORDER.every(function(t){ return list.indexOf(t) !== -1; })) list = [type];   // played them all — start a new round
+    p.gamesPlayed = list;
+    if(usedPass){ p.gamePasses = Math.max(0, (p.gamePasses||0) - 1); addHistory({personId:p.id, kind:'game', category:'games', label:'🎟️ Used a Game Pass for '+GAMES[type].name, points:0}); }
+  }
+  // check all kid players; returns false (with a message) if someone can't play
+  function checkAndRecord(type, players){
+    var uniq = players.filter(function(id, i){ return players.indexOf(id)===i; });
+    var res = uniq.map(function(id){ var p = getPerson(id); return {p:p, st:kidCanPlay(p, type)}; });
+    var blocked = res.filter(function(r){ return !r.st.ok; })[0];
+    if(blocked){ showToast(blocked.st.reason+'. A 🎟️ Game Pass from the Shop lets them play.','error'); return false; }
+    var passes = [];
+    res.forEach(function(r){ recordPlay(r.p, type, r.st.pass); if(r.st.pass) passes.push(r.p.name); });
+    if(passes.length) showToast('🎟️ Game Pass used by '+passes.join(' & '));
+    persist();
+    return true;
+  }
+  function gameCardStatus(type){
+    var k = getPerson(state.ui.gameKid);
+    if(!k || k.role!=='kid') return '';
+    var st = kidCanPlay(k, type);
+    if(st.ok && !st.pass) return '';
+    var played = playedList(k).indexOf(type) !== -1;
+    return '<span class="gc-lock">'+(played ? '🔒 played' : playsToday(k) >= state.data.gamesPerDay ? '🔒 no games left' : '🔒 brain game first')+(st.pass?' · 🎟️ pass':'')+'</span>';
+  }
+
+  /* ---------- family tournament ---------- */
+  function startTournament(game, players){
+    var matches = [];
+    for(var i=0;i<players.length;i++) for(var j=i+1;j<players.length;j++) matches.push([players[i], players[j]]);
+    var tour = {game:game, players:players.slice(), matches:shuffle(matches), idx:0, results:[], done:false};
+    startTourMatch(tour);
+  }
+  function startTourMatch(tour){
+    var m = tour.matches[tour.idx];
+    launch(tour.game, m, {tour:tour, level:'easy'});
+  }
+  function renderTourSummary(){
+    var t = G.tour, wins = {};
+    t.players.forEach(function(id){ wins[id] = 0; });
+    t.results.forEach(function(w){ if(w) wins[w] = (wins[w]||0) + 1; });
+    var rows = t.players.slice().sort(function(a,b){ return wins[b]-wins[a]; });
+    return '<div class="card game-result"><p class="disp" style="font-size:24px;color:var(--berry);">🏆 Tournament results</p>'+
+      '<p class="quest-sub">'+GAMES[t.game].icon+' '+GAMES[t.game].name+'</p>'+
+      rows.map(function(id, i){ var p = getPerson(id); return '<div class="list-row"><div style="font-size:20px;">'+(i===0?'🥇':i===1?'🥈':i===2?'🥉':'•')+'</div><div class="grow"><div class="name">'+(p?escapeHtml(p.name):'?')+'</div></div><b>'+wins[id]+' win'+(wins[id]===1?'':'s')+'</b></div>'; }).join('')+
+      '<p class="quest-sub" style="margin:10px 0;">'+escapeHtml(t.summary||'')+'</p>'+
+      '<button class="btn-primary" data-action="game-quit">Back to games</button></div>';
+  }
+  function finishTournament(){
+    var t = G.tour, wins = {};
+    t.players.forEach(function(id){ wins[id] = 0; });
+    t.results.forEach(function(w){ if(w) wins[w]++; });
+    var top = Math.max.apply(null, t.players.map(function(id){ return wins[id]; }));
+    var champs = t.players.filter(function(id){ return wins[id]===top && top>0; });
+    var msg;
+    if(champs.length === 1){
+      var c = getPerson(champs[0]);
+      if(c && c.role==='kid' && c.tourDay !== todayStr()){
+        c.tourDay = todayStr();
+        var g = earnGame(c, TOURNEY_BONUS, '🏆 Family Tournament champion ('+GAMES[t.game].name+')', true);
+        msg = c.name+' is the champion! +'+g+' bonus pts';
+      } else msg = (c?c.name:'?')+' is the champion!'+(c && c.role==='kid' ? ' (champion bonus already won today)' : '');
+      burstConfetti();
+    } else msg = champs.length ? 'It’s a tie at the top — no champion bonus this time.' : 'No winners — all draws!';
+    t.summary = msg; t.done = true;
+    persist(); render();
+  }
+
+  /* ---------- live games on two phones ----------
+     The game lives in its own document (families/<id>__live_<game>). Only the
+     player whose turn it is can move; each phone listens and redraws. */
+  var DEVICE_ID = (function(){ try{ var d = localStorage.getItem('bg_device'); if(!d){ d = uid('dev'); localStorage.setItem('bg_device', d); } return d; }catch(e){ return uid('dev'); } })();
+  var liveUnsub = null;
+  function liveRef(id){ return db.collection('families').doc(FAMILY_ID + '__live_' + id); }
+  function meIdx(){
+    if(!G || !G.online) return G ? G.players.map(function(_,i){ return i; }) : [];
+    var mine = [];
+    G.players.forEach(function(_, i){ var c = G.claims && G.claims[i]; if(c===DEVICE_ID || (!c && G.host===DEVICE_ID)) mine.push(i); });
+    return mine;
+  }
+  function liveSnapshot(){
+    return {type:G.type, players:G.players, turnIdx:G.turnIdx, scores:G.scores, result:G.result, level:G.level, cat:G.cat, tokens:G.tokens,
+            s:G.s, ver:G.ver, host:G.host, claims:G.claims||{}, liveId:G.liveId};
+  }
+  function adoptLive(data){
+    var keepSel = G && G.type===data.type;
+    G = Object.assign({}, data, {online:true});
+    if(!keepSel && G.s){ G.s.sel = null; G.s.targets = []; }
+    if(G.result) markLiveDone(G.liveId);
+    if(state.route.name==='games') render();
+  }
+  function listenLive(id){
+    if(liveUnsub){ try{ liveUnsub(); }catch(e){} }
+    liveUnsub = liveRef(id).onSnapshot(function(snap){
+      if(!G || G.liveId !== id || !snap.exists) return;
+      var raw = snap.data() && snap.data().json; if(!raw) return;
+      var data = JSON.parse(raw);
+      if(data.ver > G.ver) adoptLive(data);
+    }, function(e){ console.warn('live game listener', e); });
+  }
+  function pushLive(){
+    if(!G || !G.online) return;
+    var base = G.ver, mine = meIdx(), local = liveSnapshot(), id = G.liveId;
+    local.ver = base + 1; G.ver = base + 1;
+    db.runTransaction(function(t){
+      return t.get(liveRef(id)).then(function(snap){
+        var server = snap.exists && snap.data().json ? JSON.parse(snap.data().json) : null, out = local;
+        if(server && server.ver > base){
+          // someone else saved first: only merge the parts that belong to this phone
+          out = server;
+          out.claims = Object.assign({}, server.claims, local.claims);
+          if(out.type==='battleship' && out.s.phase==='place'){
+            mine.forEach(function(i){ if(local.s.ready[i]){ out.s.fleet[i] = local.s.fleet[i]; out.s.ready[i] = true; } });
+            if(out.s.ready[0] && out.s.ready[1]){ out.s.phase = 'battle'; out.turnIdx = 0; out.s.msg = 'Battle starts!'; }
+          }
+          out.ver = server.ver + 1;
+        }
+        t.set(liveRef(id), {json: JSON.stringify(out), updatedAt: firebase.firestore.FieldValue.serverTimestamp()});
+        return out;
+      });
+    }).then(function(out){ if(G && G.liveId===id && out.ver >= G.ver){ adoptLive(out); } })
+      .catch(function(e){ console.error(e); showToast('Couldn’t reach the other phone — check the connection','error'); });
+  }
+  function markLiveDone(id){
+    var inv = (state.data.liveGames||[]).filter(function(x){ return x.id===id; })[0];
+    if(inv && !inv.done){ inv.done = true; persist(); }
+  }
+  function startLive(){
+    G.online = true; G.host = DEVICE_ID; G.claims = {}; G.liveId = uid('lg'); G.ver = 1;
+    var id = G.liveId;
+    liveRef(id).set({json: JSON.stringify(liveSnapshot()), updatedAt: firebase.firestore.FieldValue.serverTimestamp()}).then(function(){
+      if(!Array.isArray(state.data.liveGames)) state.data.liveGames = [];
+      var cutoff = Date.now() - 24*3600*1000;
+      state.data.liveGames = state.data.liveGames.filter(function(x){ return x.ts > cutoff; });
+      state.data.liveGames.push({id:id, type:G.type, players:G.players.slice(), ts:Date.now(), done:false});
+      persist();
+      listenLive(id);
+      showToast('Live game ready — ask the others to open Games and tap Join');
+    }).catch(function(e){
+      console.error(e);
+      G.online = false;
+      showToast('Two-phone play is blocked by your Firebase rules — playing on this phone instead','error');
+      render();
+    });
+  }
+  function renderLiveInvites(){
+    var cutoff = Date.now() - 6*3600*1000;
+    var inv = (state.data.liveGames||[]).filter(function(x){ return !x.done && x.ts > cutoff && GAMES[x.type]; });
+    if(!inv.length) return '';
+    return '<div class="card live-card"><p class="field-label">📱📱 Live games waiting</p>'+inv.map(function(x){
+      return '<div class="list-row"><div style="font-size:22px;">'+GAMES[x.type].icon+'</div><div class="grow"><div class="name">'+GAMES[x.type].name+'</div>'+
+        '<div class="sub">'+x.players.map(function(id){ var p = getPerson(id); return p ? escapeHtml(p.name) : '?'; }).join(' vs ')+' · '+timeAgo(x.ts)+'</div></div>'+
+        '<button class="btn-primary" style="width:auto;padding:8px 14px;" data-action="live-join" data-id="'+x.id+'">Join</button></div>';
+    }).join('')+'</div>';
+  }
+  function renderClaim(){
+    var taken = G.claims || {};
+    return '<div class="card game-setup"><p class="quest-head">'+GAMES[G.type].icon+' Join '+GAMES[G.type].name+'</p><p class="quest-sub">Who is playing on this phone?</p>'+
+      '<div class="kid-switch game-chips" style="margin-top:8px;">'+G.players.map(function(id, i){
+        var p = getPerson(id), busy = i===0 || (taken[i] && taken[i]!==DEVICE_ID);
+        return '<button class="kchip" style="--k:'+(p?ACCENTS[p.accent]:'#999')+';'+(busy?'opacity:.4;':'')+'" '+(busy?'disabled':'data-action="live-claim" data-i="'+i+'"')+'>'+(p?faceFor(p,24):'')+'<span>'+(p?escapeHtml(p.name):'?')+'</span></button>';
+      }).join('')+'</div><div class="modal-actions" style="margin-top:12px;"><button class="btn-ghost" data-action="game-quit">Cancel</button></div></div>';
+  }
+
+  /* ---------- actions ---------- */
+  function guardTurn(){
+    if(!G || G.result) return false;
+    if(G.online && !myTurn()){ showToast('It’s '+nameOf(G.turnIdx)+'’s turn — on their phone'); return false; }
+    return true;
+  }
+  gameActions['game-pick'] = function(el){
+    var t = el.dataset.game, kids = kidsList();
+    if(t==='tourney'){ state.ui.gameSetup = {type:'tourney', players:kids.map(function(k){ return k.id; }).slice(0,4), tgame:null}; return render(); }
+    var gm = GAMES[t], viewerKid = getPerson(state.ui.gameKid);
+    var first = viewerKid && viewerKid.role==='kid' ? viewerKid.id : (kids[0] && kids[0].id);
+    var second = kids.filter(function(k){ return k.id!==first; })[0];
+    state.ui.gameSetup = {type:t, players: gm.max>2 ? [] : [first, second ? second.id : null], level:'easy', cat:'mixed', tokens:2, online:false};
+    render();
+  };
+  gameActions['game-kid'] = function(el){ state.ui.gameKid = el.dataset.person; render(); };
+  gameActions['game-player'] = function(el){
+    var s = state.ui.gameSetup; if(!s) return;
+    var i = +el.dataset.slot, o = 1-i;
+    if(s.players[o] === el.dataset.person) s.players[o] = s.players[i];
+    s.players[i] = el.dataset.person; render();
+  };
+  gameActions['game-toggle-player'] = function(el){
+    var s = state.ui.gameSetup; if(!s) return;
+    var id = el.dataset.person, at = s.players.indexOf(id);
+    if(at >= 0) s.players.splice(at, 1); else if(s.players.length < 4) s.players.push(id);
+    render();
+  };
+  gameActions['game-opt'] = function(el){
+    var s = state.ui.gameSetup; if(!s) return;
+    var k = el.dataset.k, v = el.dataset.v;
+    s[k] = k==='online' ? !!v : k==='tokens' ? +v : v;
+    render();
+  };
+  gameActions['game-back'] = function(){ state.ui.gameSetup = null; render(); };
+  gameActions['game-start'] = function(){
+    var s = state.ui.gameSetup; if(!s) return;
+    var players = s.players.filter(Boolean);
+    if(s.type==='tourney'){
+      if(players.length < 2 || !s.tgame){ showToast('Pick a game and at least 2 players','error'); return; }
+      if(!checkAndRecord(s.tgame, players)) return;
+      state.ui.gameSetup = null; startTournament(s.tgame, players); return;
+    }
+    var gm = GAMES[s.type];
+    if(players.length < gm.min || players.length > gm.max || (gm.max===2 && players[0]===players[1])){ showToast('Pick the players first','error'); return; }
+    if(!checkAndRecord(s.type, players)) return;
+    state.ui.gameSetup = null;
+    launch(s.type, players, {level:s.level, cat:s.cat, tokens:s.tokens});
+    if(s.online && gm.online) startLive();
+  };
+  gameActions['game-again'] = function(){
+    if(!G || G.online) return;
+    var players = G.players.slice(1).concat(G.players.slice(0,1));    // next player starts
+    if(!checkAndRecord(G.type, players)) return;
+    launch(G.type, players, {level:G.level, cat:G.cat, tokens:G.tokens});
+  };
+  gameActions['game-quit'] = function(){
+    clearTimeout(gameTimer);
+    if(liveUnsub){ try{ liveUnsub(); }catch(e){} liveUnsub = null; }
+    if(G && G.online && G.host===DEVICE_ID && !G.result) markLiveDone(G.liveId);
+    G = null; state.ui.gameSetup = null; render();
+  };
+  gameActions['game-resign'] = function(){
+    if(!G || G.result) return;
+    var quitter = G.online ? meIdx()[0] : G.turnIdx;
+    finishGame(1 - quitter, nameOf(quitter)+' gave up');
+  };
+  gameActions['game-draw'] = function(){ if(G && !G.result && !G.online) finishGame(null, 'Draw agreed'); };
+  gameActions['tour-next'] = function(){
+    if(!G || !G.tour) return;
+    var t = G.tour;
+    if(t.idx < t.matches.length - 1){ t.idx++; startTourMatch(t); }
+    else finishTournament();
+  };
+  gameActions['ttt-move'] = function(el){ if(guardTurn()) tttMove(+el.dataset.i); };
+  gameActions['c4-move'] = function(el){ if(guardTurn()) c4Move(+el.dataset.c); };
+  gameActions['dots-line'] = function(el){ if(guardTurn()) dotsLine(el.dataset.k, +el.dataset.r, +el.dataset.c); };
+  gameActions['mc-sow'] = function(el){ if(guardTurn()) mcSow(+el.dataset.i); };
+  gameActions['bs-shuffle'] = function(){ if(!G || G.result) return; var who = G.online ? viewer() : G.turnIdx; G.s.fleet[who] = bsFleet(); render(); };
+  gameActions['bs-ready'] = function(){ if(G && !G.result) bsReady(); };
+  gameActions['bs-unpass'] = function(){ if(G){ G.s.pass = false; G.s.msg = ''; render(); } };
+  gameActions['bs-fire'] = function(el){ if(guardTurn()) bsFire(+el.dataset.r, +el.dataset.c); };
+  gameActions['sl-roll'] = function(){ if(guardTurn()) slRoll(); };
+  gameActions['ludo-roll'] = function(){ if(guardTurn()) ludoRoll(); };
+  gameActions['ludo-move'] = function(el){ if(guardTurn()) ludoMove(+el.dataset.k); };
+  gameActions['mem-flip'] = function(el){ if(G) memFlip(+el.dataset.i); };
+  gameActions['duel-tap'] = function(el){ if(G) duelTap(+el.dataset.p, el.dataset.v); };
+  gameActions['ch-tap'] = function(el){ if(guardTurn()) chTap(+el.dataset.r, +el.dataset.c); };
+  gameActions['ck-tap'] = function(el){ if(guardTurn()) ckTap(+el.dataset.r, +el.dataset.c); };
+  gameActions['live-join'] = function(el){
+    var id = el.dataset.id;
+    liveRef(id).get().then(function(snap){
+      if(!snap.exists || !snap.data().json){ showToast('That game has ended','error'); return; }
+      var data = JSON.parse(snap.data().json);
+      if(data.result){ showToast('That game has already finished'); markLiveDone(id); return; }
+      clearTimeout(gameTimer);
+      G = Object.assign({}, data, {online:true});
+      listenLive(id);
+      render();
+    }).catch(function(e){ console.error(e); showToast('Couldn’t open the live game','error'); });
+  };
+  gameActions['live-claim'] = function(el){
+    if(!G || !G.online) return;
+    G.claims = Object.assign({}, G.claims||{});
+    Object.keys(G.claims).forEach(function(k){ if(G.claims[k]===DEVICE_ID) delete G.claims[k]; });
+    G.claims[+el.dataset.i] = DEVICE_ID;
+    pushLive(); render();
+  };
+  gameActions['gamept'] = function(el){
+    var t = el.dataset.game, d = +el.dataset.d;
+    if(!state.data.gamePts) state.data.gamePts = {};
+    state.data.gamePts[t] = clamp(gamePtsFor(t) + d, 0, 50); persist(); render();
+  };
+  gameActions['gamecap'] = function(el){ state.data.gameDailyCap = clamp(state.data.gameDailyCap + (+el.dataset.d), 0, 200); persist(); render(); };
+  gameActions['gamesperday'] = function(el){ state.data.gamesPerDay = clamp(state.data.gamesPerDay + (+el.dataset.d), 1, 10); persist(); render(); };
+  gameActions['passcost'] = function(el){ state.data.gamePassCost = clamp(state.data.gamePassCost + (+el.dataset.d), 0, 500); persist(); render(); };
+  gameActions['games-toggle'] = function(){ state.data.gamesOn = !state.data.gamesOn; persist(); render(); };
+  gameActions['brainfirst-toggle'] = function(){ state.data.brainFirst = !state.data.brainFirst; persist(); render(); };
+
+  /* game pass requests (Shop -> parent approval) */
+  gameActions['ask-pass'] = function(el){
+    var p = getPerson(el.dataset.person);
+    if(!p || p.role!=='kid') return;
+    var cost = state.data.gamePassCost;
+    if(spendablePoints(p) < cost){ showToast('Not enough points for a Game Pass','error'); return; }
+    p.passRequests.push({id:uid('gpr'), cost:cost, ts:Date.now()});
+    showToast('Asked a parent for a Game Pass ⏳'); persist(); render();
+  };
+  gameActions['approve-pass'] = function(el){
+    var p = getPerson(el.dataset.person); if(!p) return;
+    var rq = p.passRequests.filter(function(r){ return r.id===el.dataset.req; })[0]; if(!rq) return;
+    p.passRequests = p.passRequests.filter(function(r){ return r.id!==rq.id; });
+    if(p.points < rq.cost){ showToast(p.name+' no longer has enough points','error'); persist(); render(); return; }
+    p.points -= rq.cost;
+    p.gamePasses = (p.gamePasses||0) + 1;
+    addHistory({personId:p.id, kind:'redeem', category:'custom', label:'🎟️ Game Pass', points:rq.cost});
+    showToast('🎟️ Game Pass given to '+p.name); persist(); render();
+  };
+  gameActions['decline-pass'] = function(el){
+    var p = getPerson(el.dataset.person); if(!p) return;
+    p.passRequests = p.passRequests.filter(function(r){ return r.id!==el.dataset.req; });
+    showToast('Declined'); persist(); render();
+  };
+  function pendingPassPts(p){ return (p.passRequests||[]).reduce(function(s,r){ return s + (r.cost||0); }, 0); }
+  function renderPassShop(p){
+    var cost = state.data.gamePassCost, waiting = (p.passRequests||[]).length;
+    return '<p class="section-title">🎟️ Game Pass</p><div class="card pass-shop">'+
+      '<div class="goal"><span class="gi">🎟️</span><div class="gt"><p class="gn">Play any game — one extra time</p>'+
+      '<p class="gs">Even a game you already played, or after today’s '+state.data.gamesPerDay+' games are used. A parent approves it.</p>'+
+      '<p class="gs" style="color:var(--berry);">You have <b>'+(p.gamePasses||0)+'</b> pass'+((p.gamePasses||0)===1?'':'es')+(waiting?' · ⏳ '+waiting+' waiting':'')+'</p></div></div>'+
+      '<button class="btn-primary" style="margin-top:10px;" data-action="ask-pass" data-person="'+p.id+'"'+(spendablePoints(p)>=cost?'':' disabled style="margin-top:10px;opacity:.5;"')+'>Ask for a Game Pass · '+cost+' pts</button></div>';
+  }
+  function renderPassApprovals(){
+    var rows = [];
+    state.data.people.forEach(function(p){ (p.passRequests||[]).forEach(function(rq){ rows.push({p:p, rq:rq}); }); });
+    if(!rows.length) return '';
+    return '<div class="card"><p class="field-label">🎟️ Game Pass requests</p>'+rows.map(function(c){
+      return '<div class="list-row"><div style="font-size:19px;">🎟️</div><div class="grow"><div class="name">'+escapeHtml(c.p.name)+' wants an extra game</div>'+
+        '<div class="sub">'+c.rq.cost+' pts · '+timeAgo(c.rq.ts)+'</div></div>'+
+        '<button class="icon-btn" style="color:var(--moss);" data-action="approve-pass" data-person="'+c.p.id+'" data-req="'+c.rq.id+'">✓</button>'+
+        '<button class="icon-btn" style="color:var(--coral);" data-action="decline-pass" data-person="'+c.p.id+'" data-req="'+c.rq.id+'">✕</button></div>';
+    }).join('')+'</div>';
+  }
+
+  function renderGameSettings(){
+    return '<div class="card"><p class="field-label">🎲 Games</p>'+
+      '<div class="toggle-row"><button class="toggle-btn '+(state.data.gamesOn?'active':'')+'" data-action="games-toggle">'+(state.data.gamesOn?'✅ Games on':'Games on')+'</button>'+
+      '<button class="toggle-btn '+(!state.data.gamesOn?'active':'')+'" data-action="games-toggle">'+(!state.data.gamesOn?'🔒 Games off':'Games off')+'</button></div>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin:6px 0;">Games each kid can start per day (each game then locks until they’ve tried every game):</p>'+
+      '<div class="stepper"><button data-action="gamesperday" data-d="-1">−</button><span class="val disp">'+state.data.gamesPerDay+'</span><button data-action="gamesperday" data-d="1">+</button></div>'+
+      '<div class="toggle-row"><button class="toggle-btn '+(state.data.brainFirst?'active':'')+'" data-action="brainfirst-toggle">'+(state.data.brainFirst?'✅ ':'')+'Brain game first each day</button>'+
+      '<button class="toggle-btn '+(!state.data.brainFirst?'active':'')+'" data-action="brainfirst-toggle">'+(!state.data.brainFirst?'✅ ':'')+'Any game first</button></div>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin:6px 0;">🎟️ Game Pass price (extra game, you approve it):</p>'+
+      '<div class="stepper"><button data-action="passcost" data-d="-5">−</button><span class="val disp">'+state.data.gamePassCost+'</span><button data-action="passcost" data-d="5">+</button></div>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin:6px 0;">Most game points a kid can earn per day:</p>'+
+      '<div class="stepper"><button data-action="gamecap" data-d="-5">−</button><span class="val disp">'+state.data.gameDailyCap+'</span><button data-action="gamecap" data-d="5">+</button></div>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin:10px 0 4px;">Points for winning each game (draws give half):</p>'+
+      GAME_ORDER.map(function(t){
+        return '<div class="list-row" style="padding:5px 0;"><div class="grow"><div class="name">'+GAMES[t].icon+' '+GAMES[t].name+'</div></div>'+
+          '<div class="stepper sm" style="margin:0;"><button data-action="gamept" data-game="'+t+'" data-d="-1">−</button><span class="val disp">'+gamePtsFor(t)+'</span><button data-action="gamept" data-game="'+t+'" data-d="1">+</button></div></div>';
+      }).join('')+'</div>';
+  }
+
   /* ============ bottom tab bar ============ */
   function renderTabbar(active){
     var pending = countAllPending();
@@ -1579,6 +3157,7 @@
       {id:'home',    ic:'🏠', l:'Home'},
       {id:'quests',  ic:'✅',       l:'Quests'},
       {id:'journey', ic:'🗺️', l:'Journey'},
+      {id:'games',   ic:'\uD83C\uDFB2', l:'Games'},
       {id:'shop',    ic:'🎁', l:'Shop'},
       {id:'parent',  ic:'🔒', l:'Parent', badge:pending}
     ];
@@ -1673,6 +3252,7 @@
       n += Object.keys(todayLogFor(p).pending||{}).length;
       n += (p.convertRequests||[]).length;
       n += (p.quranRequests||[]).length;
+      n += (p.passRequests||[]).length;
     });
     n += state.data.owed.length;
     return n;
@@ -1724,6 +3304,7 @@
       }).join('') + '</div>';
     }
 
+    extra += renderPassApprovals();
     // Quran reading
     var qRows = [];
     state.data.people.forEach(function(p){ (p.quranRequests||[]).forEach(function(rq){ qRows.push({p:p, rq:rq}); }); });
@@ -1989,6 +3570,7 @@
         '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">How many points equal '+escapeHtml(state.data.currency)+' 1 when kids convert. Also sets the money price of rewards that don’t have their own.</p>'+
         '<div class="stepper"><button data-action="rate-dec">−</button><span class="val disp">'+state.data.pointsPerCurrency+'</span><button data-action="rate-inc">+</button></div>'+
         '<p class="stage-progress-note" style="text-align:center;">'+ptsLabel(state.data.pointsPerCurrency)+' = '+escapeHtml(state.data.currency)+' 1 · 2,000 pts = '+escapeHtml(state.data.currency)+' '+fmtMoney(pointsToCash(2000))+'</p></div>'+
+      renderGameSettings()+
       '<div class="card"><p class="field-label">\uD83D\uDCD6 Quran points</p>'+
         '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">Points per page read (approved by a parent). Finishing the whole Quran (khatm) adds a +'+KHATM_BONUS+' bonus.</p>'+
         '<div class="stepper"><button data-action="quranrate-dec">\u2212</button><span class="val disp">'+state.data.quranPtsPerPage+'</span><button data-action="quranrate-inc">+</button></div></div>'+
@@ -2174,7 +3756,10 @@
     var r = state.route, name = r.name, html;
     if(name==='parent-lock') name = r.name = 'parent';
     heroSeq = 0;
-    if(name==='quests' || name==='journey' || name==='shop'){
+    if(name==='games'){
+      html = '<div class="screen">'+renderGames()+'</div>';
+    }
+    else if(name==='quests' || name==='journey' || name==='shop'){
       var k = currentKid();
       var body = !k ? '<div class="empty-state"><span class="em">🌱</span>No kids yet — add one in Parent Mode → Members.</div>'
         : name==='quests' ? renderQuests(k) : name==='journey' ? renderJourney(k) : renderShop(k);
@@ -2196,6 +3781,7 @@
 
   /* ============ actions ============ */
   var actions = {};
+  Object.keys(gameActions).forEach(function(k){ actions[k] = gameActions[k]; });
   actions['stop'] = function(){};
   actions['close-modal'] = function(){ state.modal = null; render(); };
   actions['go-home'] = function(){ state.route = {name:'home'}; state.ui.pinEntry=''; state.ui.pinError=false; render(); };
@@ -2757,10 +4343,11 @@
     var p = getPerson(el.dataset.person);
     if(p){
       p.points=0; p.totalLifetime=0; p.savings=0; p.charityGiven=0;
-      ['prayers','azkar','charity','habits','bonus','quran'].forEach(function(c){ p.lifetime[c]=0; });
+      ['prayers','azkar','charity','habits','bonus','quran','games'].forEach(function(c){ p.lifetime[c]=0; });
       p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       p.dayPts = {}; p.convertRequests = []; p.streak = {count:0, last:null}; p.starsWon = 0; p.goalId = null;
       p.excused = {}; p.quran = {page:0, khatms:0, pagesTotal:0}; p.quranRequests = [];
+      p.gamesPlayed = []; p.gamePlays = null; p.gamePasses = 0; p.passRequests = []; p.gameDay = null;
       state.data.history = state.data.history.filter(function(h){ return h.personId !== p.id; });
       state.data.owed = state.data.owed.filter(function(o){ return o.personId !== p.id; });
     }
