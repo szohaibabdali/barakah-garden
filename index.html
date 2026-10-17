@@ -610,6 +610,11 @@
   .ln-w.hint{border-color:var(--sun);box-shadow:0 0 0 4px rgba(255,196,61,.45);animation:pulse 1.2s infinite;}
   .ln-opts.two{flex-direction:row;}
   .ln-opts.two .ln-opt{flex:1;text-align:center;font-size:18px;}
+  /* ===== v19 security ===== */
+  .join-screen{padding-top:30px;}
+  .join-head{text-align:center;margin-bottom:16px;}
+  .join-lock{font-size:54px;}
+  .join-head p{color:var(--ink-soft);font-weight:700;margin-top:4px;}
 </style>
 
 <div id="app-root">
@@ -801,14 +806,14 @@
   }
   function defaultData(){
     var d = {
-      pin: '1234',
+      pinHash: pinHash('1234'),
       currency: 'QAR',
       people: [
         freshPerson('ABBA', '🦉', 'berry', 'parent'),
         freshPerson('Mimi', '🐨', 'teal', 'parent'),
-        freshPerson('Maazin', '🦇', 'coral', 'kid'),
-        freshPerson('Musa', '🕷️', 'moss', 'kid'),
-        freshPerson('Zohrah', '🦸\u200d♀️', 'plum', 'kid')
+        freshPerson('Kid 1', '🦇', 'coral', 'kid'),
+        freshPerson('Kid 2', '🕷️', 'moss', 'kid'),
+        freshPerson('Kid 3', '🦸\u200d♀️', 'plum', 'kid')
       ],
       dailyItems: DEFAULT_DAILY_ITEMS.map(function(it){ return Object.assign({}, it); }),
       rewards: DEFAULT_REWARDS.concat(REWARD_PACK_V2).map(function(r){ return Object.assign({}, r); }),
@@ -826,7 +831,8 @@
   }
   function migrateData(data){
     var d = data && typeof data === 'object' ? data : {};
-    if(!d.pin || !/^\d{4}$/.test(d.pin)) d.pin = '1234';
+    if(typeof d.pinHash !== 'string' || d.pinHash.length !== 64) d.pinHash = pinHash(d.pin && /^\d{4}$/.test(d.pin) ? d.pin : '1234');
+    delete d.pin;   // v19: the PIN is only kept as a hash
     if(!d.currency || typeof d.currency !== 'string') d.currency = 'QAR';
     if(!Array.isArray(d.people) || d.people.length===0) d.people = defaultData().people;
     d.people.forEach(function(p){
@@ -1105,7 +1111,8 @@
   function persist(){
     if(!docRef || !state.data) return;
     var ops = diffData(baseData || {}, state.data);
-    if(!ops.length && !needsAward(state.data)) return;
+    if(!ops.length && !needsAward(state.data) && !persist.force) return;
+    persist.force = false;
     baseData = deepClone(state.data);       // optimistic: next save only sends new changes
     inFlight++;
     saveChain = saveChain.then(function(){ return commitOps(ops, 0); })
@@ -1160,9 +1167,11 @@
       if(!raw) return;
       adoptServer(JSON.parse(raw));
       // hand out Star of the Week trophies for any finished week (done safely on the server copy)
-      if(needsAward(state.data)) persist();
+      if(raw.indexOf('"pin":"') !== -1) persist.force = true;   // v19: re-save once so the old plain PIN is wiped
+      if(needsAward(state.data) || persist.force) persist();
     }, function(err){
       console.error(err);
+      if(err && err.code === 'permission-denied'){ lockOut(); return; }
       showFatalError('Could not connect to your Firebase database. Check that Firestore is enabled and your security rules allow signed-in access.');
     });
   }
@@ -1346,9 +1355,6 @@
   var HERO_PRESETS = {
     abba:   {hero:{gender:'boy',  emblem:'shield', cape:'emerald', skin:1, title:'Father'}},
     mimi:   {hero:{gender:'girl', emblem:'heart',  cape:'plum',    skin:1, title:'Mother'}},
-    maazin: {accent:'navy',    hero:{gender:'boy',  emblem:'moon', cape:'midnight', skin:1, title:'The Night Guardian'}},
-    musa:   {accent:'crimson', hero:{gender:'boy',  emblem:'bolt', cape:'gold',     skin:1, title:'The Thunder Runner'}},
-    zohrah: {accent:'plum',    hero:{gender:'girl', emblem:'star', cape:'teal',     skin:1, title:'The Star Keeper'}}
   };
   // gender is asked when a parent adds a kid ('boy' or 'girl'); null = not chosen yet
   // parents default to "Father" / "Mother"
@@ -1918,7 +1924,7 @@
     snakes:    {name:'Snakes & Ladders', icon:'\uD83D\uDC0D', cat:'fun', skill:null, min:2, max:4, online:true, blurb:'2\u20134 players. Climb ladders, dodge snakes!'},
     ludo:      {name:'Ludo',             icon:'\uD83C\uDFC1', cat:'fun', skill:null, min:2, max:4, online:true, blurb:'2\u20134 players. Race your tokens home.'},
     // 🌼 little ones
-    little:    {name:'Little Garden',    icon:'\uD83C\uDF3C', cat:'little', skill:null, min:1, max:1, blurb:'For Zohrah: animals, colours & shapes. Sit with a grown-up!'}
+    little:    {name:'Little Garden',    icon:'\uD83C\uDF3C', cat:'little', skill:null, min:1, max:1, blurb:'For little ones: animals, colours & shapes. Sit with a grown-up!'}
   };
   var GAME_CATS = [['brain','\uD83E\uDDE0 Brain & logic \u00B7 recommended'],['memory','\uD83E\uDDE9 Memory \u00B7 recommended'],['decision','\uD83C\uDFAF Decision-making \u00B7 recommended'],['islamic','\uD83C\uDF19 Islamic learning'],['fun','\uD83C\uDFB2 Just for fun'],['little','\uD83C\uDF3C Little ones']];
   var GAME_ORDER = Object.keys(GAMES);
@@ -4307,6 +4313,172 @@
       d.ramadanV1 = true;
     }
   }
+  /* ===== v18: six more chapters (Quran + sahih hadith only) ===== */
+  var CH_HUDSALIH = {id:'hudsalih', n:'Prophets Hud & Salih', ic:'🐪', sub:'Two strong nations',
+    pages:[
+      {t:'After the people of Nuh came a nation called ’Ad. Allah made them big and strong. They had cattle, children, gardens and springs, and they built tall buildings on the high places.', s:'Quran 7:69, 26:128–134'},
+      {t:'Allah sent them their brother, Prophet Hud. He said: "O my people, worship Allah — you have no god but Him." He did not ask them for any payment.', s:'Quran 7:65, 26:127'},
+      {t:'But ’Ad became proud and said: "Who is stronger than us?" They forgot that Allah, who created them, is much stronger. Hud said: "I put my trust in Allah, my Lord and your Lord."', s:'Quran 41:15, 11:56'},
+      {t:'Because they refused, Allah sent a freezing, roaring wind for seven nights and eight days. Allah saved Hud and the believers by His mercy.', s:'Quran 69:6–7, 11:58'},
+      {t:'After ’Ad came the people of Thamud. They carved beautiful houses out of the mountains. Allah sent them their brother, Prophet Salih, who also called them to worship Allah alone.', s:'Quran 7:73–74, 11:61'},
+      {t:'Thamud asked for a sign. Allah sent a she-camel as a sign. Salih said: "She drinks on one day, and you drink on another day. Do not harm her!"', s:'Quran 26:154–156, 11:64'},
+      {t:'But the worst of them killed the camel and laughed at Salih. Then a mighty blast and an earthquake came. Allah saved Salih and those who believed with him.', s:'Quran 91:11–15, 7:77–78, 11:66'},
+      {t:'Both prophets told their people: "Remember the blessings of Allah." Being strong or rich does not make anyone better — being thankful and obeying Allah does.', s:'Quran 7:69, 7:74'}
+    ],
+    lesson:'Never be proud of your strength or your things. Thank Allah for every blessing.',
+    dua:{ar:'إني توكلت على الله ربي وربكم', tr:'Inni tawakkaltu ’alallahi Rabbi wa Rabbikum', en:'I have put my trust in Allah, my Lord and your Lord. (Prophet Hud)', s:'Quran 11:56'},
+    quiz:[
+      {q:'Which prophet was sent to the people of ’Ad?', o:['Hud','Salih','Nuh','Musa'], a:0},
+      {q:'What proud thing did ’Ad say?', o:['"Who is stronger than us?"','"Thank you, Allah"','"We are sorry"','"Let us pray"'], a:0},
+      {q:'What did Allah send to ’Ad?', o:['A freezing, roaring wind','A flood','Snow','A big fish'], a:0},
+      {q:'Which prophet was sent to Thamud?', o:['Salih','Hud','Yunus','Adam'], a:0},
+      {q:'What sign did Allah send to Thamud?', o:['A she-camel','A ship','A staff','A bird'], a:0},
+      {q:'Where did Thamud build their houses?', o:['Carved into the mountains','On boats','Under the sea','In the clouds'], a:0},
+      {q:'What lesson do we learn from ’Ad and Thamud?', o:['Be thankful, never proud','Strong people are always right','Animals don’t matter','Buildings make us better'], a:0}
+    ],
+    talk:['What blessings has Allah given our family? Let’s name five!','Why is being proud dangerous?']
+  };
+  var CH_ISMAIL = {id:'ismail', n:'Prophet Ismail', ic:'🏜️', sub:'True to his promise',
+    pages:[
+      {t:'Ismail was the son of Prophet Ibrahim and Hajar. Allah gave Ibrahim the good news of "a gentle, patient boy."', s:'Quran 37:100–101'},
+      {t:'By Allah’s command, Ibrahim left Hajar and baby Ismail in the empty valley of Makkah. He prayed: "Our Lord, I have settled my family in a valley with no crops, near Your Sacred House… so make people’s hearts love them, and give them fruits, so that they may be thankful."', s:'Quran 14:37 · Bukhari 3364'},
+      {t:'When their water ran out, Allah sent the water of Zamzam. The Prophet ﷺ said: "May Allah have mercy on the mother of Ismail!"', s:'Bukhari 3364'},
+      {t:'A tribe called Jurhum saw birds circling over the water. They asked Hajar if they could live there, and she agreed. Ismail grew up among them and learned Arabic from them.', s:'Bukhari 3364'},
+      {t:'When Ismail was old enough to walk and work with his father, Ibrahim told him about his dream. Ismail answered: "O my father, do as you are commanded. You will find me patient, if Allah wills." Allah saved him and sent a great sacrifice instead.', s:'Quran 37:102–107 (most scholars say this son was Ismail)'},
+      {t:'Later, father and son built the Ka’bah together. Ismail carried the stones and Ibrahim built. When the walls grew tall, Ismail brought a stone for his father to stand on — that place is called Maqam Ibrahim.', s:'Bukhari 3364 · Quran 2:127'},
+      {t:'They prayed: "Our Lord, make us Muslims to You, and make from our children a nation that submits to You… and send among them a messenger from themselves." Allah answered this dua with Prophet Muhammad ﷺ, who came from the children of Ismail.', s:'Quran 2:128–129 · Muslim 2276'},
+      {t:'Allah praised Ismail in the Quran: "He was true to his promise, and he was a messenger and a prophet. He told his family to pray and give charity, and he was pleasing to his Lord."', s:'Quran 19:54–55'}
+    ],
+    lesson:'Keep your promises, help your parents, and remind your family to pray.',
+    dua:{ar:'ربنا واجعلنا مسلمين لك', tr:'Rabbana waj’alna muslimayni lak', en:'Our Lord, make us Muslims (submitting) to You.', s:'Quran 2:128'},
+    quiz:[
+      {q:'Who was Ismail’s father?', o:['Prophet Ibrahim','Prophet Nuh','Prophet Musa','Prophet Adam'], a:0},
+      {q:'Who was Ismail’s mother?', o:['Hajar','Maryam','Aminah','Khadijah'], a:0},
+      {q:'Which tribe came to live near Zamzam?', o:['Jurhum','’Ad','Thamud','Quraysh'], a:0},
+      {q:'What did Ismail carry when building the Ka’bah?', o:['The stones','Water','Food','Wood'], a:0},
+      {q:'What is the stone Ibrahim stood on called?', o:['Maqam Ibrahim','Safa','Judi','Hira'], a:0},
+      {q:'Allah praised Ismail for being…', o:['True to his promise','The fastest runner','The richest man','A great king'], a:0},
+      {q:'Which prophet came from the children of Ismail?', o:['Muhammad ﷺ','Musa','Isa','Yusuf'], a:0}
+    ],
+    talk:['What promise did you make this week? Did you keep it?','How can you help ABBA or Mimi, like Ismail helped his father?']
+  };
+  var CH_AYYUB = {id:'ayyub', n:'Prophet Ayyub', ic:'⛲', sub:'The most patient',
+    pages:[
+      {t:'Ayyub was a prophet and a righteous servant of Allah, and he had a family.', s:'Quran 4:163, 21:84'},
+      {t:'Then Allah tested him with a very hard illness and great hardship for a long time.', s:'Quran 21:83, 38:41'},
+      {t:'Ayyub stayed patient. He did not complain about Allah. He kept remembering Allah and turning to Him.', s:'Quran 38:44'},
+      {t:'He made a beautiful, polite dua: "Harm has touched me, and You are the Most Merciful of all who show mercy." He did not shout or demand — he just told Allah and trusted His mercy.', s:'Quran 21:83'},
+      {t:'Allah answered him: "Strike the ground with your foot. Here is cool water to wash with and to drink." And Allah took away all of his harm.', s:'Quran 38:42, 21:84'},
+      {t:'Allah gave his family back to him, and as many again with them, as a mercy from Allah and a reminder for everyone who worships Him.', s:'Quran 21:84, 38:43'},
+      {t:'Allah praised him: "We found him patient. What an excellent servant! He always turned back to Allah."', s:'Quran 38:44'},
+      {t:'The Prophet ﷺ told us that once golden locusts fell on Ayyub and he began collecting them. Allah said: "Have I not made you rich enough?" Ayyub said: "Yes, my Lord, but I can never have enough of Your blessings."', s:'Bukhari 279'}
+    ],
+    lesson:'When things are hard, be patient, make dua, and never stop thanking Allah.',
+    dua:{ar:'أني مسني الضر وأنت أرحم الراحمين', tr:'Anni massaniyad-durru wa anta arhamur-rahimin', en:'Harm has touched me, and You are the Most Merciful of those who show mercy.', s:'Quran 21:83'},
+    quiz:[
+      {q:'Prophet Ayyub is best known for his…', o:['Patience','Ship','Staff','Palace'], a:0},
+      {q:'What did Ayyub do during his hard test?', o:['Stayed patient and made dua','Got angry with Allah','Gave up','Ran away'], a:0},
+      {q:'How did Ayyub make his dua?', o:['Politely, trusting Allah’s mercy','By shouting','By demanding','He never made dua'], a:0},
+      {q:'What did Allah tell Ayyub to do?', o:['Strike the ground with his foot','Build a ship','Climb a mountain','Cross the sea'], a:0},
+      {q:'What came out of the ground?', o:['Cool water','Gold','Fire','A palm tree'], a:0},
+      {q:'What did Allah call Ayyub?', o:['An excellent servant','A king','A sailor','A builder'], a:0},
+      {q:'What did Ayyub say about Allah’s blessings?', o:['I can never have enough of them','I have too many','I don’t need them','Give them to others'], a:0}
+    ],
+    talk:['What is something hard that you can be patient about?','How can we help someone in our family who is sick?']
+  };
+  var CH_DAWUD = {id:'dawud', n:'Prophets Dawud & Sulaiman', ic:'🐜', sub:'Father and son kings',
+    pages:[
+      {t:'A small army of believers, led by King Talut, faced a huge army with a giant warrior called Jalut. The believers said: "How many small groups have beaten big groups, by Allah’s permission!" Young Dawud defeated Jalut, and Allah gave Dawud kingship and wisdom.', s:'Quran 2:249–251'},
+      {t:'Allah gave Dawud a holy book, the Zabur. When Dawud praised Allah, the mountains and the birds praised Allah with him!', s:'Quran 4:163, 34:10, 38:18–19'},
+      {t:'Allah made iron soft in Dawud’s hands, and he made coats of armour. The Prophet ﷺ said: "Prophet Dawud used to eat only from what he earned with his own hands."', s:'Quran 34:10–11 · Bukhari 2072'},
+      {t:'The Prophet ﷺ said the fasting most loved by Allah is the fasting of Dawud: he fasted one day and ate the next. And the night prayer most loved by Allah is Dawud’s prayer.', s:'Bukhari 1131 · Muslim 1159'},
+      {t:'Sulaiman, the son of Dawud, also became a prophet and king. Allah taught him the speech of birds, put the wind under his command, and the jinn worked for him.', s:'Quran 27:16, 34:12–13'},
+      {t:'Once Sulaiman’s army came to a valley of ants. One ant called: "O ants, go into your homes, so Sulaiman and his army don’t crush you without noticing!" Sulaiman smiled and prayed: "My Lord, help me to be thankful for Your blessings."', s:'Quran 27:18–19'},
+      {t:'A hoopoe bird told Sulaiman about the Queen of Saba’, whose people worshipped the sun. Sulaiman sent her a letter starting with "Bismillahir-Rahmanir-Rahim." In the end, she said: "I submit, with Sulaiman, to Allah, the Lord of all the worlds."', s:'Quran 27:20–44'},
+      {t:'When her throne was brought to him in the blink of an eye, Sulaiman did not boast. He said: "This is from the favour of my Lord, to test me: will I be thankful or ungrateful?"', s:'Quran 27:38–40'}
+    ],
+    lesson:'Everything good we have is from Allah. Use it well, work hard, and always say Alhamdulillah.',
+    dua:{ar:'رب أوزعني أن أشكر نعمتك التي أنعمت علي', tr:'Rabbi awzi’ni an ashkura ni’matakal-lati an’amta ’alayya', en:'My Lord, help me to be thankful for the blessings You have given me. (Prophet Sulaiman)', s:'Quran 27:19'},
+    quiz:[
+      {q:'Who did young Dawud defeat?', o:['The giant Jalut','Fir’awn','Iblis','The king of Saba’'], a:0},
+      {q:'Which holy book was given to Dawud?', o:['The Zabur','The Injil','The Tawrah','The Quran'], a:0},
+      {q:'What did Allah make soft for Dawud?', o:['Iron','Rocks','Wood','Gold'], a:0},
+      {q:'Who praised Allah together with Dawud?', o:['The mountains and the birds','The fish','The stars only','Nobody'], a:0},
+      {q:'Who warned the other ants?', o:['An ant','A bird','A lion','A jinn'], a:0},
+      {q:'Which bird brought news of the Queen of Saba’?', o:['The hoopoe','An eagle','A crow','A pigeon'], a:0},
+      {q:'How did Sulaiman’s letter begin?', o:['Bismillahir-Rahmanir-Rahim','Hello Queen','Dear friend','Listen to me'], a:0}
+    ],
+    talk:['Sulaiman cared even about tiny ants. How can we be kind to animals and insects?','What does it mean to earn something with your own hands?']
+  };
+  var CH_ISA = {id:'isa', n:'Prophet Isa', ic:'🕊️', sub:'Son of Maryam',
+    pages:[
+      {t:'Maryam was a pure, good woman whom Allah chose above the women of the worlds. Prophet Zakariyya looked after her. Whenever he visited her prayer room, he found food with her, and she said: "It is from Allah."', s:'Quran 3:37, 3:42'},
+      {t:'An angel brought Maryam good news: Allah would give her a son called the Messiah, Isa son of Maryam. She asked: "How can I have a son when no man has touched me?" Allah only says "Be," and it is — just as He created Adam without a father or mother.', s:'Quran 3:45–47, 3:59'},
+      {t:'Isa was born under a palm tree. Allah told Maryam to shake the trunk, and fresh dates fell down for her, and a stream flowed below her.', s:'Quran 19:23–26'},
+      {t:'When people questioned Maryam, baby Isa spoke from the cradle: "I am the servant of Allah. He has given me the Book and made me a prophet… and made me kind to my mother."', s:'Quran 19:27–32'},
+      {t:'By Allah’s permission, Isa did amazing miracles: he made a bird out of clay that became a real bird, he healed the blind and the sick, and he brought the dead back to life — all by Allah’s permission.', s:'Quran 3:49, 5:110'},
+      {t:'Allah gave Isa the Injil. Isa said: "Allah is my Lord and your Lord, so worship Him — this is the straight path." His helpers, the disciples, said: "We are Allah’s helpers."', s:'Quran 5:46, 19:36, 3:51–52'},
+      {t:'Some people plotted to kill him, but they did not kill him and did not crucify him. Allah raised Isa up to Himself.', s:'Quran 4:157–158'},
+      {t:'Isa gave good news of a messenger coming after him named Ahmad — that is Prophet Muhammad ﷺ. The Prophet ﷺ also told us that Isa will come back down before the Day of Judgement.', s:'Quran 61:6 · Bukhari 3448, Muslim 155'}
+    ],
+    lesson:'Allah can do anything. Be kind to your mother, and remember that every miracle is by Allah’s permission.',
+    dua:{ar:'ربنا آمنا بما أنزلت واتبعنا الرسول فاكتبنا مع الشاهدين', tr:'Rabbana amanna bima anzalta wattaba’nar-rasula faktubna ma’ash-shahidin', en:'Our Lord, we believe in what You sent down and we follow the messenger, so write us among the witnesses. (The disciples of Isa)', s:'Quran 3:53'},
+    quiz:[
+      {q:'Who was the mother of Isa?', o:['Maryam','Hajar','Aminah','Asiyah'], a:0},
+      {q:'Which prophet looked after Maryam?', o:['Zakariyya','Musa','Nuh','Yunus'], a:0},
+      {q:'Where was Isa born?', o:['Under a palm tree','On a ship','In a palace','In a cave'], a:0},
+      {q:'What amazing thing did baby Isa do?', o:['Spoke from the cradle','Flew','Walked on water','Built a house'], a:0},
+      {q:'How did Isa do his miracles?', o:['By Allah’s permission','By magic','By himself','By tricks'], a:0},
+      {q:'Which book was given to Isa?', o:['The Injil','The Zabur','The Tawrah','The Quran'], a:0},
+      {q:'What happened to Isa when people plotted against him?', o:['Allah raised him up to Himself','He was crucified','He ran away','He became king'], a:0}
+    ],
+    talk:['Isa said Allah made him kind to his mother. What can you do for Mimi today?','Why do we say every miracle happened "by Allah’s permission"?']
+  };
+  var CH_MUHAMMAD = {id:'muhammad', n:'Prophet Muhammad ﷺ', ic:'🌙', sub:'The last messenger',
+    pages:[
+      {t:'Prophet Muhammad ﷺ was born in Makkah on a Monday, into the family of Banu Hashim from the tribe of Quraysh. He grew up as an orphan, and Allah took care of him.', s:'Muslim 1162, 2276 · Quran 93:6'},
+      {t:'Everyone in Makkah knew he was honest. When he later asked them, "Would you believe me if I told you something?", they said: "We have never known you to lie."', s:'Bukhari 4770'},
+      {t:'When he was 40, he was in the cave of Hira when the angel Jibril came and said: "Iqra!" — "Read!" These were the first words of the Quran: "Read in the name of your Lord who created…"', s:'Bukhari 3, 3851 · Quran 96:1–5'},
+      {t:'He came home shaking, and his wife Khadijah comforted him: "Allah will never let you down. You are good to your relatives, you help the weak, and you look after guests."', s:'Bukhari 3'},
+      {t:'He called people to worship Allah alone, and many hurt him. One very hard day, after he was rejected, the angel of the mountains offered to crush the people who hurt him. He said: "No — I hope Allah will bring from their children people who worship Allah alone."', s:'Bukhari 3231 · Muslim 1795'},
+      {t:'In one night, Allah took him from Makkah to Masjid al-Aqsa and then up through the heavens. There Allah gave the five daily prayers. Prophet Musa advised him to ask for less, until it became five prayers with the reward of fifty!', s:'Quran 17:1 · Bukhari 349, Muslim 162'},
+      {t:'He moved (made Hijrah) to Madinah with Abu Bakr. Hiding in a cave, he said: "Do not be sad — Allah is with us." In Madinah the Ansar welcomed them, and they built the masjid. Years later he returned to Makkah and cleared the idols from the Ka’bah, reciting: "Truth has come and falsehood has gone."', s:'Quran 9:40, 17:81 · Bukhari 3653, 4287'},
+      {t:'Allah said: "You are of a great character." Anas served him for ten years and he never once said "uff" to him. He greeted children with salam. He is the last of all the prophets, and he said: "Whoever sends salawat on me once, Allah sends ten blessings on him."', s:'Quran 68:4, 33:40 · Bukhari 6038, 6247 · Muslim 408'}
+    ],
+    lesson:'We show our love for the Prophet ﷺ by following his good manners and sending salawat on him.',
+    dua:{ar:'اللهم صل على محمد وعلى آل محمد', tr:'Allahumma salli ’ala Muhammadin wa ’ala ali Muhammad', en:'O Allah, send Your blessings on Muhammad and on the family of Muhammad. (The start of the salawat taught by the Prophet ﷺ)', s:'Bukhari 3370 · Muslim 406'},
+    quiz:[
+      {q:'In which city was the Prophet ﷺ born?', o:['Makkah','Madinah','Ta’if','Egypt'], a:0},
+      {q:'What did the people of Makkah know him for?', o:['Being honest','Being rich','Being a king','Being a sailor'], a:0},
+      {q:'In which cave did the first revelation come?', o:['Hira','Thawr','A cave in Egypt','No cave'], a:0},
+      {q:'What was the first word Jibril said?', o:['Iqra (Read)','Salam','Allahu Akbar','Bismillah'], a:0},
+      {q:'Who comforted him after the first revelation?', o:['His wife Khadijah','Abu Bakr','Umar','Ali'], a:0},
+      {q:'How many daily prayers were given on the night journey?', o:['Five','Fifty','Three','Ten'], a:0},
+      {q:'Who went with him on the Hijrah to Madinah?', o:['Abu Bakr','Umar','Uthman','Khalid'], a:0}
+    ],
+    talk:['Which of the Prophet’s ﷺ manners can you copy this week?','How many times can you send salawat today?']
+  };
+  (function(){
+    function after(id, ch){ var i = STORY_CHAPTERS.map(function(c){ return c.id; }).indexOf(id); STORY_CHAPTERS.splice(i+1, 0, ch); }
+    after('nuh', CH_HUDSALIH);
+    after('ibrahim', CH_ISMAIL);
+    after('yusuf', CH_AYYUB);
+    after('musa', CH_DAWUD);
+    after('yunus', CH_ISA);
+    after('isa', CH_MUHAMMAD);
+    STORY_COMING.length = 0;
+  })();
+  PROPHET_SIGNS.push(
+    {ic:'🐪', q:'Who was sent with the she-camel as a sign?', a:'Salih'},
+    {ic:'🌬️', q:'Whose people said "Who is stronger than us?" and got a roaring wind?', a:'Hud'},
+    {ic:'⛲', q:'Who struck the ground with his foot and cool water came out?', a:'Ayyub'},
+    {ic:'🐜', q:'Who smiled when he heard an ant speak?', a:'Sulaiman'},
+    {ic:'🛡️', q:'Who made armour from iron that Allah made soft?', a:'Dawud'},
+    {ic:'👶', q:'Who spoke as a baby from the cradle?', a:'Isa'},
+    {ic:'🧱', q:'Who carried the stones while his father built the Ka’bah?', a:'Ismail'},
+    {ic:'📖', q:'Who heard "Iqra!" in the cave of Hira?', a:'Muhammad ﷺ'}
+  );
+  PROPHET_NAMES.push('Hud','Salih','Ismail','Ayyub','Dawud','Sulaiman','Isa','Muhammad ﷺ');
   /* ================= LEARN: logic + screens ================= */
   var LEARN_DEFAULT_PTS = {story:5, perfect:2, little:2, gem:5, dua:3, talk:2, game:2, gameCap:6, review:1};
   var LEARN_PTS_LABELS = [
@@ -4342,7 +4514,7 @@
       if(typeof p.lifetime.learn !== 'number') p.lifetime.learn = 0;
       if(!Array.isArray(p.learnRequests)) p.learnRequests = [];
       if(p.role === 'kid'){
-        if(p.learnLevel !== 'big' && p.learnLevel !== 'little') p.learnLevel = /^zohrah$/i.test(String(p.name||'').trim()) ? 'little' : 'big';
+        if(p.learnLevel !== 'big' && p.learnLevel !== 'little') p.learnLevel = 'big';
         if(!p.learn || typeof p.learn !== 'object') p.learn = {read:{}, passed:{}, box:{}, duas:{}, gems:{}, talk:{}, gameDay:{date:'', done:{}, pts:0}};
       }
     });
@@ -4474,9 +4646,9 @@
         return '<button class="ln-ch '+st+'" '+(can?'data-action="learn-open" data-ch="'+ch.id+'"':'data-action="learn-locked" data-st="'+st+'"')+'>'+
           '<span class="ln-ch-ic">'+ch.ic+'</span><span class="grow"><small>Chapter '+(i+1)+'</small><b>'+escapeHtml(ch.n)+'</b><small>'+escapeHtml(ch.sub)+'</small></span>'+tag+'</button>';
       }).join('')+
-      '<p class="quest-sub" style="margin:8px 4px 0;">Coming next: '+STORY_COMING.join(' · ')+'</p>'+
+      (STORY_COMING.length ? '<p class="quest-sub" style="margin:8px 4px 0;">Coming next: '+STORY_COMING.join(' · ')+'</p>' : '')+
       '<p class="section-title">My story badges</p><div class="badges">'+STORY_CHAPTERS.map(function(ch){
-        return '<div class="badge '+(L.passed[ch.id]?'':'locked')+'"><div class="bi">'+ch.ic+'</div>'+escapeHtml(ch.n.replace('Prophet ',''))+'</div>'; }).join('')+'</div>'+
+        return '<div class="badge '+(L.passed[ch.id]?'':'locked')+'"><div class="bi">'+ch.ic+'</div>'+escapeHtml(ch.n.replace(/^Prophets? /,''))+'</div>'; }).join('')+'</div>'+
       '<div class="note-box" style="margin-top:12px;">📚 Every story comes only from the Quran and sahih hadith, with the source under each page. No pictures of prophets are ever shown.</div>';
     return html;
   }
@@ -4877,6 +5049,234 @@
   };
   learnActions['learn-toggle'] = function(){ state.data.learnOn = !state.data.learnOn; persist(); render(); };
 
+  /* ================= v19: security — approved devices + parent Google account ================= */
+  // Small synchronous SHA-256, used so the parent PIN is never stored as plain text.
+  function sha256(ascii){
+    function rr(v, n){ return (v>>>n) | (v<<(32-n)); }
+    var maxWord = Math.pow(2, 32), result = '', words = [], bitLen = ascii.length*8, i, j;
+    var hash = [], k = [], primeCounter = 0, isComposite = {};
+    for(var c=2; primeCounter<64; c++){
+      if(!isComposite[c]){
+        for(i=0;i<313;i+=c) isComposite[i] = c;
+        hash[primeCounter] = (Math.pow(c, .5)*maxWord)|0;
+        k[primeCounter++] = (Math.pow(c, 1/3)*maxWord)|0;
+      }
+    }
+    hash = hash.slice(0, 8);
+    ascii = unescape(encodeURIComponent(ascii)); bitLen = ascii.length*8;
+    ascii += '\x80';
+    while(ascii.length%64 - 56) ascii += '\x00';
+    for(i=0;i<ascii.length;i++){ j = ascii.charCodeAt(i); words[i>>2] |= j << ((3-i)%4)*8; }
+    words[words.length] = ((bitLen/maxWord)|0);
+    words[words.length] = (bitLen);
+    for(j=0;j<words.length;){
+      var w = words.slice(j, j += 16), oldHash = hash;
+      hash = hash.slice(0, 8);
+      for(i=0;i<64;i++){
+        var w15 = w[i-15], w2 = w[i-2], a = hash[0], e = hash[4];
+        var temp1 = hash[7] + (rr(e,6) ^ rr(e,11) ^ rr(e,25)) + ((e&hash[5]) ^ ((~e)&hash[6])) + k[i] +
+          (w[i] = (i<16) ? w[i] : (w[i-16] + (rr(w15,7) ^ rr(w15,18) ^ (w15>>>3)) + w[i-7] + (rr(w2,17) ^ rr(w2,19) ^ (w2>>>10)))|0);
+        var temp2 = (rr(a,2) ^ rr(a,13) ^ rr(a,22)) + ((a&hash[1]) ^ (a&hash[2]) ^ (hash[1]&hash[2]));
+        hash = [(temp1+temp2)|0].concat(hash);
+        hash[4] = (hash[4]+temp1)|0;
+      }
+      for(i=0;i<8;i++) hash[i] = (hash[i]+oldHash[i])|0;
+    }
+    for(i=0;i<8;i++){ for(j=3;j+1;j--){ var b = (hash[i]>>(j*8))&255; result += ((b<16)?0:'') + b.toString(16); } }
+    return result;
+  }
+  function pinHash(pin){ return sha256('barakah-garden|' + FAMILY_ID + '|' + String(pin)); }
+
+  var ACCESS = {data:null, err:null, unsub:null, loaded:false};
+  var LOCK = {on:false, timer:null, sent:false, msg:''};
+  function accessRef(){ return db.collection('access').doc(FAMILY_ID); }
+  function devicePending(){ return isOwner() && ACCESS.data && ACCESS.data.requests ? Object.keys(ACCESS.data.requests).length : 0; }
+  function myUid(){ return auth && auth.currentUser ? auth.currentUser.uid : null; }
+  function googleUser(){ return auth && auth.currentUser && !auth.currentUser.isAnonymous ? auth.currentUser : null; }
+  function isOwner(){ return !!googleUser() && ACCESS.loaded && !ACCESS.err; }
+  function lsGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+  function lsSet(k, v){ try{ localStorage.setItem(k, v); }catch(e){} }
+  function watchAccess(){
+    if(ACCESS.unsub || !db) return;
+    ACCESS.unsub = accessRef().onSnapshot(function(s){
+      ACCESS.err = null; ACCESS.loaded = true;
+      if(!s.exists){
+        ACCESS.data = null;
+        if(googleUser()){
+          accessRef().set({devices:{}, requests:{}, owner: googleUser().email || '', createdAt: Date.now()})
+            .catch(function(e){ console.warn('could not create access list', e); });
+        }
+      } else ACCESS.data = s.data() || {};
+      if(state.route.name==='parent' || LOCK.on) render();
+    }, function(e){
+      ACCESS.err = (e && e.code) || 'error'; ACCESS.data = null; ACCESS.loaded = true;
+      if(ACCESS.unsub){ try{ ACCESS.unsub(); }catch(x){} }
+      ACCESS.unsub = null;
+      if(state.route.name==='parent' || LOCK.on) render();
+    });
+  }
+  function deviceStatus(){
+    var uid = myUid(), d = ACCESS.data;
+    if(googleUser() && isOwner()) return 'owner';
+    if(d && d.devices && uid && d.devices[uid]) return 'approved';
+    if(d && d.requests && uid && d.requests[uid]) return 'requested';
+    if(lsGet('bg_req_'+uid)) return 'requested';
+    return 'none';
+  }
+  function securityRules(email){
+    var em = email || 'YOUR_EMAIL@gmail.com';
+    return "rules_version = '2';\n"+
+"service cloud.firestore {\n"+
+"  match /databases/{database}/documents {\n"+
+"    function signedIn() { return request.auth != null; }\n"+
+"    // Parent Google accounts (add Mimi's Gmail here too if she will manage devices)\n"+
+"    function isOwner() {\n"+
+"      return signedIn() && request.auth.token.email_verified == true\n"+
+"        && request.auth.token.email in ['"+em+"'];\n"+
+"    }\n"+
+"    function isApprovedDevice() {\n"+
+"      return signedIn()\n"+
+"        && exists(/databases/$(database)/documents/access/"+FAMILY_ID+")\n"+
+"        && request.auth.uid in get(/databases/$(database)/documents/access/"+FAMILY_ID+").data.devices;\n"+
+"    }\n"+
+"    // family data, weekly backups and live games\n"+
+"    match /families/{docId} {\n"+
+"      allow read, write: if isOwner() || isApprovedDevice();\n"+
+"    }\n"+
+"    // the list of approved devices\n"+
+"    match /access/{familyId} {\n"+
+"      allow read, write: if isOwner();\n"+
+"      // a new device may only add its own join request\n"+
+"      allow update: if signedIn()\n"+
+"        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['requests'])\n"+
+"        && request.resource.data.requests.diff(resource.data.requests).affectedKeys().hasOnly([request.auth.uid])\n"+
+"        && request.resource.data.requests[request.auth.uid].name is string\n"+
+"        && request.resource.data.requests[request.auth.uid].name.size() <= 40;\n"+
+"    }\n"+
+"  }\n"+
+"}\n";
+  }
+
+  /* ---- screens ---- */
+  function renderDeviceRequestCard(){
+    var st = deviceStatus();
+    if(st==='approved') return '<div class="card"><p class="field-label">📱 This device</p><div class="ln-done" style="margin-top:0;">✅ Approved — '+escapeHtml((ACCESS.data.devices[myUid()]||{}).name||'')+'</div></div>';
+    if(st==='requested') return '<div class="card"><p class="field-label">📱 This device</p><div class="ln-wait" style="margin-top:0;">⏳ Request sent — a parent approves it in Parent Mode → 🔐 Devices (signed in with Google).</div>'+
+      '<button class="btn-secondary" style="width:100%;margin-top:8px;" data-action="dev-check">🔄 Check again</button></div>';
+    return '<div class="card"><p class="field-label">📱 Connect this device</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Give this phone or tablet a name, then a parent approves it once.</p>'+
+      '<input class="text-input" id="devNameInput" type="text" maxlength="40" placeholder="e.g. Kids’ tablet, Mimi’s phone">'+
+      '<button class="btn-primary" data-action="dev-request">📨 Ask a parent to approve this device</button></div>';
+  }
+  function renderGoogleCard(){
+    var g = googleUser();
+    if(!g) return '<div class="card"><p class="field-label">👤 Parent account</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Parents sign in with Google to approve devices. You only need to do this on one phone or computer.</p>'+
+      '<button class="btn-primary" data-action="dev-google">🔑 Parent: sign in with Google</button></div>';
+    var notOwner = ACCESS.err === 'permission-denied';
+    return '<div class="card"><p class="field-label">👤 Parent account</p>'+
+      '<p style="font-size:13.5px;margin-bottom:8px;">Signed in as <b>'+escapeHtml(g.email||'Google account')+'</b>'+(notOwner?' — <span style="color:var(--coral);font-weight:800;">this account isn’t on the parent list in the security rules.</span>':'')+'</p>'+
+      '<button class="btn-secondary" style="width:100%;" data-action="dev-signout">Sign out of Google on this device</button>'+
+      '<p class="quest-sub" style="margin-top:6px;">After signing out, this device will need a parent’s approval again.</p></div>';
+  }
+  function renderParentDevices(){
+    watchAccess();
+    var html = '<div class="note-box" style="margin-bottom:12px;">🔐 <b>Private family mode.</b> Only devices a parent approves (and the parent Google accounts) can open your family’s data. Strangers who find the app’s link see a locked screen.</div>';
+    if(!isOwner()) return html + renderDeviceRequestCard() + renderGoogleCard();
+    var d = ACCESS.data || {devices:{}, requests:{}}, uid = myUid();
+    var reqs = Object.keys(d.requests||{}), devs = Object.keys(d.devices||{});
+    html += renderGoogleCard();
+    html += '<div class="card"><p class="field-label">📨 Waiting for approval ('+reqs.length+')</p>'+
+      (reqs.length ? reqs.map(function(id){ var r = d.requests[id]||{};
+        return '<div class="list-row"><div style="font-size:20px;">📱</div><div class="grow"><div class="name">'+escapeHtml(String(r.name||'Unnamed device').slice(0,40))+'</div><div class="sub">asked '+(r.ts?timeAgo(r.ts):'')+' · id '+escapeHtml(id.slice(0,6))+'</div></div>'+
+          '<button class="icon-btn" style="color:var(--moss);" data-action="dev-approve" data-uid="'+escapeHtml(id)+'">✓</button>'+
+          '<button class="icon-btn" style="color:var(--coral);" data-action="dev-decline" data-uid="'+escapeHtml(id)+'">✕</button></div>'; }).join('')
+        : '<p style="font-size:13px;color:var(--ink-soft);">No requests. On a new phone or tablet, open the app and tap “Ask a parent to approve this device”.</p>')+
+      '<p class="quest-sub" style="margin-top:6px;">Only approve a device you recognise — check the name with your family.</p></div>';
+    html += '<div class="card"><p class="field-label">✅ Approved devices ('+devs.length+')</p>'+
+      (devs.length ? devs.map(function(id){ var r = d.devices[id]||{};
+        return '<div class="list-row"><div style="font-size:20px;">📱</div><div class="grow"><div class="name">'+escapeHtml(String(r.name||'Device').slice(0,40))+(id===uid?' <span class="new">THIS DEVICE</span>':'')+'</div><div class="sub">approved '+(r.approvedAt?timeAgo(r.approvedAt):'')+'</div></div>'+
+          '<button class="btn-secondary" style="padding:7px 10px;font-size:12.5px;color:var(--coral);" data-action="dev-remove" data-uid="'+escapeHtml(id)+'">Remove</button></div>'; }).join('')
+        : '<p style="font-size:13px;color:var(--ink-soft);">None yet.</p>')+
+      '<p class="quest-sub" style="margin-top:6px;">Lost a phone? Remove it here and it can no longer open the family data.</p></div>';
+    html += '<div class="card"><p class="field-label">🛡️ Security rules for Firebase</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Approve all your family’s devices first, then copy these rules into Firebase console → Firestore Database → Rules → Publish. From then on, only approved devices and your Google account can open the data.</p>'+
+      '<textarea class="text-input" id="rulesText" readonly style="height:170px;font-family:monospace;font-size:11px;white-space:pre;">'+escapeHtml(securityRules(googleUser().email))+'</textarea>'+
+      '<button class="btn-primary" data-action="dev-copy-rules">📋 Copy rules</button></div>';
+    return html;
+  }
+  function renderJoinScreen(){
+    return '<div class="screen join-screen">'+
+      '<div class="join-head"><div class="join-lock">🔐</div><h1 class="disp">Barakah Garden</h1>'+
+      '<p>This family app is private. A parent needs to approve this device once.</p></div>'+
+      renderDeviceRequestCard() + renderGoogleCard() +
+      (LOCK.msg ? '<div class="note-box">'+escapeHtml(LOCK.msg)+'</div>' : '')+
+      '</div>' + renderToast();
+  }
+  function lockOut(){
+    if(LOCK.on) return;
+    LOCK.on = true;
+    watchAccess();
+    render();
+    LOCK.timer = setInterval(function(){
+      db.collection('families').doc(FAMILY_ID).get().then(function(){ clearInterval(LOCK.timer); location.reload(); }).catch(function(){});
+    }, 10000);
+  }
+
+  /* ---- actions ---- */
+  learnActions['dev-request'] = function(){
+    var inp = document.getElementById('devNameInput'), name = inp ? inp.value.trim().slice(0, 40) : '';
+    if(!name){ showToast('Type a name for this device first','error'); return; }
+    var uid = myUid(); if(!uid){ showToast('Still connecting — try again in a moment','error'); return; }
+    var upd = {}; upd['requests.'+uid] = {name:name, ts:Date.now()};
+    accessRef().update(upd).then(function(){
+      lsSet('bg_req_'+uid, '1'); LOCK.msg = '';
+      showToast('Request sent — ask a parent to approve it ⏳'); render();
+    }).catch(function(e){
+      console.warn(e);
+      LOCK.msg = (e && e.code==='not-found') ? 'A parent needs to set up private mode first: sign in with Google in Parent Mode → 🔐 Devices.' : 'Could not send the request. Check the internet connection and try again.';
+      showToast('Request not sent','error'); render();
+    });
+  };
+  learnActions['dev-check'] = function(){
+    db.collection('families').doc(FAMILY_ID).get().then(function(){ if(LOCK.on) location.reload(); else showToast('This device can open the family data ✅'); })
+      .catch(function(){ showToast('Not approved yet ⏳'); });
+  };
+  learnActions['dev-google'] = function(){
+    var prov = new firebase.auth.GoogleAuthProvider();
+    try{ prov.setCustomParameters({prompt:'select_account'}); }catch(e){}
+    auth.signInWithPopup(prov).then(function(){ location.reload(); }).catch(function(e){
+      var c = e && e.code;
+      if(c==='auth/popup-blocked' || c==='auth/operation-not-supported-in-this-environment'){ auth.signInWithRedirect(prov); return; }
+      if(c==='auth/popup-closed-by-user' || c==='auth/cancelled-popup-request') return;
+      LOCK.msg = c==='auth/unauthorized-domain' ? 'Add this website to Firebase → Authentication → Settings → Authorized domains, then try again.'
+        : c==='auth/operation-not-allowed' ? 'Turn on Google in Firebase → Authentication → Sign-in method, then try again.'
+        : 'Google sign-in failed: '+((e && e.message) || c);
+      showToast('Sign-in failed','error'); render();
+    });
+  };
+  learnActions['dev-signout'] = function(){ auth.signOut().then(function(){ location.reload(); }); };
+  learnActions['dev-approve'] = function(el){
+    var id = el.dataset.uid, r = ACCESS.data && ACCESS.data.requests && ACCESS.data.requests[id]; if(!id) return;
+    var upd = {}; upd['devices.'+id] = {name: String((r && r.name) || 'Device').slice(0,40), approvedAt: Date.now()};
+    upd['requests.'+id] = firebase.firestore.FieldValue.delete();
+    accessRef().update(upd).then(function(){ showToast('Device approved ✅'); }).catch(function(e){ console.warn(e); showToast('Could not approve','error'); });
+  };
+  learnActions['dev-decline'] = function(el){
+    var upd = {}; upd['requests.'+el.dataset.uid] = firebase.firestore.FieldValue.delete();
+    accessRef().update(upd).then(function(){ showToast('Request declined'); }).catch(function(){ showToast('Could not decline','error'); });
+  };
+  learnActions['dev-remove'] = function(el){
+    var upd = {}; upd['devices.'+el.dataset.uid] = firebase.firestore.FieldValue.delete();
+    accessRef().update(upd).then(function(){ showToast('Device removed'); }).catch(function(){ showToast('Could not remove','error'); });
+  };
+  learnActions['dev-copy-rules'] = function(){
+    var t = document.getElementById('rulesText'); if(!t) return;
+    var txt = t.value;
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){ showToast('Rules copied 📋'); }, function(){ t.select(); document.execCommand('copy'); showToast('Rules copied 📋'); });
+    else { t.select(); document.execCommand('copy'); showToast('Rules copied 📋'); }
+  };
+
   /* ============ bottom tab bar ============ */
   function renderTabbar(active){
     var pending = countAllPending();
@@ -4970,7 +5370,7 @@
           '<span></span><button class="pin-key" data-action="pin-digit" data-digit="0">0</button>'+
           '<button class="pin-key" data-action="pin-back">\u232B</button>'+
         '</div>'+
-        '<p class="lock-hint">Default PIN is 1234 \u2014 change it under Settings once inside.</p>'+
+        (state.data.pinHash===pinHash('1234') ? '<p class="lock-hint">Default PIN is 1234 \u2014 please change it under Settings once inside.</p>' : '')+
       '</div></div>';
   }
 
@@ -4984,6 +5384,7 @@
       n += (p.passRequests||[]).length;
       n += (p.learnRequests||[]).length;
     });
+    n += devicePending();
     n += state.data.owed.length;
     return n;
   }
@@ -4995,6 +5396,7 @@
       : tab==='rewards' ? renderParentRewards()
       : tab==='adjust' ? renderParentAdjust()
       : tab==='learn' ? renderParentLearn()
+      : tab==='devices' ? renderParentDevices()
       : renderParentSettings();
     var pendingCount = countAllPending();
     return '<div class="screen parent-screen">'+
@@ -5006,6 +5408,7 @@
         '<button class="ptab '+(tab==='rewards'?'active':'')+'" data-action="parent-tab" data-tab="rewards">Rewards</button>'+
         '<button class="ptab '+(tab==='learn'?'active':'')+'" data-action="parent-tab" data-tab="learn">\uD83D\uDCD6 Learn</button>'+
         '<button class="ptab '+(tab==='adjust'?'active':'')+'" data-action="parent-tab" data-tab="adjust">Adjust</button>'+
+        '<button class="ptab '+(tab==='devices'?'active':'')+'" data-action="parent-tab" data-tab="devices">\uD83D\uDD10 Devices'+(devicePending()?' ('+devicePending()+')':'')+'</button>'+
         '<button class="ptab '+(tab==='settings'?'active':'')+'" data-action="parent-tab" data-tab="settings">Settings</button>'+
       '</div>'+ content + '</div>';
   }
@@ -5038,6 +5441,7 @@
 
     extra += renderPassApprovals();
     extra += renderLearnApprovals();
+    if(devicePending()) extra += '<div class="card"><p class="field-label">\uD83D\uDD10 New devices</p><p style="font-size:13.5px;margin-bottom:8px;">'+devicePending()+' device'+(devicePending()>1?'s are':' is')+' asking to join your family app.</p><button class="btn-primary" data-action="parent-tab" data-tab="devices">Review in \uD83D\uDD10 Devices</button></div>';
     // Quran reading
     var qRows = [];
     state.data.people.forEach(function(p){ (p.quranRequests||[]).forEach(function(rq){ qRows.push({p:p, rq:rq}); }); });
@@ -5487,6 +5891,7 @@
 
   /* ============ main render ============ */
   function render(){
+    if(LOCK.on){ document.getElementById('app').innerHTML = renderJoinScreen(); return; }
     var r = state.route, name = r.name, html;
     if(name==='parent-lock') name = r.name = 'parent';
     heroSeq = 0;
@@ -5682,7 +6087,7 @@
     state.ui.pinEntry += el.dataset.digit;
     state.ui.pinError = false;
     if(state.ui.pinEntry.length===4){
-      if(state.ui.pinEntry===state.data.pin){
+      if(pinHash(state.ui.pinEntry)===state.data.pinHash){
         state.parentUnlocked=true; state.ui.pinEntry='';
         state.route={name:'parent', tab:'approvals'}; render(); return;
       } else {
@@ -6116,7 +6521,7 @@
     var v1 = p1 && p1.value.trim(), v2 = p2 && p2.value.trim();
     if(!/^\d{4}$/.test(v1||'')){ showToast('PIN must be 4 digits','error'); return; }
     if(v1 !== v2){ showToast('PINs don\u2019t match','error'); return; }
-    state.data.pin = v1; showToast('PIN updated'); persist(); render();
+    state.data.pinHash = pinHash(v1); showToast('PIN updated'); persist(); render();
   };
   actions['ask-reset-all'] = function(){ state.modal={type:'confirmResetAll'}; render(); };
   actions['do-reset-all'] = function(){
@@ -6181,7 +6586,7 @@
       return;
     }
     auth.onAuthStateChanged(function(user){
-      if(user){ attachListener(); }
+      if(user){ attachListener(); watchAccess(); }
       else {
         auth.signInAnonymously().catch(function(e){
           console.error(e);
