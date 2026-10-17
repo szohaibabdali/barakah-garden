@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="Barakah Garden">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&family=Amiri:wght@400;700&display=swap" rel="stylesheet">
 
 <!-- ======================================================================
      FIREBASE SETUP — this is the ONLY section you need to edit.
@@ -440,11 +440,159 @@
   .ar-t{font-family:'Amiri','Scheherazade New','Traditional Arabic','Noto Naskh Arabic',serif;font-size:26px;direction:rtl;margin:4px 0;line-height:1.6;}
   .duel-btn.ar{font-family:'Amiri','Scheherazade New','Traditional Arabic','Noto Naskh Arabic',serif;font-size:17px;direction:rtl;line-height:1.5;}
   .pass-shop{border:2px dashed var(--sun);}
+  .tp{display:inline-flex;gap:4px;flex-wrap:wrap;}
+  .tp i{font-style:normal;font-size:11px;font-weight:800;background:#F1F3F0;color:var(--ink-soft);border-radius:8px;padding:2px 6px;}
+  .tp i.on{background:#EAF6EC;color:var(--moss);}
+  .tourney-card{border:2px solid #E7DCC0;}
+  .tourney-card.open{border-color:var(--sun);background:#FFF8E6;}
+  .skills-card .sk-row{display:flex;align-items:center;gap:10px;padding:6px 0;}
+  .sk-ic{font-size:24px;}
+  .reflect{margin:0 0 12px;text-align:left;background:#F3ECFF;}
+  .pig-totals{display:flex;flex-direction:column;gap:6px;}
+  .pig-row{display:flex;align-items:center;gap:8px;font-weight:800;font-size:13px;}
+  .pig-row span{width:70px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .pig-row .bar{flex:1;margin:0;}
+  .pig-row.turn span{color:var(--berry);}
+  .pig-die{font-size:72px;text-align:center;line-height:1.1;margin:8px 0;}
+  .choice-q{font-weight:800;font-size:17px;margin:6px 0 12px;line-height:1.4;}
+  .choice-btn{display:block;width:100%;text-align:left;background:var(--cream);border:2px solid var(--line);border-radius:14px;padding:12px;font-weight:700;font-size:14px;margin-bottom:8px;}
+  .choice-btn.right{background:#EAF6EC;border-color:var(--moss);}
+  .choice-btn.wrong{background:#FDECEA;border-color:var(--coral);}
+  .spend-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;}
+  .spend-it{background:#fff;border:2px solid var(--line);border-radius:14px;padding:10px;text-align:left;display:flex;flex-direction:column;gap:2px;font-size:13px;}
+  .spend-it span{color:var(--berry);font-weight:800;}
+  .spend-it.on{background:#EAF6EC;border-color:var(--moss);}
+  .spend-it:disabled{opacity:.4;}
+  .chess.rv{background:#1E7A4C;gap:2px;padding:2px;border-color:#0F5233;}
+  .rv-sq{aspect-ratio:1;background:#2E9A62;display:flex;align-items:center;justify-content:center;position:relative;padding:0;}
+  .rvd{width:80%;height:80%;border-radius:50%;box-shadow:inset 0 -3px 0 rgba(0,0,0,.25);}
+  .rvd.bk{background:#1F1F1F;} .rvd.wh{background:#F7F7F2;}
+  .rv-sq i.dot{width:22%;height:22%;border-radius:50%;background:rgba(255,255,255,.45);}
+  .simon{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:340px;margin:0 auto;}
+  .sim-pad{aspect-ratio:1;border-radius:26px;background:var(--c);opacity:.45;font-size:44px;transition:opacity .1s,transform .1s;}
+  .sim-pad.lit{opacity:1;transform:scale(1.05);box-shadow:0 0 30px var(--c);}
+  .sim-pad:not(:disabled){opacity:.85;}
+  .screen.still{animation:none;}
+  .sd{display:grid;gap:2px;max-width:250px;margin:0 auto;background:var(--ink);padding:3px;border-radius:10px;}
+  .sd-c{aspect-ratio:1;background:#fff;font-family:'Baloo 2',sans-serif;font-size:20px;font-weight:700;padding:0;border-radius:3px;}
+  .sd-c.given{background:#EEF1EC;color:var(--ink);}
+  .sd-c.sel{background:#FFF1C9;}
+  .sd-c.wrong{color:var(--coral);}
+  .sd-c.br{margin-right:2px;} .sd-c.bb{margin-bottom:2px;}
+  .sd-pad{display:flex;gap:4px;justify-content:center;margin-top:8px;flex-wrap:wrap;}
+  .sd-pad button{min-width:38px;height:38px;border-radius:10px;background:var(--cream);border:2px solid var(--line);font-weight:800;font-size:16px;}
+  .tower{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;height:220px;}
+  .tw-peg{position:relative;background:#F4EFE3;border-radius:14px;border:2px solid transparent;padding:0;}
+  .tw-peg.hold{border-color:var(--sun);}
+  .tw-pole{position:absolute;left:50%;bottom:8%;width:8px;height:80%;transform:translateX(-50%);background:#8A5A33;border-radius:4px;}
+  .tw-disc{position:absolute;left:50%;transform:translateX(-50%);height:13%;border-radius:8px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2);}
+  .tw-disc.up{transform:translate(-50%,-40%);outline:2px solid var(--ink);}
+  .mz{display:grid;max-width:260px;margin:0 auto;background:#fff;border:3px solid var(--ink);border-radius:6px;}
+  .mz-c{aspect-ratio:1;border:0 solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:14px;}
+  .mz-pad{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;max-width:260px;margin:8px auto 0;}
+  .mz-pad button{height:42px;border-radius:12px;background:var(--cream);border:2px solid var(--line);font-size:20px;}
+  .little{text-align:center;}
+  .little-head{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:10px;text-align:left;}
+  .little-q{font-size:22px;font-weight:800;margin:14px 0;}
+  .little-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  .lg-tile{aspect-ratio:1;font-size:64px;background:#fff;border-radius:24px;box-shadow:var(--shadow);border:4px solid transparent;}
+  .lg-tile.yay{border-color:var(--sun);transform:scale(1.08);}
+  .lg-color{display:inline-block;width:70%;height:70%;border-radius:50%;}
   .photo-btn{flex:1;min-width:120px;text-align:center;cursor:pointer;padding:9px 8px;font-size:12.5px;}
   .sched-btn{margin-top:3px;font-size:11.5px;font-weight:700;color:var(--teal);text-align:left;padding:0;}
   .day-chip,.kid-chip{padding:7px 10px;font-size:12.5px;}
 
   @media (prefers-reduced-motion: reduce){*{animation-duration:0.01ms !important;animation-iteration-count:1 !important;transition-duration:0.01ms !important;}}
+  /* ===== v16 Learn ===== */
+  .tabbar{grid-template-columns:repeat(7,1fr);padding-left:4px;padding-right:4px;}
+  .tabbtn{font-size:10.5px;}
+  .tabbtn .ic{font-size:21px;}
+  .ln-head{display:flex;justify-content:space-between;align-items:flex-end;margin:4px 2px 12px;}
+  .ln-head h2{font-size:26px;}
+  .ln-pts{background:#fff;border:2px solid var(--line);border-radius:14px;padding:6px 12px;font-family:'Baloo 2',sans-serif;font-size:18px;color:var(--berry);text-align:center;line-height:1.1;box-shadow:var(--shadow);}
+  .ln-pts small{display:block;font-family:Nunito,sans-serif;font-size:10px;font-weight:800;color:var(--ink-soft);}
+  .ln-gem{display:block;width:100%;text-align:left;background:linear-gradient(160deg,#FFF8E6,#F1F8EE);border:2px solid #E9D9A8;border-radius:20px;padding:14px 15px;box-shadow:var(--shadow);margin-bottom:12px;}
+  .ln-gem.compact{margin:6px 0 4px;padding:11px 13px;}
+  .ln-gem-h{font-size:12px;font-weight:900;letter-spacing:.04em;text-transform:uppercase;color:#9A6B00;margin-bottom:6px;}
+  .ln-wk{float:right;font-weight:700;text-transform:none;letter-spacing:0;color:var(--ink-soft);}
+  .ln-ar{font-family:'Amiri','Scheherazade New','Traditional Arabic','Geeza Pro',serif;direction:rtl;text-align:right;font-size:25px;line-height:1.7;color:#1F2E23;margin:2px 0 4px;}
+  .ln-ar.sm{font-size:18px;display:inline;}
+  .ln-tr{font-style:italic;font-size:13.5px;color:#4A5B50;margin-bottom:6px;}
+  .ln-gem-t{font-size:15.5px;font-weight:700;line-height:1.45;color:#1F2E23;}
+  .ln-src{font-size:11.5px;font-weight:800;color:#6B7B70;margin-top:6px;}
+  .ln-live{background:#fff;border-radius:12px;padding:8px 10px;font-size:13px;margin-top:10px;line-height:1.4;}
+  .ln-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;}
+  .ln-say{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 11px;font-weight:800;font-size:12.5px;}
+  .ln-done{margin-top:10px;background:#E6F4E2;color:#2E6B3A;font-weight:800;border-radius:12px;padding:9px;text-align:center;font-size:13.5px;}
+  .ln-wait{margin-top:10px;background:#FFF4D6;color:#8A6200;font-weight:800;border-radius:12px;padding:9px;text-align:center;font-size:13.5px;}
+  .ln-box{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:#EEF0FF;border:2px solid #C9CEF5;border-radius:18px;padding:11px 13px;margin-bottom:12px;}
+  .ln-box.calm{background:#F4F6F2;border-color:var(--line);}
+  .ln-box b{display:block;font-size:15px;}
+  .ln-box small{font-size:12.5px;color:var(--ink-soft);font-weight:700;}
+  .ln-box-ic{font-size:28px;}
+  .ln-go{font-size:18px;color:#5B63C9;}
+  .ln-seg{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;background:var(--sky-1,#EAF2EA);padding:4px;border-radius:14px;margin-bottom:6px;}
+  .ln-seg button{padding:9px 4px;border-radius:11px;font-weight:800;font-size:13px;}
+  .ln-seg button.active{background:#fff;box-shadow:var(--shadow);color:var(--accent);}
+  .ln-ch{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:18px;padding:11px 12px;margin-bottom:8px;box-shadow:var(--shadow);}
+  .ln-ch.review,.ln-ch.locked{opacity:.62;}
+  .ln-ch.done{border-color:#BFE0B8;}
+  .ln-ch-ic{font-size:30px;width:46px;height:46px;border-radius:14px;background:var(--cream);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .ln-ch b{display:block;font-size:15.5px;}
+  .ln-ch small{display:block;font-size:11.5px;font-weight:700;color:var(--ink-soft);}
+  .ln-tag{font-size:11.5px;font-weight:800;border-radius:10px;padding:4px 8px;background:#F1F1EC;color:#6B7B70;white-space:nowrap;}
+  .ln-tag.ok{background:#E6F4E2;color:#2E6B3A;}
+  .ln-tag.go{background:var(--accent);color:#fff;}
+  .ln-reader{padding-top:2px;}
+  .ln-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+  .ln-pg{font-size:12.5px;font-weight:800;color:var(--ink-soft);}
+  .ln-ch-title{font-family:'Baloo 2',sans-serif;font-size:22px;}
+  .ln-page{background:#FFFDF6;border:2px solid var(--line);border-radius:20px;padding:18px 16px;box-shadow:var(--shadow);}
+  .ln-text{font-size:19px;line-height:1.6;font-weight:600;color:#1F2E23;}
+  .ln-lesson{background:#E6F4E2;border-radius:16px;padding:12px 14px;margin-top:12px;font-size:15px;line-height:1.45;}
+  .ln-dua{background:#fff;border:2px solid var(--line);border-radius:18px;padding:13px 14px;margin-top:12px;box-shadow:var(--shadow);}
+  .ln-nav{display:flex;justify-content:space-between;gap:10px;margin-top:16px;}
+  .ln-nav button{flex:1;}
+  .ln-nav span{flex:1;}
+  .ln-q{font-size:19px;font-weight:800;line-height:1.4;margin:6px 0 12px;}
+  .ln-opts{display:flex;flex-direction:column;gap:8px;}
+  .ln-opt{background:#fff;border:2px solid var(--line);border-radius:14px;padding:13px 14px;text-align:left;font-weight:700;font-size:15px;box-shadow:var(--shadow);}
+  .ln-opt.big{font-size:16.5px;padding:15px;}
+  .ln-opt.right{background:#DDF2D8;border-color:#5FAE58;}
+  .ln-opt.wrong{background:#FDE3DE;border-color:#E2705E;animation:shake .3s;}
+  .ln-opt.dim{opacity:.5;}
+  .ln-fb{font-weight:800;margin:12px 0 8px;font-size:15px;}
+  .ln-fb.ok{color:#2E6B3A;}
+  .ln-fb.no{color:#B2412F;}
+  .ln-result{text-align:center;background:#fff;border-radius:22px;padding:20px 16px;box-shadow:var(--shadow);}
+  .ln-result p{margin-top:6px;}
+  .ln-big{font-size:52px;line-height:1;}
+  .ln-stars{font-size:28px;letter-spacing:2px;}
+  .ln-talk{text-align:left;background:#FFF8E6;border-radius:16px;padding:12px;margin-top:14px;font-size:14px;}
+  .ln-games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+  .ln-game{position:relative;background:#fff;border:2px solid var(--line);border-radius:18px;padding:14px 10px;text-align:center;box-shadow:var(--shadow);display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;}
+  .ln-game-ic{font-size:32px;}
+  .ln-game b{font-size:14px;}
+  .ln-game small{font-size:11.5px;color:var(--ink-soft);font-weight:700;}
+  .ln-tick{position:absolute;top:6px;right:8px;font-size:10.5px;font-weight:800;color:#2E6B3A;background:#E6F4E2;border-radius:8px;padding:1px 6px;}
+  .ln-list{display:flex;flex-direction:column;gap:6px;margin:8px 0 12px;text-align:left;}
+  .ln-step{display:flex;align-items:center;gap:9px;border-radius:12px;padding:8px 10px;font-weight:700;font-size:14px;}
+  .ln-step.ok{background:#E6F4E2;}
+  .ln-step.slot{border:2px dashed #B9C4BB;color:var(--ink-soft);}
+  .ln-num{width:24px;height:24px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-family:'Baloo 2',sans-serif;font-size:13px;flex-shrink:0;}
+  .ln-sic{font-size:20px;flex-shrink:0;}
+  .ln-cards{display:flex;flex-direction:column;gap:8px;}
+  .ln-card{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--line);border-radius:14px;padding:12px;text-align:left;font-weight:700;font-size:15px;box-shadow:var(--shadow);}
+  .ln-card.wrong{background:#FDE3DE;border-color:#E2705E;animation:shake .3s;}
+  .ln-card.hint{border-color:var(--sun);box-shadow:0 0 0 4px rgba(255,196,61,.45);animation:pulse 1.2s infinite;}
+  .ln-sit{background:#fff;border-radius:20px;padding:16px;text-align:center;box-shadow:var(--shadow);margin:6px 0 12px;}
+  .ln-sit span{font-size:56px;display:block;line-height:1.1;}
+  .ln-sit p{font-size:18px;font-weight:800;margin:8px 0 2px;}
+  .ln-sit .ln-say{margin-top:6px;}
+  .ln-preview{background:#FFFDF6;border-radius:12px;padding:10px 12px;margin:4px 0 10px;font-size:13.5px;line-height:1.5;}
+  .ln-preview p{margin-bottom:6px;}
+  .ln-preview .ln-src{display:inline;margin:0;}
+  .ln-preview .ln-ar.sm{display:block;text-align:right;}
 </style>
 
 <div id="app-root">
@@ -472,7 +620,8 @@
     habits:  {title:'Daily Habits', icon:'🌱'},
     bonus:   {title:'Bonus',        icon:'⭐'},
     quran:   {title:'Quran',        icon:'📖'},
-    games:   {title:'Games',        icon:'🎲'}
+    games:   {title:'Games',        icon:'🎲'},
+    learn:   {title:'Learning',     icon:'📚'}
   };
   var SECTION_ORDER = ['prayers','azkar','charity','habits'];
 
@@ -616,7 +765,8 @@
       accent: accent,
       role: role,
       points: 0,
-      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0, games:0},
+      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0, games:0, learn:0},
+      learnRequests: [],
       totalLifetime: 0,
       todayLog: {date: todayStr(), done:{}, pending:{}, perfectGiven:false},
       savings: 0,
@@ -670,7 +820,7 @@
       if(p.role !== 'parent' && p.role !== 'kid') p.role = 'kid';
       if(typeof p.points !== 'number' || isNaN(p.points)) p.points = 0;
       if(!p.lifetime || typeof p.lifetime !== 'object') p.lifetime = {};
-      ['prayers','azkar','charity','habits','bonus','quran','games'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
+      ['prayers','azkar','charity','habits','bonus','quran','games','learn'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
       if(typeof p.totalLifetime !== 'number' || isNaN(p.totalLifetime)) p.totalLifetime = 0;
       if(!p.todayLog || typeof p.todayLog !== 'object') p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       if(!p.todayLog.done || typeof p.todayLog.done !== 'object') p.todayLog.done = {};
@@ -687,6 +837,8 @@
       ['page','khatms','pagesTotal'].forEach(function(k){ if(typeof p.quran[k] !== 'number' || isNaN(p.quran[k])) p.quran[k] = 0; });
       if(!Array.isArray(p.quranRequests)) p.quranRequests = [];
       if(!Array.isArray(p.gamesPlayed)) p.gamesPlayed = [];
+      if(!p.skills || typeof p.skills !== 'object') p.skills = {brain:0, memory:0, decision:0};
+      if(!p.tourPath || typeof p.tourPath !== 'object') p.tourPath = {brain:0, memory:0, decision:0};
       if(!Array.isArray(p.passRequests)) p.passRequests = [];
       if(typeof p.gamePasses !== 'number' || isNaN(p.gamePasses) || p.gamePasses < 0) p.gamePasses = 0;
       if(typeof p.starsWon !== 'number' || isNaN(p.starsWon)) p.starsWon = 0;
@@ -776,6 +928,7 @@
     }
     if(typeof d.pointsPerCurrency !== 'number' || isNaN(d.pointsPerCurrency) || d.pointsPerCurrency < 1) d.pointsPerCurrency = DEFAULT_PTS_PER_CURRENCY;
     if(!Array.isArray(d.history)) d.history = [];
+    migrateLearn(d);
     return d;
   }
 
@@ -1459,7 +1612,7 @@
       '<div class="star-row">'+
         starCard('week', '🌟 Star of the Week', week, 'this week · ends '+weekEndLabel())+
         starCard('day', '☀️ Daily Star', day, 'today')+
-      '</div>'+ board + monthLine;
+      '</div>'+ board + monthLine + (state.data.learnOn ? renderGemCard(null, true) : '');
 
     if(kids.length){
       html += '<p class="section-title">Kids</p>'+ kids.map(function(k){
@@ -1599,7 +1752,7 @@
     labelsSvg + '</svg>';
     var N = land(li+1);
     var badges = []; for(var b=0;b<=li+2;b++) badges.push({d:land(b), got:b<=li});
-    var chips = SECTION_ORDER.concat(['quran','games','bonus']).map(function(c){
+    var chips = SECTION_ORDER.concat(['quran','learn','games','bonus']).map(function(c){
       var meta = SECTION_META[c];
       return '<div class="chip">'+meta.icon+' '+meta.title+' <b>'+(p.lifetime[c]||0)+'</b></div>';
     }).join('');
@@ -1610,6 +1763,7 @@
       '</div>'+
       '<p class="section-title">Land badges</p>'+
       '<div class="badges">'+badges.map(function(u){ return '<div class="badge '+(u.got?'':'locked')+'"><div class="bi">'+u.d.i+'</div>'+u.d.n+'</div>'; }).join('')+'</div>'+
+      renderSkillsCard(p)+
       '<p class="section-title">Growth by type</p><div class="chip-row" style="justify-content:flex-start;">'+chips+'</div>'+
       '<div class="note-box" style="margin-top:14px;">💡 Your <b>journey</b> is every point you’ve ever earned, so it only goes forward, even after the top reward. Your <b>points</b> are what you can spend in the Shop.</div>';
   }
@@ -1708,33 +1862,52 @@
      Pass-and-play on one device, or live on two phones (turn-based board games).
      A kid who wins earns points (stars + journey), up to a daily limit. */
   var GAMES = {
-    chess:     {name:'Chess',            icon:'♞', cat:'board',   min:2, max:2, online:true,  blurb:'The classic. Checkmate the king to win.'},
-    checkers:  {name:'Checkers',         icon:'⚪', cat:'board',   min:2, max:2, online:true,  blurb:'Jump over pieces. Captures are a must!'},
-    ttt:       {name:'Tic-Tac-Toe',      icon:'❌', cat:'board',   min:2, max:2, online:true,  blurb:'Three in a row wins.'},
-    connect4:  {name:'Connect Four',     icon:'🔴', cat:'board', min:2, max:2, online:true, blurb:'Drop discs — four in a line wins.'},
-    dots:      {name:'Dots & Boxes',     icon:'🟦', cat:'board', min:2, max:2, online:true, blurb:'Close a box to score and go again.'},
-    mancala:   {name:'Mancala',          icon:'🥣', cat:'board', min:2, max:2, online:true, blurb:'Sow the seeds — most in your store wins.'},
-    battleship:{name:'Battleship',       icon:'🚢', cat:'board', min:2, max:2, online:true, blurb:'Find and sink the hidden ships.'},
-    snakes:    {name:'Snakes & Ladders', icon:'🐍', cat:'board', min:2, max:4, online:true, blurb:'2–4 players. Climb ladders, dodge snakes!'},
-    ludo:      {name:'Ludo',             icon:'🏁', cat:'board', min:2, max:4, online:true, blurb:'2–4 players. Race your tokens home.'},
-    memory:    {name:'Memory Match',     icon:'🧠', cat:'brain', min:2, max:2, blurb:'Take turns finding pairs. Most pairs wins.'},
-    math:      {name:'Math Duel',        icon:'➕', cat:'brain',   min:2, max:2, blurb:'Face to face — first to tap the right answer.'},
-    tables:    {name:'Times-Table Race', icon:'✖️', cat:'brain', min:2, max:2, blurb:'Race through the times tables.'},
-    words:     {name:'Word Scramble',    icon:'🔤', cat:'brain', min:2, max:2, blurb:'Unscramble the word first.'},
-    reaction:  {name:'Reaction Race',    icon:'⚡', cat:'brain',   min:2, max:2, blurb:'Tap when it turns green — not before!'},
-    oddone:    {name:'Spot the Odd One', icon:'🔍', cat:'brain', min:2, max:2, blurb:'Find the one that’s different.'},
-    quiz:      {name:'Quiz Duel',        icon:'💡', cat:'brain', min:2, max:2, blurb:'Islamic & general knowledge, face to face.'},
-    ayah:      {name:'Ayah Order',       icon:'📖', cat:'islamic', min:2, max:2, blurb:'Which ayah comes next? Short surahs.'},
-    prophets:  {name:'Prophets’ Quiz', icon:'🕌', cat:'islamic', min:2, max:2, blurb:'Stories of the prophets (AS).'},
-    arabic:    {name:'Arabic Letters',   icon:'أ', cat:'islamic', min:2, max:2, blurb:'Match each letter to its name.'},
-    names99:   {name:'99 Names Memory',  icon:'✨', cat:'islamic', min:2, max:2, blurb:'Match the Names of Allah to their meanings.'}
+    // 🧠 brain & logic
+    math:      {name:'Math Duel',        icon:'\u2795', cat:'brain', skill:'brain', min:2, max:2, blurb:'Face to face \u2014 first to tap the right answer.'},
+    tables:    {name:'Times-Table Race', icon:'\u2716\uFE0F', cat:'brain', skill:'brain', min:2, max:2, blurb:'Race through the times tables.'},
+    pattern:   {name:'Pattern Finder',   icon:'\uD83D\uDD22', cat:'brain', skill:'brain', min:2, max:2, blurb:'What comes next? Gets harder as you grow.'},
+    stroop:    {name:'Colour Trap',      icon:'\uD83C\uDFA8', cat:'brain', skill:'brain', min:2, max:2, blurb:'Tap the COLOUR, not the word. Trains focus!'},
+    sudoku:    {name:'Kids\u2019 Sudoku', icon:'\uD83D\uDD33', cat:'brain', skill:'brain', min:2, max:2, blurb:'Logic race \u2014 4\u00D74 or 6\u00D76 for your level.'},
+    tower:     {name:'Tower Puzzle',     icon:'\uD83D\uDDFC', cat:'brain', skill:'brain', min:2, max:2, blurb:'Plan ahead \u2014 fewest moves wins.'},
+    maze:      {name:'Maze Race',        icon:'\uD83E\uDDED', cat:'brain', skill:'brain', min:2, max:2, blurb:'Face to face \u2014 first out of the maze.'},
+    words:     {name:'Word Scramble',    icon:'\uD83D\uDD24', cat:'brain', skill:'brain', min:2, max:2, blurb:'Unscramble the word first.'},
+    reaction:  {name:'Reaction Race',    icon:'\u26A1', cat:'brain', skill:'brain', min:2, max:2, blurb:'Tap when it turns green \u2014 not before!'},
+    oddone:    {name:'Spot the Odd One', icon:'\uD83D\uDD0D', cat:'brain', skill:'brain', min:2, max:2, blurb:'Find the one that\u2019s different.'},
+    quiz:      {name:'Quiz Duel',        icon:'\uD83D\uDCA1', cat:'brain', skill:'brain', min:2, max:2, blurb:'Islamic & general knowledge, face to face.'},
+    battleship:{name:'Battleship',       icon:'\uD83D\uDEA2', cat:'brain', skill:'brain', min:2, max:2, online:true, blurb:'Use logic to find the hidden ships.'},
+    // 🧩 memory
+    simon:     {name:'Simon Sequence',   icon:'\uD83D\uDD34', cat:'memory', skill:'memory', min:2, max:2, blurb:'Remember the growing pattern of colours.'},
+    memory:    {name:'Memory Match',     icon:'\uD83E\uDDE0', cat:'memory', skill:'memory', min:2, max:2, blurb:'Take turns finding pairs. Most pairs wins.'},
+    // 🎯 decision-making
+    choices:   {name:'What Would You Do?', icon:'\uD83E\uDD14', cat:'decision', skill:'decision', min:2, max:2, blurb:'Real-life choices and good manners. Talk about it!'},
+    pig:       {name:'Push Your Luck',   icon:'\uD83C\uDFB2', cat:'decision', skill:'decision', min:2, max:4, online:true, blurb:'Roll again or stop? Risk vs reward.'},
+    spender:   {name:'Smart Spender',    icon:'\uD83D\uDED2', cat:'decision', skill:'decision', min:2, max:2, blurb:'Needs or wants? Spend your budget wisely.'},
+    chess:     {name:'Chess',            icon:'\u265E', cat:'decision', skill:'decision', min:2, max:2, online:true, blurb:'The classic. Checkmate the king to win.'},
+    reversi:   {name:'Reversi',          icon:'\u26AB', cat:'decision', skill:'decision', min:2, max:2, online:true, blurb:'Flip discs \u2014 think two moves ahead.'},
+    checkers:  {name:'Checkers',         icon:'\u26AA', cat:'decision', skill:'decision', min:2, max:2, online:true, blurb:'Jump over pieces. Captures are a must!'},
+    mancala:   {name:'Mancala',          icon:'\uD83E\uDD63', cat:'decision', skill:'decision', min:2, max:2, online:true, blurb:'Sow the seeds \u2014 most in your store wins.'},
+    connect4:  {name:'Connect Four',     icon:'\uD83D\uDFE1', cat:'decision', skill:'decision', min:2, max:2, online:true, blurb:'Drop discs \u2014 four in a line wins.'},
+    dots:      {name:'Dots & Boxes',     icon:'\uD83D\uDFE6', cat:'decision', skill:'decision', min:2, max:2, online:true, blurb:'Close a box to score and go again.'},
+    ttt:       {name:'Tic-Tac-Toe',      icon:'\u274C', cat:'decision', skill:'decision', min:2, max:2, online:true, blurb:'Three in a row wins.'},
+    // 🌙 Islamic learning
+    ayah:      {name:'Ayah Order',       icon:'\uD83D\uDCD6', cat:'islamic', skill:'memory', min:2, max:2, blurb:'Which ayah comes next? Short surahs.'},
+    names99:   {name:'99 Names Memory',  icon:'\u2728', cat:'islamic', skill:'memory', min:2, max:2, blurb:'Match the Names of Allah to their meanings.'},
+    prophets:  {name:'Prophets\u2019 Quiz', icon:'\uD83D\uDD4C', cat:'islamic', skill:'brain', min:2, max:2, blurb:'Stories of the prophets (AS).'},
+    arabic:    {name:'Arabic Letters',   icon:'\u0623', cat:'islamic', skill:'brain', min:2, max:2, blurb:'Match each letter to its name.'},
+    // 🎲 just for fun (luck)
+    snakes:    {name:'Snakes & Ladders', icon:'\uD83D\uDC0D', cat:'fun', skill:null, min:2, max:4, online:true, blurb:'2\u20134 players. Climb ladders, dodge snakes!'},
+    ludo:      {name:'Ludo',             icon:'\uD83C\uDFC1', cat:'fun', skill:null, min:2, max:4, online:true, blurb:'2\u20134 players. Race your tokens home.'},
+    // 🌼 little ones
+    little:    {name:'Little Garden',    icon:'\uD83C\uDF3C', cat:'little', skill:null, min:1, max:1, blurb:'For Zohrah: animals, colours & shapes. Sit with a grown-up!'}
   };
-  var GAME_CATS = [['brain','🧠 Brain duels \u00B7 recommended'],['islamic','🌙 Islamic learning \u00B7 recommended'],['board','🎲 Board games']];
+  var GAME_CATS = [['brain','\uD83E\uDDE0 Brain & logic \u00B7 recommended'],['memory','\uD83E\uDDE9 Memory \u00B7 recommended'],['decision','\uD83C\uDFAF Decision-making \u00B7 recommended'],['islamic','\uD83C\uDF19 Islamic learning'],['fun','\uD83C\uDFB2 Just for fun'],['little','\uD83C\uDF3C Little ones']];
   var GAME_ORDER = Object.keys(GAMES);
   var DEFAULT_GAME_PTS = {chess:10, checkers:6, ttt:2, connect4:3, dots:4, mancala:5, battleship:5, snakes:3, ludo:6,
-    memory:4, math:5, tables:4, words:4, reaction:3, oddone:3, quiz:5, ayah:5, prophets:5, arabic:4, names99:5};
-  var TOURNEY_BONUS = 10;
-  var DUEL_TYPES = {math:1, tables:1, words:1, reaction:1, oddone:1, quiz:1, ayah:1, prophets:1, arabic:1};
+    memory:4, math:5, tables:4, words:4, reaction:3, oddone:3, quiz:5, ayah:5, prophets:5, arabic:4, names99:5,
+    pig:4, choices:4, spender:4, reversi:6, simon:5, stroop:4, sudoku:6, tower:5, maze:4, pattern:4, little:0};
+  var TOURNEY_BONUS = 20;
+  var DUEL_TYPES = {math:1, tables:1, words:1, reaction:1, oddone:1, quiz:1, ayah:1, prophets:1, arabic:1, stroop:1, pattern:1};
+  var LIMIT_FREE = {little:1};   // not counted in the daily limit or rotation
   var G = null;            // the game being played right now
   var gameTimer = null;
   var gameActions = {};    // merged into actions once they exist
@@ -1784,12 +1957,10 @@
         var lock = gameCardStatus(t);
         return '<button class="game-card'+(gm.cat!=='board'?' learn':'')+(lock?' locked':'')+'" data-action="game-pick" data-game="'+t+'">'+lock+'<span class="gc-ic">'+gm.icon+'</span>'+
           '<span class="gc-n">'+gm.name+'</span><span class="gc-b">'+gm.blurb+'</span>'+
-          '<span class="gc-p">Win +'+gamePtsFor(t)+' pts'+(gm.online?' · 📱📱':'')+'</span></button>';
+          '<span class="gc-p">'+(gamePtsFor(t) ? 'Win +'+gamePtsFor(t)+' pts' : '\uD83C\uDF1F Just for fun')+(gm.online?' · 📱📱':'')+'</span></button>';
       }).join('')+'</div>';
     });
-    html += '<p class="section-title">🏆 Family</p><div class="game-grid">'+
-      '<button class="game-card tourney" data-action="game-pick" data-game="tourney"><span class="gc-ic">🏆</span><span class="gc-n">Family Tournament</span>'+
-      '<span class="gc-b">Everyone plays everyone. The champion wins a bonus!</span><span class="gc-p">Champion +'+TOURNEY_BONUS+' pts</span></button></div>';
+    html += renderTourneyCard();
     var wins = weekGameWins(), kids = kidsList();
     html += '<p class="section-title">This week’s game wins</p><div class="board" style="justify-content:flex-start;">'+
       kids.map(function(k){ return '<span>'+escapeHtml(k.name)+' <b>'+(wins[k.id]||0)+'</b> · today '+gamePtsToday(k)+'/'+state.data.gameDailyCap+' pts</span>'; }).join('')+'</div>'+
@@ -1804,22 +1975,31 @@
     var k = getPerson(state.ui.gameKid);
     if(!k || k.role!=='kid'){ k = kids[0]; state.ui.gameKid = k.id; }
     var left = Math.max(0, state.data.gamesPerDay - playsToday(k));
-    var total = GAME_ORDER.length, done = playedList(k).length;
+    var total = GAME_ORDER.filter(function(t){ return !LIMIT_FREE[t]; }).length, done = playedList(k).length;
     return '<div class="kid-switch">'+kids.map(function(x){
         return '<button class="kchip '+(x.id===k.id?'active':'')+'" style="--k:'+ACCENTS[x.accent]+'" data-action="game-kid" data-person="'+x.id+'">'+faceFor(x,24)+'<span>'+escapeHtml(x.name)+'</span></button>';
       }).join('')+'</div>'+
       '<div class="note-box game-limits"><b>'+escapeHtml(k.name)+'</b>: '+left+' of '+state.data.gamesPerDay+' games left today \u00B7 tried '+done+' of '+total+' games'+
       ((k.gamePasses||0) ? ' \u00B7 \uD83C\uDF9F\uFE0F '+k.gamePasses+' pass'+(k.gamePasses>1?'es':'') : '')+
-      (state.data.brainFirst && playsToday(k)===0 ? '<br>\uD83E\uDDE0 First game today must be a brain or Islamic game.' : '')+'</div>';
+      (state.data.brainFirst && playsToday(k)===0 ? '<br>\uD83E\uDDE0 First game today must be a Brain, Memory or Islamic game.' : '')+
+      '<br>\uD83C\uDFC6 Tournament path: '+renderTourPath(k)+'</div>';
+  }
+  function renderTourneyCard(){
+    var kids = kidsList(), q = kids.filter(tourQualified), open = q.length >= 2;
+    return '<p class="section-title">\uD83C\uDFC6 Family Tournament \u2014 earn your place</p><div class="card tourney-card'+(open?' open':'')+'">'+
+      '<p class="quest-sub" style="margin-bottom:8px;">To qualify, win <b>'+TOUR_NEED+' Brain</b>, <b>'+TOUR_NEED+' Decision</b> and <b>'+TOUR_NEED+' Memory</b> games. It opens when 2 kids qualify. Champion wins <b>+'+TOURNEY_BONUS+' pts</b>. It can\u2019t be bought with points or passes.</p>'+
+      kids.map(function(k){ return '<div class="list-row"><div>'+faceFor(k,30)+'</div><div class="grow"><div class="name">'+escapeHtml(k.name)+(tourQualified(k)?' \u2705 qualified':'')+'</div>'+renderTourPath(k)+'</div></div>'; }).join('')+
+      '<button class="btn-primary" style="margin-top:10px;'+(open?'':'opacity:.5;')+'" data-action="game-pick" data-game="tourney"'+(open?'':' disabled')+'>'+(open?'\uD83C\uDFC6 Start the tournament':'\uD83D\uDD12 Locked \u2014 '+q.length+' of 2 kids qualified')+'</button></div>';
   }
   function renderGameSetup(setup){
     var people = state.data.people, tour = setup.type==='tourney';
     var gm = tour ? null : GAMES[setup.type];
-    var multi = tour || (gm && gm.max > 2);
+    var multi = tour || (gm && gm.max !== 2);
     var sel = setup.players || [];
     var chips;
     if(multi){
-      chips = '<p class="section-title">Players (tap in playing order, '+(tour?'2–4':gm.min+'–'+gm.max)+')</p><div class="kid-switch game-chips">'+people.map(function(p){
+      var pool = tour ? people.filter(function(p){ return p.role!=='kid' || tourQualified(p); }) : people;
+      chips = '<p class="section-title">'+(tour ? 'Qualified players (parents may join for fun)' : gm.max===1 ? 'Who is playing?' : 'Players (tap in playing order, '+gm.min+'\u2013'+gm.max+')')+'</p><div class="kid-switch game-chips">'+pool.map(function(p){
         var at = sel.indexOf(p.id);
         return '<button class="kchip '+(at>=0?'active':'')+'" style="--k:'+ACCENTS[p.accent]+'" data-action="game-toggle-player" data-person="'+p.id+'">'+faceFor(p,24)+'<span>'+(at>=0?(at+1)+'. ':'')+escapeHtml(p.name)+'</span></button>';
       }).join('')+'</div>';
@@ -1840,7 +2020,7 @@
     if(setup.type==='ludo') opts = '<p class="section-title">Tokens each</p><div class="toggle-row">'+
       [['2','2 tokens (quick game)'],['4','4 tokens (full game)']].map(function(l){ return '<button class="toggle-btn '+(String(setup.tokens||2)===l[0]?'active':'')+'" data-action="game-opt" data-k="tokens" data-v="'+l[0]+'">'+l[1]+'</button>'; }).join('')+'</div>';
     if(tour){
-      opts = '<p class="section-title">Which game?</p><div class="seg-row">'+GAME_ORDER.filter(function(t){ return GAMES[t].max===2; }).map(function(t){
+      opts = '<p class="section-title">Which game?</p><div class="seg-row">'+GAME_ORDER.filter(function(t){ return GAMES[t].max===2 && GAMES[t].min===2; }).map(function(t){
         return '<button class="seg-btn '+(setup.tgame===t?'active':'')+'" data-action="game-opt" data-k="tgame" data-v="'+t+'">'+GAMES[t].icon+' '+GAMES[t].name+'</button>'; }).join('')+'</div>';
     }
     var count = sel.filter(Boolean).length, distinct = sel.length===2 ? sel[0] && sel[1] && sel[0]!==sel[1] : true;
@@ -1890,7 +2070,7 @@
     var btns = t ? (t.idx < t.matches.length-1 || !t.done ? '<button class="btn-primary" data-action="tour-next">'+(t.idx < t.matches.length-1 ? 'Next match ▶' : 'See champion 🏆')+'</button>' : '')
       : (G.online ? '' : '<button class="btn-primary" data-action="game-again">🔁 Play again</button>');
     return '<div class="card game-result"><p class="disp" style="font-size:24px;color:var(--berry);">'+r.title+'</p>'+
-      '<p class="quest-sub" style="margin:4px 0 12px;">'+r.sub+'</p>'+
+      '<p class="quest-sub" style="margin:4px 0 12px;">'+r.sub+'</p>'+ reflectionPrompt() +
       '<div class="modal-actions"><button class="btn-ghost" data-action="game-quit">'+(t?'End tournament':'Back to games')+'</button>'+btns+'</div></div>';
   }
   // finish a game: winnerIdx = player index, or null for a draw
@@ -1919,6 +2099,16 @@
     }
     G.result = {title:title, sub:sub, winner:winnerIdx};
     if(G.tour) G.tour.results[G.tour.idx] = winnerIdx===null ? null : G.players[winnerIdx];
+    else if(winnerIdx !== null && GAMES[type] && GAMES[type].skill){
+      var wk = gp(winnerIdx), sk = GAMES[type].skill;
+      if(wk && wk.role==='kid'){
+        addSkill(wk, sk);
+        if(!wk.tourPath) wk.tourPath = {};
+        var before = tourQualified(wk);
+        wk.tourPath[sk] = tourCount(wk, sk) + 1;
+        if(!before && tourQualified(wk)) G.result.sub += ' \u00B7 \uD83C\uDFC6 '+escapeHtml(wk.name)+' qualified for the Family Tournament!';
+      }
+    }
     persist();
     pushLive(true);
     render();
@@ -2460,9 +2650,38 @@
       for(var g=0; g<16; g++) grid.push(g===odd ? pr[1] : pr[0]);
       return {grid:grid, ans:String(odd), label:'Find the odd one out!'};
     }
+    if(t==='stroop'){
+      var cols = sharedLv('brain') >= 5 ? STROOP_COLORS : STROOP_COLORS.slice(0,4);
+      var word = cols[rnd(cols.length)], ink = cols[rnd(cols.length)];
+      if(rnd(4)) while(ink === word) ink = cols[rnd(cols.length)];   // usually a mismatch — that's the trap
+      var others = shuffle(cols.filter(function(c){ return c!==ink; })).slice(0,3).map(function(c){ return c[0]; });
+      return {text:word[0], color:ink[1], ans:ink[0], options: shuffle([ink[0]].concat(others)), big:true, label:'Tap the COLOUR of the word!'};
+    }
+    if(t==='pattern') return patternQuestion(sharedLv('brain'));
     // quiz + prophets
     q = s.deck[(s.round-1) % s.deck.length];
     return {text:q[0], ans:q[1], options: shuffle([q[1]].concat(q[2]))};
+  }
+  var STROOP_COLORS = [['RED','#E2453C'],['BLUE','#2F6FD6'],['GREEN','#2F9E5A'],['YELLOW','#E0A800'],['PURPLE','#8E44AD'],['ORANGE','#F28C28']];
+  var PAT_EMOJI = ['\uD83C\uDF4E','\uD83C\uDF4C','\u2B50','\uD83C\uDF19','\uD83D\uDC31','\uD83D\uDC1F','\uD83C\uDF38','\uD83D\uDE97'];
+  function patternQuestion(lv){
+    var seq, ans, opts, kind = lv <= 2 ? 0 : lv <= 4 ? 1 : lv <= 6 ? 2 : 3;
+    if(kind <= 1){
+      var em = shuffle(PAT_EMOJI.slice()), unit = kind===0 ? [em[0],em[1]] : (rnd(2) ? [em[0],em[1],em[2]] : [em[0],em[0],em[1]]);
+      var len = unit.length*2 + rnd(unit.length);
+      seq = []; for(var i=0;i<len;i++) seq.push(unit[i % unit.length]);
+      ans = unit[len % unit.length];
+      opts = shuffle(unit.filter(function(x, k){ return unit.indexOf(x)===k; }).concat([em[3]]).concat(kind===0?[em[4]]:[])).slice(0,4);
+      if(opts.indexOf(ans)===-1) opts[0] = ans;
+      return {text: seq.join(' ')+' \u2753', ans:ans, options: shuffle(opts), big:true, label:'What comes next?'};
+    }
+    var start = 1 + rnd(9), step = 2 + rnd(kind===2?4:6);
+    seq = [start];
+    for(var k=1;k<5;k++) seq.push(kind===2 ? seq[k-1]+step : seq[k-1] + step + (k-1));   // level 7+: the gap grows
+    ans = kind===2 ? seq[4]+step : seq[4] + step + 4;
+    seq = seq.slice(0,5);
+    opts = [ans]; while(opts.length < 4){ var w = ans + (rnd(2)?1:-1)*(1+rnd(6)); if(w>0 && opts.indexOf(w)===-1) opts.push(w); }
+    return {text: seq.join(', ')+', ?', ans:String(ans), options: shuffle(opts.map(String)), big:true, label:'What number comes next?'};
   }
   function duelNew(){
     var t = G.type, deck = null, total = 8;
@@ -2474,6 +2693,7 @@
     if(t==='ayah'){ deck = []; SURAHS.forEach(function(su, si){ for(var i=0;i<su[1].length-1;i++) deck.push([si,i]); }); deck = shuffle(deck); }
     if(t==='math' || t==='tables') total = 10;
     if(t==='reaction') total = 5;
+    if(t==='stroop' || t==='pattern') total = 8;
     return {round:0, total:total, q:null, locked:[false,false], winner:null, reveal:false, deck:deck, phase:'wait', note:''};
   }
   function duelNext(){
@@ -2508,7 +2728,7 @@
       var status = s.reveal ? (s.winner!==null ? '✅ '+nameOf(s.winner)+' got it!' : (q && q.ans && !q.grid ? 'Answer: '+escapeHtml(q.ans) : 'Nobody got it')) + (s.note ? ' '+escapeHtml(s.note) : '') : '';
       if(reaction) mid = '<div class="duel-q"><small>Round '+s.round+' of '+s.total+'</small><p class="math-t">'+(s.phase==='go'?'🟢 GO!':'🔴 Wait…')+'</p><small>'+status+'</small></div>';
       else mid = '<div class="duel-q"><small>Round '+s.round+' of '+s.total+(q.label?' · '+escapeHtml(q.label):'')+'</small>'+
-        (q.grid ? '' : '<p class="'+(q.arabic?'ar-t':q.big?'math-t':'quiz-t')+'">'+escapeHtml(q.text)+'</p>')+
+        (q.grid ? '' : '<p class="'+(q.arabic?'ar-t':q.big?'math-t':'quiz-t')+'"'+(q.color?' style="color:'+q.color+';letter-spacing:2px;"':'')+'>'+escapeHtml(q.text)+'</p>')+
         (status ? '<small>'+status+'</small>' : '')+'</div>';
     }
     return '<div class="duel">'+(G.result ? '' : pad(1) + mid + pad(0))+'</div>'+
@@ -2736,6 +2956,435 @@
     return html + '</div>' + resultCard() + gameFooter();
   }
 
+
+  /* ============ v15: brain-power games, skills, earned tournament ============ */
+
+  /* ---------- skill levels (per kid) ----------
+     Every win in a skill earns 1 XP. Level = 1 + XP/3 (max 10).
+     Difficulty of the new games follows each kid's level. */
+  var SKILLS = {brain:{label:'Brain', icon:'🧠'}, memory:{label:'Memory', icon:'🧩'}, decision:{label:'Decisions', icon:'🎯'}};
+  function skillXp(p, sk){ return (p && p.skills && typeof p.skills[sk]==='number') ? p.skills[sk] : 0; }
+  function skillLv(p, sk){ if(!p || p.role!=='kid') return 5; return Math.min(10, 1 + Math.floor(skillXp(p, sk)/3)); }
+  function sharedLv(sk){ var lv = 10, any = false; (G ? G.players : []).forEach(function(id){ var p = getPerson(id); if(p && p.role==='kid'){ any = true; lv = Math.min(lv, skillLv(p, sk)); } }); return any ? lv : 5; }
+  function addSkill(p, sk){
+    if(!p || p.role!=='kid' || !SKILLS[sk]) return;
+    if(!p.skills) p.skills = {};
+    var before = skillLv(p, sk);
+    p.skills[sk] = skillXp(p, sk) + 1;
+    if(skillLv(p, sk) > before) addHistory({personId:p.id, kind:'game', category:'games', label:SKILLS[sk].icon+' '+SKILLS[sk].label+' skill reached level '+skillLv(p, sk)+'!', points:0});
+  }
+  function renderSkillsCard(p){
+    return '<p class="section-title">🧠 Brain skills</p><div class="card skills-card">'+Object.keys(SKILLS).map(function(sk){
+      var xp = skillXp(p, sk), lv = skillLv(p, sk), pct = lv>=10 ? 100 : Math.round((xp % 3)/3*100);
+      return '<div class="sk-row"><span class="sk-ic">'+SKILLS[sk].icon+'</span><div class="grow"><div class="name">'+SKILLS[sk].label+' · Level '+lv+'</div>'+
+        '<div class="bar"><i style="width:'+pct+'%;background:var(--accent);"></i></div></div><b>'+xp+' wins</b></div>';
+    }).join('')+'<p class="quest-sub" style="margin-top:6px;">Win games to level up. Games get harder as each skill grows.</p></div>';
+  }
+
+  /* ---------- tournament path (earned, never bought) ---------- */
+  var TOUR_NEED = 3;     // wins needed in EACH skill to qualify
+  function tourPath(p){ return (p && p.tourPath) || {}; }
+  function tourCount(p, sk){ var v = tourPath(p)[sk]; return typeof v === 'number' ? v : (v ? 1 : 0); }
+  function tourQualified(p){ return ['brain','memory','decision'].every(function(sk){ return tourCount(p, sk) >= TOUR_NEED; }); }
+  function renderTourPath(p){
+    return '<span class="tp">'+['brain','decision','memory'].map(function(sk){ var n = Math.min(TOUR_NEED, tourCount(p, sk));
+      return '<i class="'+(n>=TOUR_NEED?'on':'')+'">'+SKILLS[sk].icon+' '+n+'/'+TOUR_NEED+'</i>'; }).join('')+'</span>';
+  }
+
+  /* ---------- Push Your Luck (Pig) ---------- */
+  var PIG_TARGET = 50;
+  function pigNew(){ return {totals:G.players.map(function(){ return 0; }), turnPts:0, dice:null, msg:'', target:PIG_TARGET}; }
+  function renderPig(){
+    var s = G.s, html = gameHeader(G.result ? '' : nameOf(G.turnIdx)+'’s turn');
+    var dieFace = s.dice ? ['','⚀','⚁','⚂','⚃','⚄','⚅'][s.dice] : '🎲';
+    html += '<div class="card pig"><div class="pig-totals">'+G.players.map(function(_,i){
+        var pct = Math.min(100, Math.round(s.totals[i]/s.target*100));
+        return '<div class="pig-row'+(i===G.turnIdx&&!G.result?' turn':'')+'"><span>'+nameOf(i)+'</span><div class="bar"><i style="width:'+pct+'%;background:'+TOKEN_COLORS[i]+'"></i></div><b>'+s.totals[i]+'</b></div>';
+      }).join('')+'</div>'+
+      '<div class="pig-die">'+dieFace+'</div>'+
+      '<p class="quest-head" style="text-align:center;">This turn: <span style="color:var(--berry);">'+s.turnPts+'</span> pts</p>'+
+      (s.msg ? '<p class="quest-sub" style="text-align:center;margin:4px 0;">'+escapeHtml(s.msg)+'</p>' : '')+
+      (G.result ? '' : '<div class="seg-row" style="margin-top:10px;"><button class="btn-primary" style="flex:1;" data-action="pig-roll"'+(myTurn()?'':' disabled')+'>🎲 Roll</button>'+
+        '<button class="btn-secondary" style="flex:1;" data-action="pig-hold"'+(myTurn()&&s.turnPts>0?'':' disabled')+'>✋ Stop & keep '+s.turnPts+'</button></div>')+
+      '<p class="quest-sub" style="text-align:center;margin-top:6px;">Keep rolling to add points — but a ⚀ (1) wipes out this turn! First to '+s.target+' wins.</p></div>';
+    return html + resultCard() + gameFooter();
+  }
+  function pigRoll(){
+    var s = G.s, who = gp(G.turnIdx) ? gp(G.turnIdx).name : 'Player';
+    s.dice = 1 + rnd(6);
+    if(s.dice === 1){ s.msg = who+' rolled a 1 — lost '+s.turnPts+' points! 😬'; s.turnPts = 0; nextTurn(); }
+    else { s.turnPts += s.dice; s.msg = who+' rolled '+s.dice+'. Roll again or stop?'; if(s.totals[G.turnIdx] + s.turnPts >= s.target){ s.totals[G.turnIdx] += s.turnPts; return finishGame(G.turnIdx, 'Reached '+s.target+'!'); } }
+    moved();
+  }
+  function pigHold(){
+    var s = G.s, i = G.turnIdx;
+    if(!s.turnPts) return;
+    s.totals[i] += s.turnPts; s.msg = (gp(i)?gp(i).name:'Player')+' kept '+s.turnPts+' points. Smart!'; s.turnPts = 0; s.dice = null;
+    if(s.totals[i] >= s.target) return finishGame(i, 'Reached '+s.target+'!');
+    nextTurn(); moved();
+  }
+
+  /* ---------- What Would You Do? (akhlaq choices) ---------- */
+  var CHOICES = [
+    ['Your little sister breaks your favourite toy by accident.', ['Shout at her','Stay calm and forgive her — it was an accident','Break one of her toys'], 1, 'The Prophet ﷺ taught that the strong person is the one who controls himself when angry. Forgiving is a beautiful choice.'],
+    ['You find 10 QAR on the floor at school.', ['Keep it — nobody saw','Give it to the teacher so the owner gets it back','Spend it on sweets'], 1, 'Honesty and giving back what belongs to others (amanah) are part of being a good Muslim.'],
+    ['A friend is being teased by other kids.', ['Laugh along so they like you','Walk away','Stand with your friend and tell a teacher'], 2, 'Helping someone who is being hurt is brave and kind.'],
+    ['It’s time for Maghrib, but you’re in the middle of a game.', ['Pause the game and pray first','Finish the game, then pray much later','Skip the prayer today'], 0, 'Praying on time is one of the most loved deeds to Allah. The game can wait!'],
+    ['You got a better mark than your friend.', ['Show off to everyone','Stay humble and encourage your friend','Tease your friend'], 1, 'Being humble and kind keeps friendships strong.'],
+    ['Mimi asks for help while you’re watching TV.', ['Pretend you didn’t hear','Say “later” and keep watching','Help her straight away'], 2, 'Being kind and quick to help your parents is a big good deed.'],
+    ['You broke a glass and nobody saw.', ['Hide it','Tell ABBA or Mimi the truth','Blame your brother'], 1, 'Telling the truth, even when it’s hard, makes you trustworthy.'],
+    ['Someone gives you a gift you don’t really like.', ['Say “I don’t like it”','Say thank you kindly — Jazakallahu khayran','Throw it away'], 1, 'Thanking people for their kindness is good manners.'],
+    ['You have one sweet left and your brother asks for some.', ['Share it with him','Eat it quickly','Hide it'], 0, 'Sharing makes both of you happy and brings barakah.'],
+    ['A new kid at school is sitting alone.', ['Ignore them','Invite them to play with you','Whisper about them'], 1, 'Including others is kind and makes a new friend.'],
+    ['You feel very angry and want to say a bad word.', ['Say it anyway','Stay quiet, say Aʿudhu billah and calm down','Hit something'], 1, 'Staying quiet and seeking refuge in Allah helps anger go away.'],
+    ['You promised to play with your brother, but a friend invites you out.', ['Go with your friend and forget your promise','Keep your promise to your brother','Tell your brother a fib'], 1, 'Keeping promises is an important part of good character.'],
+    ['A friend wants to copy your homework.', ['Let them copy','Offer to help them understand it instead','Tell everyone they’re lazy'], 1, 'Helping them learn is the real kindness — copying doesn’t help.'],
+    ['You see someone drop litter in the park.', ['Drop yours too','Pick it up and put it in the bin','Kick it away'], 1, 'Keeping places clean is part of good manners and care for Allah’s creation.'],
+    ['You lose a game against your brother.', ['Say “well done” and try again next time','Cry and say it’s unfair','Never play again'], 0, 'Being a good loser is a sign of a strong character.'],
+    ['An elderly neighbour is carrying heavy bags.', ['Walk past','Offer to help carry them','Watch from the window'], 1, 'Respecting and helping elders is something the Prophet ﷺ encouraged.'],
+    ['You have QAR 20. A toy costs 20, but you are saving for a bike.', ['Buy the toy now','Save most of it for the bike','Ask for more money'], 1, 'Saving for a bigger goal is a smart decision.'],
+    ['You are about to start eating.', ['Start straight away','Say Bismillah and eat with your right hand','Eat while running around'], 1, 'Saying Bismillah brings barakah to your food.']
+  ];
+  function choicesNew(){ return {deck:shuffle(CHOICES.slice()).slice(0, 8), round:0, picked:null}; }
+  function renderChoices(){
+    var s = G.s, sc = s.deck[s.round];
+    if(G.result || !sc) return gameHeader('')+resultCard()+gameFooter();
+    var html = gameHeader(nameOf(G.turnIdx)+' answers · '+(s.round+1)+' of '+s.deck.length)+
+      '<div class="card choice-card"><p class="quest-sub">🤔 What would you do?</p><p class="choice-q">'+escapeHtml(sc[0])+'</p>'+
+      sc[1].map(function(o, i){
+        var cls = s.picked===null ? '' : (i===sc[2] ? 'right' : (i===s.picked ? 'wrong' : ''));
+        return '<button class="choice-btn '+cls+'" data-action="choice-pick" data-i="'+i+'"'+(s.picked!==null?' disabled':'')+'>'+escapeHtml(o)+'</button>';
+      }).join('');
+    if(s.picked !== null){
+      html += '<div class="note-box" style="margin-top:10px;">'+(s.picked===sc[2] ? '✅ Great choice!' : '💡 A better choice:')+' '+escapeHtml(sc[3])+
+        '<br><b>Talk about it:</b> why is this the best choice?</div>'+
+        '<button class="btn-primary" data-action="choice-next">'+(s.round+1 < s.deck.length ? 'Next ▶ '+nameOf((G.turnIdx+1)%nPlayers())+'’s turn' : 'See results')+'</button>';
+    }
+    return html + '</div>' + gameFooter();
+  }
+  function choicePick(i){ var s = G.s; if(s.picked!==null) return; s.picked = i; if(i === s.deck[s.round][2]) G.scores[G.turnIdx]++; render(); }
+  function choiceNext(){
+    var s = G.s; if(s.picked===null) return;
+    s.round++; s.picked = null;
+    if(s.round >= s.deck.length){ var w = G.scores[0]===G.scores[1] ? null : (G.scores[0]>G.scores[1]?0:1); return finishGame(w, G.scores[0]+' good choices to '+G.scores[1]); }
+    nextTurn(); render();
+  }
+
+  /* ---------- Smart Spender (needs vs wants) ---------- */
+  var SPEND_ROUNDS = [
+    ['School trip day', 30, [['Packed lunch',10,'need'],['Water bottle',3,'need'],['Sun hat',8,'need'],['Toy car',20,'want'],['Candy bag',5,'want'],['Sticker book',12,'want']]],
+    ['Eid gift for Mimi', 40, [['Flowers',15,'need'],['Thank-you card',5,'need'],['Chocolate box',12,'need'],['Video game for you',35,'want'],['Balloons for you',8,'want'],['Slime for you',10,'want']]],
+    ['New school year', 50, [['Pencil case',10,'need'],['Notebooks',12,'need'],['Backpack',20,'need'],['Sparkly stickers',8,'want'],['Toy robot',30,'want'],['Comic book',15,'want']]],
+    ['Picnic in the park', 25, [['Sandwiches',8,'need'],['Fruit',5,'need'],['Water',3,'need'],['Kite',15,'want'],['Ice cream for 1',6,'want'],['Bubble gun',12,'want']]],
+    ['Saving week', 20, [['Charity box',5,'need'],['Save in your jar',10,'need'],['Snack',4,'need'],['Trading cards',12,'want'],['Toy slime',8,'want'],['Fizzy drink',4,'want']]],
+    ['Ramadan iftar help', 30, [['Dates',8,'need'],['Water bottles',4,'need'],['Soup',10,'need'],['Fireworks',15,'want'],['Party hats',6,'want'],['Fidget toy',9,'want']]]
+  ];
+  function spenderNew(){ return {rounds:shuffle(SPEND_ROUNDS.slice()).slice(0,3), round:0, basket:[], step:0, scores:[[],[]], reveal:false, pass:false}; }
+  function spendScore(r, basket){
+    var cost = 0, pts = 0;
+    basket.forEach(function(i){ var it = r[2][i]; cost += it[1]; pts += it[2]==='need' ? 3 : 1; });
+    return {cost:cost, pts: pts + Math.floor((r[1]-cost)/5), left:r[1]-cost};
+  }
+  function renderSpender(){
+    var s = G.s, r = s.rounds[s.round];
+    if(G.result || !r) return gameHeader('')+resultCard()+gameFooter();
+    if(s.pass) return gameHeader('')+'<div class="card pass-card"><p class="disp" style="font-size:22px;">🙈 Pass the phone to '+nameOf(G.turnIdx)+'</p><p class="quest-sub">Same shop, same money — make your own choices!</p><button class="btn-primary" style="margin-top:12px;" data-action="spend-unpass">I’m '+nameOf(G.turnIdx)+' — let’s shop</button></div>'+gameFooter();
+    if(s.reveal){
+      var rows = [0,1].map(function(pi){ var b = s.scores[pi][s.round], sc = spendScore(r, b);
+        return '<div class="list-row"><div class="grow"><div class="name">'+nameOf(pi)+' — '+sc.pts+' smart points</div><div class="sub">'+b.map(function(i){ var it = r[2][i]; return it[0]+(it[2]==='need'?' ✅':' 😋'); }).join(', ')+' · QAR '+sc.left+' left</div></div></div>'; }).join('');
+      return gameHeader('Round '+(s.round+1)+' results')+'<div class="card"><p class="quest-head">'+escapeHtml(r[0])+'</p>'+rows+
+        '<div class="note-box" style="margin-top:8px;">✅ = a <b>need</b> (3 pts) · 😋 = a <b>want</b> (1 pt) · +1 pt for every QAR 5 saved.</div>'+
+        '<button class="btn-primary" data-action="spend-next">'+(s.round<2?'Next round ▶':'See who won')+'</button></div>'+gameFooter();
+    }
+    var sc2 = spendScore(r, s.basket);
+    return gameHeader(nameOf(G.turnIdx)+' is shopping · round '+(s.round+1)+' of 3')+
+      '<div class="card"><p class="quest-head">🛒 '+escapeHtml(r[0])+'</p><p class="quest-sub">You have <b>QAR '+r[1]+'</b>. Choose wisely — what do you really need?</p>'+
+      '<div class="spend-grid">'+r[2].map(function(it, i){
+        var on = s.basket.indexOf(i)!==-1, tooMuch = !on && sc2.cost + it[1] > r[1];
+        return '<button class="spend-it '+(on?'on':'')+'" data-action="spend-toggle" data-i="'+i+'"'+(tooMuch?' disabled':'')+'><b>'+escapeHtml(it[0])+'</b><span>QAR '+it[1]+'</span></button>';
+      }).join('')+'</div>'+
+      '<p class="quest-sub" style="margin:8px 0;">Spent QAR '+sc2.cost+' · left QAR '+(r[1]-sc2.cost)+'</p>'+
+      '<button class="btn-primary" data-action="spend-done">Done shopping</button></div>'+gameFooter();
+  }
+  function spendToggle(i){ var s = G.s, at = s.basket.indexOf(i); if(at>=0) s.basket.splice(at,1); else s.basket.push(i); render(); }
+  function spendDone(){
+    var s = G.s;
+    s.scores[G.turnIdx][s.round] = s.basket.slice(); s.basket = [];
+    if(G.turnIdx === 0){ G.turnIdx = 1; s.pass = true; }
+    else { s.reveal = true; G.turnIdx = 0;
+      [0,1].forEach(function(pi){ G.scores[pi] = s.scores[pi].reduce(function(a, b, ri){ return a + spendScore(s.rounds[ri], b).pts; }, 0); });
+    }
+    render();
+  }
+  function spendNext(){
+    var s = G.s; s.reveal = false; s.round++;
+    if(s.round >= 3){ var w = G.scores[0]===G.scores[1] ? null : (G.scores[0]>G.scores[1]?0:1); return finishGame(w, G.scores[0]+' smart points to '+G.scores[1]); }
+    G.turnIdx = 0; s.pass = true; render();
+  }
+
+  /* ---------- Reversi (Othello) ---------- */
+  function rvNew(){ var b=[]; for(var r=0;r<8;r++){ b.push([null,null,null,null,null,null,null,null]); } b[3][3]=1; b[4][4]=1; b[3][4]=0; b[4][3]=0; return {b:b, msg:''}; }
+  var RV_DIRS = [[1,0],[-1,0],[0,1],[0,-1],[1,1],[1,-1],[-1,1],[-1,-1]];
+  function rvFlips(b, r, c, me){
+    if(b[r][c] !== null) return [];
+    var all = [];
+    RV_DIRS.forEach(function(d){
+      var line = [], rr = r+d[0], cc = c+d[1];
+      while(inB(rr,cc) && b[rr][cc] === 1-me){ line.push([rr,cc]); rr += d[0]; cc += d[1]; }
+      if(line.length && inB(rr,cc) && b[rr][cc] === me) all = all.concat(line);
+    });
+    return all;
+  }
+  function rvHasMove(b, me){ for(var r=0;r<8;r++) for(var c=0;c<8;c++) if(rvFlips(b,r,c,me).length) return true; return false; }
+  function rvCount(b){ var n=[0,0]; b.forEach(function(row){ row.forEach(function(v){ if(v!==null) n[v]++; }); }); return n; }
+  function rvTap(r, c){
+    var s = G.s, me = G.turnIdx, f = rvFlips(s.b, r, c, me);
+    if(!f.length) return;
+    s.b[r][c] = me; f.forEach(function(x){ s.b[x[0]][x[1]] = me; });
+    s.msg = '';
+    if(rvHasMove(s.b, 1-me)) G.turnIdx = 1-me;
+    else if(!rvHasMove(s.b, me)){ var n = rvCount(s.b); return finishGame(n[0]===n[1]?null:(n[0]>n[1]?0:1), n[0]+' discs to '+n[1]); }
+    else s.msg = nameOf(1-me)+' has no move — '+nameOf(me)+' goes again.';
+    moved();
+  }
+  function renderReversi(){
+    var s = G.s, n = rvCount(s.b), mine = !G.result && myTurn();
+    var html = gameHeader(G.result ? '' : nameOf(G.turnIdx)+' ('+(G.turnIdx===0?'⚫':'⚪')+') · '+n[0]+' vs '+n[1])+'<div class="chess rv">';
+    for(var r=0;r<8;r++) for(var c=0;c<8;c++){
+      var v = s.b[r][c], can = mine && v===null && rvFlips(s.b, r, c, G.turnIdx).length;
+      html += '<button class="rv-sq" data-action="rv-tap" data-r="'+r+'" data-c="'+c+'">'+(v!==null ? '<span class="rvd '+(v===0?'bk':'wh')+'"></span>' : can ? '<i class="dot"></i>' : '')+'</button>';
+    }
+    return html + '</div>' + (s.msg ? '<p class="quest-sub" style="text-align:center;margin-top:6px;">'+escapeHtml(s.msg)+'</p>' : '') + resultCard() + gameFooter();
+  }
+
+  /* ---------- Simon Sequence (memory) ---------- */
+  var SIMON_PADS = [['#E2453C','🍎'],['#2F9E5A','🌿'],['#2F6FD6','💧'],['#F5B93E','⭐']];
+  function simonNew(){
+    var start = 2 + Math.floor((sharedLv('memory')-1)/3);
+    var seq = []; for(var i=0;i<start;i++) seq.push(rnd(4));
+    return {seq:seq, pos:0, phase:'ready', flash:-1, best:[0,0]};
+  }
+  function simonShow(){
+    var s = G.s, me = G, k = 0, speed = Math.max(380, 750 - sharedLv('memory')*35);
+    s.phase = 'show'; s.pos = 0; render();
+    (function step(){
+      if(G !== me) return;
+      if(k >= s.seq.length){ s.flash = -1; s.phase = 'input'; render(); return; }
+      s.flash = s.seq[k]; render();
+      gameTimer = setTimeout(function(){ if(G!==me) return; s.flash = -1; render(); k++; gameTimer = setTimeout(step, 180); }, speed);
+    })();
+  }
+  function simonTap(i){
+    var s = G.s;
+    if(s.phase !== 'input') return;
+    s.flash = i; render();
+    var me = G; setTimeout(function(){ if(G===me && s.flash===i){ s.flash = -1; render(); } }, 200);
+    if(s.seq[s.pos] !== i){ s.phase = 'out'; return finishGame(1 - G.turnIdx, nameOf(G.turnIdx)+' missed at length '+s.seq.length); }
+    s.pos++;
+    if(s.pos >= s.seq.length){
+      s.best[G.turnIdx] = s.seq.length;
+      s.seq.push(rnd(4)); nextTurn(); s.phase = 'ready';
+      if(s.seq.length > 30) return finishGame(null, 'Amazing memory — both reached 30!');
+      render();
+    }
+  }
+  function renderSimon(){
+    var s = G.s;
+    var info = G.result ? '' : s.phase==='show' ? 'Watch carefully…' : s.phase==='input' ? nameOf(G.turnIdx)+': repeat the '+s.seq.length+' steps' : nameOf(G.turnIdx)+'’s turn — '+s.seq.length+' steps';
+    var html = gameHeader(info)+'<div class="simon">'+SIMON_PADS.map(function(pd, i){
+      return '<button class="sim-pad '+(s.flash===i?'lit':'')+'" style="--c:'+pd[0]+'" data-action="simon-tap" data-i="'+i+'"'+(s.phase==='input'&&!G.result?'':' disabled')+'>'+pd[1]+'</button>';
+    }).join('')+'</div>';
+    if(!G.result && s.phase==='ready') html += '<button class="btn-primary" style="margin-top:12px;" data-action="simon-start">▶ '+nameOf(G.turnIdx)+', show me the sequence</button>';
+    if(!G.result) html += '<p class="quest-sub" style="text-align:center;margin-top:8px;">Each turn the pattern gets one step longer. Miss a step and the other player wins!</p>';
+    return html + resultCard() + gameFooter();
+  }
+
+  /* ---------- Kids' Sudoku race (4x4 or 6x6, per kid level) ---------- */
+  function sdBox(n){ return n===4 ? [2,2] : [2,3]; }      // [box rows, box cols]
+  function sdSolveCount(g, n, limit){
+    var bx = sdBox(n), count = 0;
+    function ok(r, c, v){
+      for(var k=0;k<n;k++){ if(g[r*n+k]===v || g[k*n+c]===v) return false; }
+      var r0 = r - r%bx[0], c0 = c - c%bx[1];
+      for(var i=0;i<bx[0];i++) for(var j=0;j<bx[1];j++) if(g[(r0+i)*n+c0+j]===v) return false;
+      return true;
+    }
+    (function solve(){
+      if(count >= limit) return;
+      var at = g.indexOf(0);
+      if(at < 0){ count++; return; }
+      var r = Math.floor(at/n), c = at%n;
+      for(var v=1; v<=n; v++){ if(ok(r,c,v)){ g[at] = v; solve(); g[at] = 0; if(count>=limit) return; } }
+    })();
+    return count;
+  }
+  function sdMake(n){
+    var bx = sdBox(n), sol = [];
+    for(var r=0;r<n;r++) for(var c=0;c<n;c++) sol.push(((bx[1]*(r%bx[0]) + Math.floor(r/bx[0]) + c) % n) + 1);
+    // shuffle digits, rows inside bands, columns inside stacks
+    var map = shuffle(Array.from({length:n}, function(_,i){ return i+1; }));
+    sol = sol.map(function(v){ return map[v-1]; });
+    var rows = [], cols = [];
+    for(var b=0;b<n/bx[0];b++) shuffle(Array.from({length:bx[0]}, function(_,i){ return b*bx[0]+i; })).forEach(function(x){ rows.push(x); });
+    for(var s2=0;s2<n/bx[1];s2++) shuffle(Array.from({length:bx[1]}, function(_,i){ return s2*bx[1]+i; })).forEach(function(x){ cols.push(x); });
+    var g = []; rows.forEach(function(r){ cols.forEach(function(c){ g.push(sol[r*n+c]); }); });
+    var full = g.slice(), puzzle = g.slice(), holes = n===4 ? 9 : 20, tries = 0;
+    shuffle(Array.from({length:n*n}, function(_,i){ return i; })).forEach(function(i){
+      if(holes <= 0 || tries > 200) return; tries++;
+      var keep = puzzle[i]; puzzle[i] = 0;
+      if(sdSolveCount(puzzle.slice(), n, 2) !== 1) puzzle[i] = keep; else holes--;
+    });
+    return {n:n, sol:full, given:puzzle.map(function(v){ return v>0; }), cur:puzzle.slice(), sel:-1, done:false};
+  }
+  function sudokuNew(){ return {boards:G.players.map(function(id){ return sdMake(skillLv(getPerson(id),'brain') >= 4 ? 6 : 4); })}; }
+  function renderSdBoard(i){
+    var bd = G.s.boards[i], n = bd.n, bx = sdBox(n);
+    var html = '<div class="sd" style="grid-template-columns:repeat('+n+',1fr);">';
+    bd.cur.forEach(function(v, k){
+      var r = Math.floor(k/n), c = k%n, wrong = v && bd.full && v!==bd.sol[k];
+      var cls = (bd.given[k]?'given':'')+(bd.sel===k?' sel':'')+(wrong?' wrong':'')+(c%bx[1]===bx[1]-1&&c<n-1?' br':'')+(r%bx[0]===bx[0]-1&&r<n-1?' bb':'');
+      html += '<button class="sd-c '+cls+'" data-action="sd-cell" data-p="'+i+'" data-k="'+k+'"'+(bd.given[k]||G.result?' disabled':'')+'>'+(v||'')+'</button>';
+    });
+    html += '</div><div class="sd-pad">'+Array.from({length:n}, function(_,x){ return '<button data-action="sd-num" data-p="'+i+'" data-v="'+(x+1)+'"'+(G.result?' disabled':'')+'>'+(x+1)+'</button>'; }).join('')+
+      '<button data-action="sd-num" data-p="'+i+'" data-v="0"'+(G.result?' disabled':'')+'>⌫</button></div>';
+    return html;
+  }
+  function renderSudoku(){
+    function pad(i){ var bd = G.s.boards[i];
+      return '<div class="duel-pad '+(i===1?'flip':'')+'" style="--k:'+(gp(i)?ACCENTS[gp(i).accent]:'#3F7D58')+'"><p class="duel-name">'+(gp(i)?faceFor(gp(i),24):'')+nameOf(i)+' · '+bd.n+'×'+bd.n+'</p>'+renderSdBoard(i)+'</div>'; }
+    return '<div class="duel">'+(G.result ? '' : pad(1) + '<div class="duel-q"><small>Fill every row, column and box with each number once. First to finish wins!</small></div>' + pad(0))+'</div>'+
+      (G.result ? gameHeader('')+resultCard() : '')+gameFooter();
+  }
+  function sdCell(i, k){ var bd = G.s.boards[i]; if(bd.given[k]) return; bd.sel = k; render(); }
+  function sdNum(i, v){
+    var bd = G.s.boards[i];
+    if(bd.sel < 0 || bd.given[bd.sel]) return;
+    bd.cur[bd.sel] = v;
+    bd.full = bd.cur.every(function(x){ return x>0; });
+    if(bd.full && bd.cur.every(function(x, k){ return x===bd.sol[k]; })) return finishGame(i, 'Solved the '+bd.n+'×'+bd.n+' puzzle first');
+    render();
+  }
+
+  /* ---------- Tower Puzzle (Tower of Hanoi, fewest moves wins) ---------- */
+  function towerFor(i){ var d = 3 + Math.min(2, Math.floor((skillLv(gp(i),'brain')-1)/3)); var pegs = [[],[],[]]; for(var k=d;k>=1;k--) pegs[0].push(k); return {discs:d, pegs:pegs, moves:0, hold:null, done:false}; }
+  function towerNew(){ return {t:[null,null], pass:false}; }
+  function renderTower(){
+    var s = G.s, i = G.turnIdx;
+    if(!s.t[i]) s.t[i] = towerFor(i);
+    if(G.result) return gameHeader('')+resultCard()+gameFooter();
+    if(s.pass) return gameHeader('')+'<div class="card pass-card"><p class="disp" style="font-size:22px;">🗼 '+nameOf(i)+'’s turn</p><p class="quest-sub">'+nameOf(1-i)+' finished in '+s.t[1-i].moves+' moves. Can you beat it?</p><button class="btn-primary" style="margin-top:12px;" data-action="tower-unpass">Start</button></div>'+gameFooter();
+    var tw = s.t[i], best = Math.pow(2, tw.discs)-1;
+    return gameHeader(nameOf(i)+' · '+tw.discs+' discs · moves: '+tw.moves+' (best possible '+best+')')+
+      '<div class="tower">'+tw.pegs.map(function(peg, pi){
+        return '<button class="tw-peg '+(tw.hold===pi?'hold':'')+'" data-action="tower-peg" data-i="'+pi+'"><span class="tw-pole"></span>'+
+          peg.map(function(d, di){ return '<span class="tw-disc '+(tw.hold===pi && di===peg.length-1?'up':'')+'" style="width:'+(26+d*14)+'%;background:'+TOKEN_COLORS[(d-1)%4]+';bottom:'+(10+di*16)+'%"></span>'; }).join('')+'</button>';
+      }).join('')+'</div>'+
+      '<p class="quest-sub" style="text-align:center;margin-top:8px;">Move the whole tower to the right peg. Tap a peg to lift its top disc, then tap where to put it. A bigger disc can never go on a smaller one.</p>'+gameFooter();
+  }
+  function towerPeg(pi){
+    var s = G.s, tw = s.t[G.turnIdx];
+    if(tw.hold === null){ if(tw.pegs[pi].length) tw.hold = pi; return render(); }
+    if(tw.hold === pi){ tw.hold = null; return render(); }
+    var from = tw.pegs[tw.hold], to = tw.pegs[pi], d = from[from.length-1];
+    if(to.length && to[to.length-1] < d){ showToast('A bigger disc can’t go on a smaller one','error'); tw.hold = null; return render(); }
+    to.push(from.pop()); tw.hold = null; tw.moves++;
+    if(tw.pegs[2].length === tw.discs){
+      tw.done = true;
+      if(G.turnIdx === 0){ G.turnIdx = 1; s.pass = true; return render(); }
+      var sc = [0,1].map(function(k){ return (Math.pow(2, s.t[k].discs)-1) / s.t[k].moves; });
+      G.scores = [s.t[0].moves, s.t[1].moves];
+      var w = Math.abs(sc[0]-sc[1]) < 1e-9 ? null : (sc[0] > sc[1] ? 0 : 1);
+      return finishGame(w, s.t[0].moves+' moves vs '+s.t[1].moves+' moves');
+    }
+    render();
+  }
+
+  /* ---------- Maze Race (face to face, each kid's maze fits their level) ---------- */
+  function mzMake(n){
+    var cells = []; for(var i=0;i<n*n;i++) cells.push({n:1,e:1,s:1,w:1,v:false});
+    var stack = [0]; cells[0].v = true;
+    while(stack.length){
+      var cur = stack[stack.length-1], r = Math.floor(cur/n), c = cur%n, nb = [];
+      if(r>0 && !cells[cur-n].v) nb.push(['n',cur-n,'s']);
+      if(r<n-1 && !cells[cur+n].v) nb.push(['s',cur+n,'n']);
+      if(c>0 && !cells[cur-1].v) nb.push(['w',cur-1,'e']);
+      if(c<n-1 && !cells[cur+1].v) nb.push(['e',cur+1,'w']);
+      if(!nb.length){ stack.pop(); continue; }
+      var pick = nb[rnd(nb.length)];
+      cells[cur][pick[0]] = 0; cells[pick[1]][pick[2]] = 0; cells[pick[1]].v = true; stack.push(pick[1]);
+    }
+    return {n:n, walls:cells.map(function(x){ return [x.n,x.e,x.s,x.w]; }), pos:0};
+  }
+  function mazeNew(){ return {m:G.players.map(function(id){ var lv = skillLv(getPerson(id),'brain'); return mzMake(5 + Math.min(4, Math.floor((lv-1)/2))); })}; }
+  function renderMazeBoard(i){
+    var mz = G.s.m[i], n = mz.n, html = '<div class="mz" style="grid-template-columns:repeat('+n+',1fr);">';
+    mz.walls.forEach(function(w, k){
+      var st = 'border-top-width:'+(w[0]?3:0)+'px;border-right-width:'+(w[1]?3:0)+'px;border-bottom-width:'+(w[2]?3:0)+'px;border-left-width:'+(w[3]?3:0)+'px;';
+      html += '<span class="mz-c" style="'+st+'">'+(k===mz.pos ? (gp(i)?faceFor(gp(i),18):'●') : k===n*n-1 ? '🏁' : '')+'</span>';
+    });
+    html += '</div><div class="mz-pad">'+[['n','⬆️'],['w','⬅️'],['s','⬇️'],['e','➡️']].map(function(d){
+      return '<button data-action="mz-move" data-p="'+i+'" data-d="'+d[0]+'"'+(G.result?' disabled':'')+'>'+d[1]+'</button>'; }).join('')+'</div>';
+    return html;
+  }
+  function renderMaze(){
+    function pad(i){ return '<div class="duel-pad '+(i===1?'flip':'')+'" style="--k:'+(gp(i)?ACCENTS[gp(i).accent]:'#3F7D58')+'"><p class="duel-name">'+(gp(i)?faceFor(gp(i),24):'')+nameOf(i)+'</p>'+renderMazeBoard(i)+'</div>'; }
+    return '<div class="duel">'+(G.result ? '' : pad(1) + '<div class="duel-q"><small>Get to the 🏁 first! Use your arrows.</small></div>' + pad(0))+'</div>'+(G.result ? gameHeader('')+resultCard() : '')+gameFooter();
+  }
+  function mzMove(i, d){
+    var mz = G.s.m[i], n = mz.n, w = mz.walls[mz.pos], idx = {n:0,e:1,s:2,w:3}[d];
+    if(w[idx]) return;
+    mz.pos += d==='n' ? -n : d==='s' ? n : d==='w' ? -1 : 1;
+    if(mz.pos === n*n-1) return finishGame(i, 'Escaped the maze first');
+    render();
+  }
+
+  /* ---------- Little Garden (toddler mode: no points, no losing) ---------- */
+  var LG_ANIMALS = [['🐱','cat'],['🐶','dog'],['🐪','camel'],['🐔','chicken'],['🐟','fish'],['🐘','elephant'],['🦆','duck'],['🐑','sheep'],['🐴','horse'],['🐇','rabbit']];
+  var LG_COLORS = [['#E2453C','red'],['#2F6FD6','blue'],['#F5C518','yellow'],['#2F9E5A','green'],['#8E44AD','purple'],['#F28C28','orange']];
+  var LG_SHAPES = [['●','circle'],['■','square'],['▲','triangle'],['★','star'],['♥','heart']];
+  function say(text){ try{ if(window.speechSynthesis){ var u = new SpeechSynthesisUtterance(text); u.rate = 0.85; u.pitch = 1.2; speechSynthesis.cancel(); speechSynthesis.speak(u); } }catch(e){} }
+  function littleNew(){ return {mode:'animals', q:null, stars:0, happy:false}; }
+  function littleQuestion(){
+    var s = G.s, set = s.mode==='colors' ? LG_COLORS : s.mode==='shapes' ? LG_SHAPES : LG_ANIMALS;
+    var opts = shuffle(set.slice()).slice(0, 3), ans = opts[rnd(3)];
+    s.q = {opts:opts, ans:ans[1]}; s.happy = false;
+    say((s.mode==='colors' ? 'Find ' : 'Where is the ') + ans[1] + (s.mode==='colors' ? '!' : '?'));
+  }
+  function renderLittle(){
+    var s = G.s, kid = gp(0);
+    if(!s.q) littleQuestion();
+    var html = '<div class="little"><div class="little-head">'+(kid?faceFor(kid,44):'')+'<div><p class="disp" style="font-size:22px;">🌼 Little Garden</p><p class="quest-sub">'+(kid?escapeHtml(kid.name):'')+' · '+'⭐'.repeat(Math.min(s.stars,10))+(s.stars>10?' +'+(s.stars-10):'')+'</p></div></div>'+
+      '<div class="seg-row" style="justify-content:center;">'+[['animals','🐱 Animals'],['colors','🎨 Colours'],['shapes','⭐ Shapes']].map(function(m){
+        return '<button class="seg-btn '+(s.mode===m[0]?'active':'')+'" data-action="little-mode" data-m="'+m[0]+'">'+m[1]+'</button>'; }).join('')+'</div>'+
+      '<p class="little-q">'+(s.mode==='colors'?'Find <b>'+s.q.ans+'</b>!':'Where is the <b>'+s.q.ans+'</b>?')+' <button class="icon-btn" data-action="little-say" aria-label="Say it again">🔊</button></p>'+
+      '<div class="little-grid">'+s.q.opts.map(function(o){
+        var face = s.mode==='colors' ? '<span class="lg-color" style="background:'+o[0]+'"></span>' : s.mode==='shapes' ? '<span style="color:'+TOKEN_COLORS[rnd(4)]+'">'+o[0]+'</span>' : o[0];
+        return '<button class="lg-tile '+(s.happy && o[1]===s.q.ans?'yay':'')+'" data-action="little-tap" data-v="'+o[1]+'">'+face+'</button>';
+      }).join('')+'</div>'+
+      (s.happy ? '<p class="little-q" style="font-size:28px;">🎉 Well done!</p>' : '')+
+      '<button class="btn-secondary" style="width:100%;margin-top:14px;" data-action="game-quit">Finish</button></div>';
+    return html;
+  }
+  function littleTap(v){
+    var s = G.s;
+    if(s.happy) return;
+    if(v === s.q.ans){
+      s.happy = true; s.stars++; say('Well done! ' + v + '!'); burstConfetti();
+      var me = G; gameTimer = setTimeout(function(){ if(G===me){ littleQuestion(); render(); } }, 1600);
+    } else say('Try again! Where is the ' + s.q.ans + '?');
+    render();
+  }
+
+  /* ---------- reflection bonus ("Why?") after decision games ---------- */
+  var REFLECT_BONUS = 2;
+  function reflectionPrompt(){
+    if(!G.result || G.result.winner === null || G.result.winner === undefined || G.reflected) return '';
+    var gm = GAMES[G.type], w = gp(G.result.winner);
+    if(!gm || gm.skill !== 'decision' || !w || w.role !== 'kid') return '';
+    return '<div class="note-box reflect">💬 <b>'+escapeHtml(w.name)+', tell ABBA or Mimi:</b> what was your best move, and why? What would you do differently?'+
+      '<button class="btn-secondary" style="width:100%;margin-top:8px;" data-action="reflect-done">✅ We talked about it (+'+REFLECT_BONUS+' pts)</button></div>';
+  }
+
   /* ---------- router ---------- */
   function renderGameBoard(){
     var t = G.type, body;
@@ -2750,6 +3399,15 @@
     else if(t==='snakes') body = renderSnakes();
     else if(t==='ludo') body = renderLudo();
     else if(t==='memory' || t==='names99') body = renderMemory();
+    else if(t==='pig') body = renderPig();
+    else if(t==='choices') body = renderChoices();
+    else if(t==='spender') body = renderSpender();
+    else if(t==='reversi') body = renderReversi();
+    else if(t==='simon') body = renderSimon();
+    else if(t==='sudoku') body = renderSudoku();
+    else if(t==='tower') body = renderTower();
+    else if(t==='maze') body = renderMaze();
+    else if(t==='little') return '<div class="game-wrap">'+renderLittle()+'</div>';
     else body = renderDuel();
     return '<div class="game-wrap">'+body+'</div>';
   }
@@ -2765,12 +3423,21 @@
     if(type==='ludo') return ludoNew(G.tokens || 2);
     if(type==='memory') return memNew('emoji');
     if(type==='names99') return memNew('names99');
+    if(type==='pig') return pigNew();
+    if(type==='choices') return choicesNew();
+    if(type==='spender') return spenderNew();
+    if(type==='reversi') return rvNew();
+    if(type==='simon') return simonNew();
+    if(type==='sudoku') return sudokuNew();
+    if(type==='tower') return towerNew();
+    if(type==='maze') return mazeNew();
+    if(type==='little') return littleNew();
     return duelNew();
   }
   function launch(type, players, opts){
     clearTimeout(gameTimer);
     opts = opts || {};
-    var scored = {memory:1, names99:1, dots:1};
+    var scored = {memory:1, names99:1, dots:1, choices:1, spender:1, tower:1};
     G = {type:type, players:players.slice(), turnIdx:0, result:null, level:opts.level, cat:opts.cat, tokens:opts.tokens,
          scores: (scored[type] || DUEL_TYPES[type]) ? players.map(function(){ return 0; }) : null, tour: opts.tour || null,
          online:false, me:[], ver:0};
@@ -2782,28 +3449,28 @@
   function moved(){ pushLive(false); render(); }
 
   /* ---------- daily limit, rotation, brain-first, game passes ---------- */
-  function isLearning(type){ return GAMES[type] && (GAMES[type].cat==='brain' || GAMES[type].cat==='islamic'); }
+  function isLearning(type){ return GAMES[type] && (GAMES[type].cat==='brain' || GAMES[type].cat==='memory' || GAMES[type].cat==='islamic'); }
   function playsToday(p){ return (p.gamePlays && p.gamePlays.date===todayStr()) ? p.gamePlays.n : 0; }
   function playedList(p){ return Array.isArray(p.gamesPlayed) ? p.gamesPlayed : []; }
   // can this kid start `type` now? -> {ok, pass, reason}
   function kidCanPlay(p, type){
-    if(!p || p.role!=='kid') return {ok:true};
+    if(!p || p.role!=='kid' || LIMIT_FREE[type]) return {ok:true};
     var left = state.data.gamesPerDay - playsToday(p);
     var reason = null;
     if(left <= 0) reason = p.name+' has played '+state.data.gamesPerDay+' games today';
     else if(playedList(p).indexOf(type) !== -1) reason = p.name+' already played '+GAMES[type].name+' — try every game first';
-    else if(state.data.brainFirst && playsToday(p)===0 && !isLearning(type)) reason = p.name+'’s first game today must be a brain or Islamic game';
+    else if(state.data.brainFirst && playsToday(p)===0 && !isLearning(type)) reason = p.name+'’s first game today must be a Brain, Memory or Islamic game';
     if(!reason) return {ok:true};
     if((p.gamePasses||0) > 0) return {ok:true, pass:true, reason:reason};
     return {ok:false, reason:reason};
   }
   function recordPlay(p, type, usedPass){
-    if(!p || p.role!=='kid') return;
+    if(!p || p.role!=='kid' || LIMIT_FREE[type]) return;
     var n = playsToday(p);
     p.gamePlays = {date: todayStr(), n: n+1};
     var list = playedList(p).slice();
     if(list.indexOf(type) === -1) list.push(type);
-    if(GAME_ORDER.every(function(t){ return list.indexOf(t) !== -1; })) list = [type];   // played them all — start a new round
+    if(GAME_ORDER.every(function(t){ return LIMIT_FREE[t] || list.indexOf(t) !== -1; })) list = [type];   // played them all — start a new round
     p.gamesPlayed = list;
     if(usedPass){ p.gamePasses = Math.max(0, (p.gamePasses||0) - 1); addHistory({personId:p.id, kind:'game', category:'games', label:'🎟️ Used a Game Pass for '+GAMES[type].name, points:0}); }
   }
@@ -2859,14 +3526,15 @@
     var msg;
     if(champs.length === 1){
       var c = getPerson(champs[0]);
-      if(c && c.role==='kid' && c.tourDay !== todayStr()){
-        c.tourDay = todayStr();
-        var g = earnGame(c, TOURNEY_BONUS, '🏆 Family Tournament champion ('+GAMES[t.game].name+')', true);
+      if(c && c.role==='kid'){
+        var g = earnGame(c, TOURNEY_BONUS, '\uD83C\uDFC6 Family Tournament champion ('+GAMES[t.game].name+')', true);
         msg = c.name+' is the champion! +'+g+' bonus pts';
-      } else msg = (c?c.name:'?')+' is the champion!'+(c && c.role==='kid' ? ' (champion bonus already won today)' : '');
+      } else msg = (c?c.name:'?')+' is the champion!';
       burstConfetti();
     } else msg = champs.length ? 'It’s a tie at the top — no champion bonus this time.' : 'No winners — all draws!';
-    t.summary = msg; t.done = true;
+    // everyone who played starts a fresh qualification path
+    t.players.forEach(function(id){ var p = getPerson(id); if(p && p.role==='kid') p.tourPath = {brain:0, memory:0, decision:0}; });
+    t.summary = msg + ' Qualification starts again from 0.'; t.done = true;
     persist(); render();
   }
 
@@ -2974,7 +3642,12 @@
   }
   gameActions['game-pick'] = function(el){
     var t = el.dataset.game, kids = kidsList();
-    if(t==='tourney'){ state.ui.gameSetup = {type:'tourney', players:kids.map(function(k){ return k.id; }).slice(0,4), tgame:null}; return render(); }
+    if(t==='tourney'){
+      var q = kids.filter(tourQualified);
+      if(q.length < 2){ showToast('The tournament opens when 2 kids have qualified','error'); return; }
+      state.ui.gameSetup = {type:'tourney', players:q.map(function(k){ return k.id; }).slice(0,4), tgame:null}; return render();
+    }
+    if(t==='little'){ var young = kids.slice().sort(function(a,b){ return 0; }).pop(); state.ui.gameSetup = {type:'little', players: young ? [young.id] : []}; return render(); }
     var gm = GAMES[t], viewerKid = getPerson(state.ui.gameKid);
     var first = viewerKid && viewerKid.role==='kid' ? viewerKid.id : (kids[0] && kids[0].id);
     var second = kids.filter(function(k){ return k.id!==first; })[0];
@@ -3006,7 +3679,8 @@
     var players = s.players.filter(Boolean);
     if(s.type==='tourney'){
       if(players.length < 2 || !s.tgame){ showToast('Pick a game and at least 2 players','error'); return; }
-      if(!checkAndRecord(s.tgame, players)) return;
+      var notQ = players.map(getPerson).filter(function(p){ return p && p.role==='kid' && !tourQualified(p); })[0];
+      if(notQ){ showToast(notQ.name+' hasn\u2019t qualified yet','error'); return; }
       state.ui.gameSetup = null; startTournament(s.tgame, players); return;
     }
     var gm = GAMES[s.type];
@@ -3034,6 +3708,31 @@
     finishGame(1 - quitter, nameOf(quitter)+' gave up');
   };
   gameActions['game-draw'] = function(){ if(G && !G.result && !G.online) finishGame(null, 'Draw agreed'); };
+  gameActions['pig-roll'] = function(){ if(guardTurn()) pigRoll(); };
+  gameActions['pig-hold'] = function(){ if(guardTurn()) pigHold(); };
+  gameActions['choice-pick'] = function(el){ if(G && !G.result) choicePick(+el.dataset.i); };
+  gameActions['choice-next'] = function(){ if(G && !G.result) choiceNext(); };
+  gameActions['spend-toggle'] = function(el){ if(G && !G.result) spendToggle(+el.dataset.i); };
+  gameActions['spend-done'] = function(){ if(G && !G.result) spendDone(); };
+  gameActions['spend-next'] = function(){ if(G && !G.result) spendNext(); };
+  gameActions['spend-unpass'] = function(){ if(G){ G.s.pass = false; render(); } };
+  gameActions['rv-tap'] = function(el){ if(guardTurn()) rvTap(+el.dataset.r, +el.dataset.c); };
+  gameActions['simon-start'] = function(){ if(G && !G.result && G.s.phase==='ready') simonShow(); };
+  gameActions['simon-tap'] = function(el){ if(G && !G.result) simonTap(+el.dataset.i); };
+  gameActions['sd-cell'] = function(el){ if(G && !G.result) sdCell(+el.dataset.p, +el.dataset.k); };
+  gameActions['sd-num'] = function(el){ if(G && !G.result) sdNum(+el.dataset.p, +el.dataset.v); };
+  gameActions['tower-peg'] = function(el){ if(G && !G.result) towerPeg(+el.dataset.i); };
+  gameActions['tower-unpass'] = function(){ if(G){ G.s.pass = false; render(); } };
+  gameActions['mz-move'] = function(el){ if(G && !G.result) mzMove(+el.dataset.p, el.dataset.d); };
+  gameActions['little-mode'] = function(el){ if(G){ G.s.mode = el.dataset.m; littleQuestion(); render(); } };
+  gameActions['little-tap'] = function(el){ if(G) littleTap(el.dataset.v); };
+  gameActions['little-say'] = function(){ if(G && G.s.q) say((G.s.mode==='colors'?'Find ':'Where is the ')+G.s.q.ans); };
+  gameActions['reflect-done'] = function(){
+    if(!G || !G.result || G.reflected) return;
+    var w = gp(G.result.winner); G.reflected = true;
+    if(w){ var g = earnGame(w, REFLECT_BONUS, '\uD83D\uDCAC Explained my best move ('+GAMES[G.type].name+')'); showToast(g ? '+'+g+' pts for thinking it through \uD83E\uDDE0' : 'Great thinking! (daily game points limit reached)'); }
+    persist(); render();
+  };
   gameActions['tour-next'] = function(){
     if(!G || !G.tour) return;
     var t = G.tour;
@@ -3149,6 +3848,843 @@
       }).join('')+'</div>';
   }
 
+  /* ================= LEARN: content =================
+     Sources: the Quran and Sahih al-Bukhari / Sahih Muslim (plus a few
+     narrations in Abu Dawud / at-Tirmidhi that scholars grade sahih).
+     No Isra'iliyyat, no weak narrations, no pictures of any prophet.
+     Where scholars differ, the view of the majority is used.
+     Every chapter stays locked until a parent has read and approved it. */
+  var STORY_CHAPTERS = [
+    {id:'adam', n:'Prophet Adam', ic:'🌱', sub:'The first human',
+      pages:[
+        {t:'Before there were any people, Allah told the angels: "I am going to place a khalifah (a caretaker) on the earth."', s:'Quran 2:30'},
+        {t:'Allah created Adam from clay, with His own Hands, and blew into him the soul. Adam was very tall — 60 cubits (about 30 metres)!', s:'Quran 38:71–72 · Bukhari 3326, Muslim 2841'},
+        {t:'Allah taught Adam the names of all things. When Allah asked the angels about them, they said: "Glory be to You! We know only what You have taught us." Then Adam told them all the names.', s:'Quran 2:31–33'},
+        {t:'The very first thing Allah taught Adam to say to the angels was "As-salamu alaikum". The angels answered: "As-salamu alaika wa rahmatullah." That is why we greet each other with salam!', s:'Bukhari 3326, Muslim 2841'},
+        {t:'Allah told the angels to bow down to Adam, and they all did — except Iblis. Iblis was from the jinn. He was proud and said: "I am better than him. You made me from fire and him from clay."', s:'Quran 2:34, 7:11–12, 18:50'},
+        {t:'Adam and his wife lived in Jannah. They could eat from everything except one tree. Shaytan whispered to them again and again until they ate from it.', s:'Quran 2:35–36, 7:19–22'},
+        {t:'Adam and his wife felt very sorry. They did not argue like Iblis. They asked Allah to forgive them: "Our Lord, we have wronged ourselves. If You do not forgive us and have mercy on us, we will surely be losers." Allah forgave them, because He is the Most Forgiving.', s:'Quran 7:23, 2:37'},
+        {t:'Then Allah sent them down to live on the earth, and promised to send guidance. Whoever follows Allah’s guidance will have no fear and no sadness.', s:'Quran 2:38'}
+      ],
+      lesson:'When we make a mistake, we say sorry to Allah straight away — we are never proud like Iblis.',
+      dua:{ar:'ربنا ظلمنا أنفسنا وإن لم تغفر لنا وترحمنا لنكونن من الخاسرين', tr:'Rabbana zalamna anfusana wa in lam taghfir lana wa tarhamna lanakunanna minal-khasirin', en:'Our Lord, we have wronged ourselves; if You do not forgive us and have mercy on us, we will surely be among the losers.', s:'Quran 7:23'},
+      quiz:[
+        {q:'What did Allah create Adam from?', o:['Clay','Fire','Light','Water'], a:0},
+        {q:'What did Allah teach Adam that the angels did not know?', o:['The names of all things','How to fly','How to build houses','How to swim'], a:0},
+        {q:'What were the first words Adam said to the angels?', o:['As-salamu alaikum','Good morning','Allahu Akbar','Bismillah'], a:0},
+        {q:'Who refused to bow down to Adam?', o:['Iblis','The angel Jibril','All the angels','Nobody'], a:0},
+        {q:'Why did Iblis refuse?', o:['He was proud','He was sleeping','He did not hear','He was sick'], a:0},
+        {q:'What did Adam do after his mistake?', o:['He asked Allah to forgive him','He blamed someone else','He hid','He got angry'], a:0},
+        {q:'Iblis was made from…', o:['Fire','Clay','Light','Gold'], a:0}
+      ],
+      talk:['Why is saying sorry better than being proud?','When did you last say sorry? How did it feel?']
+    },
+    {id:'nuh', n:'Prophet Nuh', ic:'🚢', sub:'The great Ark',
+      pages:[
+        {t:'A long time after Adam, people started to worship idols they had made. They gave them names like Wadd, Suwa’, Yaghuth, Ya’uq and Nasr.', s:'Quran 71:23'},
+        {t:'Allah sent Prophet Nuh to tell them: "Worship Allah alone." Nuh called his people for 950 years! He called them by day and by night, in public and in private.', s:'Quran 29:14, 71:5–9'},
+        {t:'Most people did not listen. They put their fingers in their ears and laughed at him. Only a few people believed.', s:'Quran 71:7, 11:40'},
+        {t:'Allah told Nuh to build a huge ship — an Ark — and said Allah was watching over him. Every time the people walked past, they made fun of him. Nuh stayed patient.', s:'Quran 11:37–38'},
+        {t:'When Allah’s command came, water burst out of the ground and poured from the sky. Allah told Nuh to take a pair of every kind of animal, his family, and the believers onto the Ark.', s:'Quran 11:40, 54:11–12'},
+        {t:'Nuh said: "Bismillahi majreha wa mursaha" — "In the name of Allah it sails and it stops." The Ark sailed on waves like mountains.', s:'Quran 11:41–42'},
+        {t:'Nuh’s own son did not believe. He said he would climb a mountain to be safe. Nuh said: "Today nothing can save anyone from Allah’s command, except whom He has mercy on." A wave came between them and the son drowned.', s:'Quran 11:42–43'},
+        {t:'Then the rain stopped, the water went down, and the Ark came to rest on Mount Judi. Nuh and the believers stepped out safely, with peace and blessings from Allah.', s:'Quran 11:44, 11:48'}
+      ],
+      lesson:'Keep doing what is right, even when others laugh at you. Allah is always watching over you.',
+      dua:{ar:'رب اغفر لي ولوالدي', tr:'Rabbi-ghfir li wa li walidayya', en:'My Lord, forgive me and my parents. (Nuh’s dua)', s:'Quran 71:28'},
+      quiz:[
+        {q:'What did Allah tell Nuh to build?', o:['An Ark (a big ship)','A tower','A palace','A bridge'], a:0},
+        {q:'How long did Nuh call his people to Allah?', o:['950 years','10 years','100 years','1 year'], a:0},
+        {q:'What did the people do when they walked past the Ark?', o:['They made fun of Nuh','They helped him','They brought food','They prayed'], a:0},
+        {q:'What did Nuh say when the Ark began to sail?', o:['Bismillahi majreha wa mursaha','Good luck','Let’s go','SubhanAllah'], a:0},
+        {q:'Where did the Ark come to rest?', o:['Mount Judi','Makkah','Egypt','An island'], a:0},
+        {q:'Which animals went on the Ark?', o:['A pair of every kind','Only birds','Only cats','No animals'], a:0},
+        {q:'What lesson do we learn from Nuh?', o:['Be patient and keep doing right','Give up when people laugh','Only do good when people watch','Argue with everyone'], a:0}
+      ],
+      talk:['How would you feel if people laughed at you for doing good?','Why do you think Nuh never gave up?']
+    },
+    {id:'ibrahim', n:'Prophet Ibrahim', ic:'🔥', sub:'The friend of Allah',
+      pages:[
+        {t:'Ibrahim’s father and his people worshipped idols. Ibrahim spoke to his father very gently: "O my father, why do you worship something that cannot hear, cannot see, and cannot help you at all?"', s:'Quran 19:42–45, 6:74'},
+        {t:'Ibrahim taught his people with clear signs. He pointed to a star, the moon and the sun — each one set and disappeared. He said: "I do not love things that disappear," and told them he turns only to Allah, who created the heavens and the earth.', s:'Quran 6:76–79, 6:83'},
+        {t:'One day, when the people were away, Ibrahim broke their idols — all except the biggest one. When they asked who did it, he said: "Ask them, if they can speak!" The people knew the idols could not speak, but they still would not believe.', s:'Quran 21:57–67'},
+        {t:'The people made a huge fire and threw Ibrahim into it. But Allah said: "O fire, be cool and safe for Ibrahim!" And Ibrahim was not harmed at all.', s:'Quran 21:68–70'},
+        {t:'By Allah’s command, Ibrahim left his wife Hajar and baby Ismail in the empty valley of Makkah. Hajar asked: "Did Allah command you to do this?" He said yes. She said: "Then Allah will not leave us."', s:'Bukhari 3364'},
+        {t:'When their water ran out, Hajar ran between the hills of Safa and Marwah seven times looking for help. Then an angel came, and water gushed out of the ground — the well of Zamzam! That is why pilgrims walk between Safa and Marwah today.', s:'Bukhari 3364'},
+        {t:'When Ismail was older, Ibrahim saw in a dream that he was to sacrifice him. Ismail said: "O my father, do what you are commanded. You will find me patient, if Allah wills." Allah saw they both obeyed, and gave them a great ram to sacrifice instead. We remember this every Eid al-Adha.', s:'Quran 37:102–107 (most scholars say this son was Ismail)'},
+        {t:'Later, Ibrahim and Ismail built the Ka’bah together. As they raised its walls they prayed: "Our Lord, accept this from us. You are the All-Hearing, the All-Knowing." Allah called Ibrahim His close friend (Khalil).', s:'Quran 2:127, 4:125'}
+      ],
+      lesson:'Trust Allah completely, and always speak to your parents with gentleness and respect.',
+      dua:{ar:'ربنا تقبل منا إنك أنت السميع العليم', tr:'Rabbana taqabbal minna innaka antas-Sami’ul-’Alim', en:'Our Lord, accept this from us. You are the All-Hearing, the All-Knowing.', s:'Quran 2:127'},
+      quiz:[
+        {q:'How did Ibrahim speak to his father?', o:['Very gently','Very rudely','He never spoke to him','By shouting'], a:0},
+        {q:'What did Allah say to the fire?', o:['Be cool and safe for Ibrahim','Burn brighter','Go out forever','Move away'], a:0},
+        {q:'Which idol did Ibrahim leave unbroken?', o:['The biggest one','The smallest one','None','All of them'], a:0},
+        {q:'What is the name of the well that gushed out for Hajar and Ismail?', o:['Zamzam','Nile','Judi','Badr'], a:0},
+        {q:'How many times did Hajar run between Safa and Marwah?', o:['Seven','Three','Ten','One'], a:0},
+        {q:'What did Ibrahim and Ismail build together?', o:['The Ka’bah','A ship','A palace','A tower'], a:0},
+        {q:'Which Eid reminds us of Ibrahim and Ismail’s obedience?', o:['Eid al-Adha','Eid al-Fitr','Both','Neither'], a:0}
+      ],
+      talk:['Hajar said "Allah will not leave us." When do you need to trust Allah?','How can you speak gently to your parents even when you disagree?']
+    },
+    {id:'yusuf', n:'Prophet Yusuf', ic:'⭐', sub:'Patience and forgiveness',
+      pages:[
+        {t:'When Yusuf was a boy, he dreamed that eleven stars, the sun and the moon bowed down to him. His father, Prophet Yaqub, said: "Do not tell your brothers about this dream."', s:'Quran 12:4–5'},
+        {t:'Yusuf’s older brothers were jealous because their father loved him so much. They took him out and threw him into a deep well. Then they came home crying and showed their father Yusuf’s shirt with fake blood on it.', s:'Quran 12:8–18'},
+        {t:'Yaqub knew they were not telling the truth. He said: "Fa sabrun jamil" — "Beautiful patience." He was very sad, but he kept trusting Allah.', s:'Quran 12:18'},
+        {t:'Travellers found Yusuf in the well and sold him in Egypt for a few coins. A great minister of Egypt (the ’Aziz) bought him and raised him in his house.', s:'Quran 12:19–21'},
+        {t:'When Yusuf grew up, a woman in that house wanted him to do something wrong. Yusuf refused and said: "I seek refuge in Allah!" Even though he did nothing wrong, he was put in prison. He said prison was better than disobeying Allah.', s:'Quran 12:23–35'},
+        {t:'In prison, Yusuf was kind to everyone and taught them to worship Allah alone. Allah gave him the gift of explaining dreams.', s:'Quran 12:36–41'},
+        {t:'The King dreamed of seven fat cows being eaten by seven thin cows. Yusuf explained: "There will be seven good years of farming. Save the grain! Then seven hard years will come." The King made Yusuf in charge of all the food stores of Egypt.', s:'Quran 12:43–55'},
+        {t:'During the hard years, his brothers came to Egypt for food and did not recognise him. Later Yusuf told them: "I am Yusuf!" Instead of punishing them, he said: "No blame on you today. May Allah forgive you." His whole family came to Egypt and his childhood dream came true.', s:'Quran 12:58–100'}
+      ],
+      lesson:'Be patient when things are hard, always choose what is right, and forgive others.',
+      dua:{ar:'لا تثريب عليكم اليوم يغفر الله لكم', tr:'La tathriba ’alaykumul-yawm, yaghfirullahu lakum', en:'No blame on you today. May Allah forgive you. (What Yusuf said to his brothers)', s:'Quran 12:92'},
+      quiz:[
+        {q:'What did Yusuf see in his dream?', o:['11 stars, the sun and the moon bowing','A big ship','A fire','A lion'], a:0},
+        {q:'Why were Yusuf’s brothers jealous?', o:['Their father loved him so much','He was rich','He was older','He was the King'], a:0},
+        {q:'What did the brothers do to Yusuf?', o:['Threw him into a well','Gave him a gift','Sent him to school','Made him King'], a:0},
+        {q:'What did Yaqub say when he was sad?', o:['Beautiful patience (sabrun jamil)','I am angry','Go away','I give up'], a:0},
+        {q:'What did the King’s dream mean?', o:['7 good years then 7 hard years','It would rain forever','A war was coming','Nothing'], a:0},
+        {q:'What did Yusuf say to his brothers at the end?', o:['No blame on you today','I will punish you','Go home','I don’t know you'], a:0},
+        {q:'Why did Yusuf go to prison?', o:['He refused to do something wrong','He stole','He was rude','He broke a rule'], a:0}
+      ],
+      talk:['Yusuf forgave his brothers. Is there someone you can forgive today?','What can you do when you feel jealous of a brother or sister?']
+    },
+    {id:'musa', n:'Prophet Musa', ic:'🌊', sub:'The sea that split',
+      pages:[
+        {t:'In Egypt there was a cruel king called Fir’awn (Pharaoh). He was harming the people of Bani Isra’il and killing their baby boys.', s:'Quran 28:4'},
+        {t:'When Musa was born, Allah told his mother: "Put him in a box and place it in the river. Do not be afraid or sad — We will bring him back to you." The river carried baby Musa right to Fir’awn’s palace!', s:'Quran 28:7–8'},
+        {t:'Fir’awn’s kind wife said: "He will be a joy for us — do not kill him." Baby Musa would not drink milk from anyone. His sister, who was watching, said: "I know a family who can look after him." And so Musa went back to his own mother, just as Allah had promised.', s:'Quran 28:9–13'},
+        {t:'When he grew up, Musa went to the land of Madyan. He saw two girls waiting to give their sheep water and he helped them. Then he sat in the shade and made dua: "My Lord, I am in need of whatever good You send me." Allah answered — he found a home, work and a family there.', s:'Quran 28:22–28'},
+        {t:'Years later, Musa saw a fire on a mountain. There Allah spoke to him directly and made him a prophet. Allah turned Musa’s staff into a moving snake, and made his hand shine white — two signs from Allah.', s:'Quran 20:9–23, 4:164'},
+        {t:'Musa asked Allah: "My Lord, open my chest for me and make my task easy," and asked for his brother Harun to help him. Allah told them to go to Fir’awn and speak to him gently.', s:'Quran 20:25–36, 20:43–44'},
+        {t:'Fir’awn called his best magicians. They threw ropes and sticks that looked like moving snakes. Musa threw his staff and it swallowed up all their tricks! The magicians fell down in sujud and believed in Allah.', s:'Quran 20:65–70, 7:117'},
+        {t:'Musa led the believers away at night, with Fir’awn’s army chasing them. They reached the sea. Musa said: "My Lord is with me." Allah told him to strike the sea with his staff, and it split into two like great mountains. The believers crossed safely, and Fir’awn and his army drowned.', s:'Quran 26:52–66'}
+      ],
+      lesson:'Allah is always with those who trust Him. When a task feels hard, ask Allah to make it easy.',
+      dua:{ar:'رب اشرح لي صدري ويسر لي أمري', tr:'Rabbish-rah li sadri wa yassir li amri', en:'My Lord, open my chest for me and make my task easy for me.', s:'Quran 20:25–26'},
+      quiz:[
+        {q:'Where did Musa’s mother put baby Musa?', o:['In a box on the river','In a cave','In a tree','On a ship'], a:0},
+        {q:'Who said "do not kill him" about baby Musa?', o:['Fir’awn’s wife','Fir’awn','A soldier','A magician'], a:0},
+        {q:'Who did Musa help in Madyan?', o:['Two girls watering their sheep','A king','A sailor','A merchant'], a:0},
+        {q:'What happened to Musa’s staff when he threw it?', o:['It became a moving snake','It broke','It became gold','Nothing'], a:0},
+        {q:'Who did Musa ask Allah to send to help him?', o:['His brother Harun','His friend','A soldier','The King'], a:0},
+        {q:'What happened when Musa struck the sea?', o:['It split into two','It froze','It dried up slowly','It turned red'], a:0},
+        {q:'How did Allah tell Musa and Harun to speak to Fir’awn?', o:['Gently','Angrily','By shouting','Not at all'], a:0}
+      ],
+      talk:['Musa helped the two girls without being asked. Who can you help this week?','When something feels hard, what dua can you say?']
+    },
+    {id:'yunus', n:'Prophet Yunus', ic:'🐋', sub:'The dua in the dark',
+      pages:[
+        {t:'Allah sent Prophet Yunus to a town to call the people to worship Allah. At first they did not listen.', s:'Quran 37:139, 10:98'},
+        {t:'Yunus became upset and left his people in anger, before Allah had told him to leave.', s:'Quran 21:87, 68:48'},
+        {t:'He got on a ship that was full of people. The ship was in danger, so they drew lots to see who must leave the ship. Yunus’s name came out, and he went into the sea.', s:'Quran 37:140–141'},
+        {t:'A huge fish (a whale) swallowed Yunus! Inside the fish it was completely dark.', s:'Quran 37:142, 21:87'},
+        {t:'In the darkness, Yunus called out to Allah: "La ilaha illa anta, subhanaka, inni kuntu minaz-zalimin" — "There is no god but You. Glory be to You! I have done wrong."', s:'Quran 21:87'},
+        {t:'Allah heard him and saved him. Allah says: "If he had not been one of those who glorify Allah, he would have stayed inside the fish until the Day of Judgement."', s:'Quran 21:88, 37:143–144'},
+        {t:'The fish put Yunus out onto the shore. He was weak and tired, so Allah made a gourd plant grow over him to give him shade.', s:'Quran 37:145–146'},
+        {t:'Allah sent Yunus back to his people — over 100,000 of them. This time they all believed, and Allah let them enjoy life. The Prophet ﷺ told us that whoever makes Yunus’s dua for anything, Allah answers him.', s:'Quran 37:147–148, 10:98 · Tirmidhi 3505 (sahih)'}
+      ],
+      lesson:'Allah hears us anywhere — even in the dark. Be patient, and remember Allah in hard times.',
+      dua:{ar:'لا إله إلا أنت سبحانك إني كنت من الظالمين', tr:'La ilaha illa anta, subhanaka, inni kuntu minaz-zalimin', en:'There is no god but You. Glory be to You! Truly I have done wrong.', s:'Quran 21:87'},
+      quiz:[
+        {q:'What swallowed Yunus?', o:['A huge fish (whale)','A lion','A big bird','A snake'], a:0},
+        {q:'Why did Yunus leave his people?', o:['He was upset with them','He was going on holiday','He was hungry','They asked him to'], a:0},
+        {q:'Where was Yunus when the fish swallowed him?', o:['In the sea','In a desert','In a cave','On a mountain'], a:0},
+        {q:'What did Yunus do inside the fish?', o:['Made dua and glorified Allah','Slept','Cried only','Shouted at the fish'], a:0},
+        {q:'What did Allah grow to give Yunus shade?', o:['A gourd plant','A palm tree','A tent','A flower'], a:0},
+        {q:'What did Yunus’s people do when he came back?', o:['They all believed','They ran away','They laughed','They fought'], a:0},
+        {q:'Yunus’s dua starts with…', o:['La ilaha illa anta','Bismillah','Rabbana','Alhamdulillah'], a:0}
+      ],
+      talk:['Where is a "dark" or scary place where you can remember Allah?','Why is it important to be patient with people?']
+    }
+  ];
+  var STORY_COMING = ['Hud & Salih','Ismail','Ayyub','Dawud & Sulaiman','Isa','Muhammad ﷺ'];
+
+  /* Gem of the Week: hadith and ayat take turns, one per Sunday-to-Saturday week */
+  var WEEK_HADITH = [
+    {id:'h_quran', en:'The best of you are those who learn the Quran and teach it.', s:'Sahih al-Bukhari 5027', live:'Teach someone in the family one ayah you know.', q:{q:'Who are the best people, according to this hadith?', o:['Those who learn the Quran and teach it','The richest people','The fastest runners','The tallest people'], a:0}},
+    {id:'h_salam', en:'Shall I tell you something that will make you love each other? Spread salam among yourselves.', s:'Sahih Muslim 54', live:'Say "As-salamu alaikum" first to everyone you meet at home.', q:{q:'What makes us love each other, according to this hadith?', o:['Spreading salam','Buying toys','Winning games','Being quiet'], a:0}},
+    {id:'h_love', en:'None of you truly believes until he loves for his brother what he loves for himself.', s:'Sahih al-Bukhari 13 · Sahih Muslim 45', live:'Share something you like with your brother or sister.', q:{q:'We should love for our brother…', o:['What we love for ourselves','Nothing','Only bad things','Only what is left over'], a:0}},
+    {id:'h_speak', en:'Whoever believes in Allah and the Last Day, let him say something good or stay quiet.', s:'Sahih al-Bukhari 6018 · Sahih Muslim 47', live:'Before you speak, ask yourself: is it good?', q:{q:'If we can’t say something good, we should…', o:['Stay quiet','Shout','Say it anyway','Laugh at others'], a:0}},
+    {id:'h_strong', en:'The strong person is not the one who wins a wrestling match. The strong person is the one who controls himself when he is angry.', s:'Sahih al-Bukhari 6114 · Sahih Muslim 2609', live:'When you feel angry, stop, breathe and say A’udhu billah.', q:{q:'Who is really strong?', o:['The one who controls his anger','The one who wins fights','The biggest person','The loudest person'], a:0}},
+    {id:'h_kind', en:'Allah is Kind, and He loves kindness in all things.', s:'Sahih al-Bukhari 6024 · Sahih Muslim 2165', live:'Do one kind thing for someone without being asked.', q:{q:'What does Allah love in all things?', o:['Kindness','Winning','Being first','Money'], a:0}},
+    {id:'h_clean', en:'Purity (cleanliness) is half of faith.', s:'Sahih Muslim 223', live:'Keep your room and your wudu neat and clean all week.', q:{q:'Cleanliness is…', o:['Half of faith','Not important','Only for adults','Only on Friday'], a:0}},
+    {id:'h_word', en:'A good word is charity (sadaqah).', s:'Sahih al-Bukhari 2989 · Sahih Muslim 1009', live:'Say three kind words to someone every day.', q:{q:'A good word is…', o:['Charity (sadaqah)','Nothing special','A waste of time','Only for grown-ups'], a:0}},
+    {id:'h_eat', en:'The Prophet ﷺ told a young boy: "Say Bismillah, eat with your right hand, and eat from what is in front of you."', s:'Sahih al-Bukhari 5376 · Sahih Muslim 2022', live:'Remember all three manners at every meal.', q:{q:'Which hand do we eat with?', o:['The right hand','The left hand','Either hand','No hands'], a:0}},
+    {id:'h_regular', en:'The deeds most loved by Allah are those done regularly, even if they are small.', s:'Sahih al-Bukhari 6464 · Sahih Muslim 783', live:'Pick one small good deed and do it every single day.', q:{q:'Which deeds does Allah love most?', o:['Small deeds done regularly','Big deeds done once','Deeds people see','Only hard deeds'], a:0}},
+    {id:'h_truth', en:'Truthfulness leads to goodness, and goodness leads to Paradise.', s:'Sahih al-Bukhari 6094 · Sahih Muslim 2607', live:'Tell the truth all week, even when it is hard.', q:{q:'Where does truthfulness lead?', o:['To goodness and Paradise','Nowhere','To trouble','To being bored'], a:0}},
+    {id:'h_mother', en:'A man asked: "Who deserves my good company the most?" The Prophet ﷺ said: "Your mother." Then? "Your mother." Then? "Your mother." Then? "Your father."', s:'Sahih al-Bukhari 5971 · Sahih Muslim 2548', live:'Help Mimi with something every day this week.', q:{q:'How many times did the Prophet ﷺ say "your mother"?', o:['Three times','Once','Twice','Five times'], a:0}},
+    {id:'h_mercy', en:'Whoever does not show mercy to people, Allah will not show mercy to him.', s:'Sahih al-Bukhari 7376 · Sahih Muslim 2319', live:'Be gentle with your little brother or sister all week.', q:{q:'If we want Allah’s mercy, we should…', o:['Show mercy to people','Be harsh','Ignore others','Only care about ourselves'], a:0}},
+    {id:'h_easy', en:'Make things easy, and do not make them hard. Give good news, and do not drive people away.', s:'Sahih al-Bukhari 69', live:'Help a friend or sibling with something they find hard.', q:{q:'This hadith tells us to…', o:['Make things easy for people','Make things hard','Scare people','Never help'], a:0}},
+    {id:'h_path', en:'Faith has many branches. The smallest is removing something harmful from the path, and shyness (haya) is a branch of faith.', s:'Sahih Muslim 35', live:'Pick up anything on the floor that someone could trip on.', q:{q:'Removing something harmful from the path is…', o:['A branch of faith','Someone else’s job','Not important','Only for cleaners'], a:0}},
+    {id:'h_give', en:'The upper hand is better than the lower hand. (The hand that gives is better than the hand that takes.)', s:'Sahih al-Bukhari 1429 · Sahih Muslim 1033', live:'Give something to charity from your own money this week.', q:{q:'Which hand is better?', o:['The hand that gives','The hand that takes','Both the same','Neither'], a:0}},
+    {id:'h_anger', en:'A man said: "Give me advice." The Prophet ﷺ said: "Do not get angry." He asked again and again, and each time he said: "Do not get angry."', s:'Sahih al-Bukhari 6116', live:'Go a whole day without getting angry — then try the whole week!', q:{q:'What advice did the Prophet ﷺ keep giving?', o:['Do not get angry','Eat more','Sleep early','Run fast'], a:0}},
+    {id:'h_smallgood', en:'Do not think any good deed is too small — even meeting your brother with a cheerful face.', s:'Sahih Muslim 2626', live:'Smile and greet everyone at breakfast.', q:{q:'Meeting your brother with a cheerful face is…', o:['A good deed','Too small to matter','Silly','Only for Eid'], a:0}}
+  ];
+  var WEEK_AYAT = [
+    {id:'a_remember', ar:'فاذكروني أذكركم', tr:'Fadhkuruni adhkurkum', en:'So remember Me; I will remember you.', s:'Quran 2:152', live:'Say SubhanAllah 10 times after each salah.', q:{q:'If we remember Allah, what does He do?', o:['He remembers us','Nothing','He forgets us','He is angry'], a:0}},
+    {id:'a_ease', ar:'فإن مع العسر يسرا', tr:'Fa inna ma’al-’usri yusra', en:'Indeed, with hardship comes ease.', s:'Quran 94:5–6', live:'When something is hard this week, say this ayah and keep trying.', q:{q:'What comes with hardship?', o:['Ease','More hardship','Nothing','Sadness only'], a:0}},
+    {id:'a_parents', ar:'وبالوالدين إحسانا', tr:'Wa bil-walidayni ihsana', en:'And be excellent to your parents.', s:'Quran 17:23', live:'Do one helpful thing for ABBA and Mimi every day.', q:{q:'How should we treat our parents?', o:['With excellence and kindness','Any way we like','Only on Eid','By ignoring them'], a:0}},
+    {id:'a_brothers', ar:'إنما المؤمنون إخوة', tr:'Innamal-mu’minuna ikhwah', en:'The believers are brothers (one family).', s:'Quran 49:10', live:'Make peace quickly if you argue with your sibling.', q:{q:'The believers are…', o:['Brothers, like one family','Strangers','Enemies','Only neighbours'], a:0}},
+    {id:'a_patient', ar:'إن الله مع الصابرين', tr:'Innallaha ma’as-sabirin', en:'Indeed, Allah is with the patient.', s:'Quran 2:153', live:'Wait your turn patiently all week — in games, at meals, everywhere.', q:{q:'Allah is with…', o:['The patient','The fastest','The loudest','The richest'], a:0}},
+    {id:'a_knowledge', ar:'رب زدني علما', tr:'Rabbi zidni ’ilma', en:'My Lord, increase me in knowledge.', s:'Quran 20:114', live:'Say this dua before homework and reading every day.', q:{q:'What do we ask Allah for in this ayah?', o:['More knowledge','More toys','More sleep','More sweets'], a:0}},
+    {id:'a_tawakkul', ar:'ومن يتوكل على الله فهو حسبه', tr:'Wa man yatawakkal ’alallahi fahuwa hasbuh', en:'Whoever puts their trust in Allah, He is enough for them.', s:'Quran 65:3', live:'Before a test or a hard task, do your best and trust Allah.', q:{q:'If we trust Allah, He is…', o:['Enough for us','Far away','Busy','Not listening'], a:0}},
+    {id:'a_muhsin', ar:'إن الله يحب المحسنين', tr:'Innallaha yuhibbul-muhsinin', en:'Indeed, Allah loves those who do good.', s:'Quran 2:195', live:'Do every job this week as well as you possibly can.', q:{q:'Who does Allah love?', o:['Those who do good','Those who are lazy','Those who show off','Those who are rude'], a:0}},
+    {id:'a_goodword', ar:'وقولوا للناس حسنا', tr:'Wa qulu lin-nasi husna', en:'And speak to people in a good way.', s:'Quran 2:83', live:'No unkind words this week — only good ones.', q:{q:'How should we speak to people?', o:['In a good way','Rudely','Loudly','Not at all'], a:0}},
+    {id:'a_hearts', ar:'ألا بذكر الله تطمئن القلوب', tr:'Ala bi dhikrillahi tatma’innul-qulub', en:'Surely, in the remembrance of Allah do hearts find peace.', s:'Quran 13:28', live:'When you feel worried, say La ilaha illallah quietly.', q:{q:'What gives our hearts peace?', o:['Remembering Allah','Watching TV','Eating sweets','Shouting'], a:0}},
+    {id:'a_atom', ar:'فمن يعمل مثقال ذرة خيرا يره', tr:'Faman ya’mal mithqala dharratin khayran yarah', en:'Whoever does an atom’s weight of good will see it.', s:'Quran 99:7', live:'Count your tiny good deeds every day — none of them are lost!', q:{q:'Even a tiny good deed…', o:['Will be seen and rewarded','Is lost','Does not count','Is forgotten'], a:0}},
+    {id:'a_favours', ar:'فبأي آلاء ربكما تكذبان', tr:'Fabi ayyi ala’i Rabbikuma tukadhdhiban', en:'So which of the favours of your Lord would you deny?', s:'Quran 55:13', live:'Each night, tell the family three blessings you had that day.', q:{q:'This ayah reminds us to…', o:['Be thankful for Allah’s blessings','Complain','Forget our blessings','Ask for more toys'], a:0}},
+    {id:'a_cooperate', ar:'وتعاونوا على البر والتقوى', tr:'Wa ta’awanu ’alal-birri wat-taqwa', en:'Help one another in goodness and in being mindful of Allah.', s:'Quran 5:2', live:'Do one chore together as a team with your siblings.', q:{q:'We should help each other in…', o:['Goodness','Naughty things','Cheating','Nothing'], a:0}},
+    {id:'a_purify', ar:'إن الله يحب التوابين ويحب المتطهرين', tr:'Innallaha yuhibbut-tawwabina wa yuhibbul-mutatahhirin', en:'Indeed, Allah loves those who turn back to Him and loves those who keep themselves clean.', s:'Quran 2:222', live:'Make a careful, complete wudu for every salah this week.', q:{q:'Allah loves those who…', o:['Keep themselves clean and say sorry to Him','Stay messy','Never pray','Show off'], a:0}},
+    {id:'a_mercyparents', ar:'رب ارحمهما كما ربياني صغيرا', tr:'Rabbir-hamhuma kama rabbayani saghira', en:'My Lord, have mercy on them (my parents) as they raised me when I was small.', s:'Quran 17:24', live:'Make this dua for your parents after every salah.', q:{q:'Who do we ask Allah to have mercy on in this ayah?', o:['Our parents','Our toys','Our friends only','Nobody'], a:0}},
+    {id:'a_callme', ar:'ادعوني أستجب لكم', tr:'Ud’uni astajib lakum', en:'Call upon Me; I will answer you.', s:'Quran 40:60', live:'Make your own dua to Allah every night before sleeping.', q:{q:'What does Allah say He will do when we call Him?', o:['Answer us','Ignore us','Wait forever','Nothing'], a:0}},
+    {id:'a_humble', ar:'ولا تمش في الأرض مرحا', tr:'Wa la tamshi fil-ardi marahan', en:'And do not walk on the earth with pride.', s:'Quran 17:37', live:'If you win a game, be humble and say Alhamdulillah.', q:{q:'How should we walk on the earth?', o:['Humbly, without pride','Showing off','Pushing others','Very proudly'], a:0}},
+    {id:'a_mashaAllah', ar:'ما شاء الله لا قوة إلا بالله', tr:'Ma sha’ Allah, la quwwata illa billah', en:'What Allah wills (happens); there is no power except with Allah.', s:'Quran 18:39', live:'Say MashaAllah whenever you see something nice.', q:{q:'When we see something nice, we say…', o:['MashaAllah','Nothing','I want it','Give it to me'], a:0}}
+  ];
+
+  /* Daily duas */
+  var DUAS = [
+    {id:'eat', when:'Before eating', ic:'🍽️', ar:'بسم الله', tr:'Bismillah', en:'In the name of Allah.', s:'Sahih al-Bukhari 5376 · Sahih Muslim 2022'},
+    {id:'eatforgot', when:'If you forgot Bismillah at the start of eating', ic:'🥢', ar:'بسم الله أوله وآخره', tr:'Bismillahi awwalahu wa akhirahu', en:'In the name of Allah, at its beginning and its end.', s:'Abu Dawud 3767 · at-Tirmidhi 1858 (sahih)'},
+    {id:'aftereat', when:'After eating', ic:'😋', ar:'الحمد لله', tr:'Alhamdulillah', en:'All praise is for Allah.', s:'Sahih Muslim 2734'},
+    {id:'sleep', when:'Before sleeping', ic:'🛏️', ar:'باسمك اللهم أموت وأحيا', tr:'Bismika Allahumma amutu wa ahya', en:'In Your name, O Allah, I die and I live.', s:'Sahih al-Bukhari 6324'},
+    {id:'wake', when:'Waking up', ic:'🌅', ar:'الحمد لله الذي أحيانا بعد ما أماتنا وإليه النشور', tr:'Alhamdu lillahil-ladhi ahyana ba’da ma amatana wa ilayhin-nushur', en:'All praise is for Allah who gave us life after He made us sleep, and to Him we will return.', s:'Sahih al-Bukhari 6324'},
+    {id:'toiletin', when:'Going into the bathroom (say it before entering)', ic:'🚻', ar:'اللهم إني أعوذ بك من الخبث والخبائث', tr:'Allahumma inni a’udhu bika minal-khubuthi wal-khaba’ith', en:'O Allah, I seek Your protection from all evil and evil things.', s:'Sahih al-Bukhari 142 · Sahih Muslim 375'},
+    {id:'toiletout', when:'Coming out of the bathroom', ic:'🚪', ar:'غفرانك', tr:'Ghufranak', en:'(O Allah) I ask for Your forgiveness.', s:'Abu Dawud 30 · at-Tirmidhi 7 (sahih)'},
+    {id:'leavehome', when:'Leaving the house', ic:'🏠', ar:'بسم الله توكلت على الله ولا حول ولا قوة إلا بالله', tr:'Bismillahi tawakkaltu ’alallah, wa la hawla wa la quwwata illa billah', en:'In the name of Allah, I trust in Allah; there is no power and no strength except with Allah.', s:'Abu Dawud 5095 · at-Tirmidhi 3426 (sahih)'},
+    {id:'car', when:'Getting in the car (travelling)', ic:'🚗', ar:'سبحان الذي سخر لنا هذا وما كنا له مقرنين وإنا إلى ربنا لمنقلبون', tr:'Subhanal-ladhi sakhkhara lana hadha wa ma kunna lahu muqrinin, wa inna ila Rabbina lamunqalibun', en:'Glory be to the One who made this ride easy for us — we could never have done it ourselves — and to our Lord we will return.', s:'Quran 43:13–14 · Sahih Muslim 1342'},
+    {id:'masjid', when:'Going into the masjid', ic:'🕌', ar:'اللهم افتح لي أبواب رحمتك', tr:'Allahumma-ftah li abwaba rahmatik', en:'O Allah, open for me the doors of Your mercy.', s:'Sahih Muslim 713'},
+    {id:'afterwudu', when:'After wudu', ic:'💧', ar:'أشهد أن لا إله إلا الله وحده لا شريك له وأشهد أن محمدا عبده ورسوله', tr:'Ashhadu an la ilaha illallahu wahdahu la sharika lah, wa ashhadu anna Muhammadan ’abduhu wa rasuluh', en:'I bear witness that there is no god but Allah alone, with no partner, and that Muhammad is His servant and Messenger.', s:'Sahih Muslim 234'},
+    {id:'sneeze', when:'When you sneeze', ic:'🤧', ar:'الحمد لله', tr:'Alhamdulillah — the listener says "Yarhamukallah", and you reply "Yahdikumullahu wa yuslihu balakum"', en:'All praise is for Allah. (May Allah have mercy on you. — May Allah guide you and set your affairs right.)', s:'Sahih al-Bukhari 6224'},
+    {id:'angry', when:'When you feel angry', ic:'😤', ar:'أعوذ بالله من الشيطان الرجيم', tr:'A’udhu billahi minash-shaytanir-rajim', en:'I seek protection with Allah from Shaytan, the outcast.', s:'Sahih al-Bukhari 3282 · Sahih Muslim 2610'},
+    {id:'parents', when:'For your parents', ic:'💞', ar:'رب ارحمهما كما ربياني صغيرا', tr:'Rabbir-hamhuma kama rabbayani saghira', en:'My Lord, have mercy on them as they raised me when I was small.', s:'Quran 17:24'},
+    {id:'knowledge', when:'Before studying', ic:'📚', ar:'رب زدني علما', tr:'Rabbi zidni ’ilma', en:'My Lord, increase me in knowledge.', s:'Quran 20:114'},
+    {id:'rain', when:'When it rains', ic:'🌧️', ar:'اللهم صيبا نافعا', tr:'Allahumma sayyiban nafi’a', en:'O Allah, make it a helpful rain.', s:'Sahih al-Bukhari 1032'}
+  ];
+
+  /* Learn games: put-in-order and "what do we say?" */
+  var ORDER_SETS = {
+    wudu: {n:'Wudu Steps', ic:'💧', intro:'Put the steps of wudu in the right order.', s:'Quran 5:6 · Sahih al-Bukhari 159 · Sahih Muslim 226', steps:[
+      {ic:'🤲', t:'Make the intention and say Bismillah'},
+      {ic:'✋', t:'Wash both hands 3 times'},
+      {ic:'👄', t:'Rinse the mouth 3 times'},
+      {ic:'👃', t:'Rinse the nose 3 times'},
+      {ic:'😊', t:'Wash the face 3 times'},
+      {ic:'💪', t:'Wash the arms up to the elbows — right, then left'},
+      {ic:'💆', t:'Wipe the head with wet hands'},
+      {ic:'👂', t:'Wipe the ears'},
+      {ic:'🦶', t:'Wash the feet up to the ankles — right, then left'},
+      {ic:'☝️', t:'Say the dua after wudu'}
+    ]},
+    salah: {n:'Salah Steps', ic:'🕌', intro:'Put the main steps of salah in order (one rak’ah, then the ending).', s:'Sahih al-Bukhari 757 · Sahih Muslim 772', steps:[
+      {ic:'🕋', t:'Stand facing the Qiblah with the intention'},
+      {ic:'🙌', t:'Raise the hands: "Allahu Akbar"'},
+      {ic:'📖', t:'Recite Surah Al-Fatihah'},
+      {ic:'⤵️', t:'Ruku’ (bow): "Subhana Rabbiyal-’Azim"'},
+      {ic:'⬆️', t:'Stand up: "Sami’allahu liman hamidah"'},
+      {ic:'⬇️', t:'Sujud: "Subhana Rabbiyal-A’la"'},
+      {ic:'🧎', t:'Sit up between the two sujud'},
+      {ic:'⬇️', t:'Second sujud'},
+      {ic:'☝️', t:'In the last rak’ah, sit for the Tashahhud'},
+      {ic:'👋', t:'Salam to the right, then to the left'}
+    ]},
+    prayers: {n:'5 Daily Prayers', ic:'🕐', intro:'Put the five daily prayers in order, starting from dawn.', s:'Quran 17:78 · Sahih Muslim 612', steps:[
+      {ic:'🌅', t:'Fajr — at dawn'},
+      {ic:'☀️', t:'Dhuhr — after midday'},
+      {ic:'🌤️', t:'Asr — in the afternoon'},
+      {ic:'🌇', t:'Maghrib — at sunset'},
+      {ic:'🌙', t:'Isha — at night'}
+    ]},
+    prophets: {n:'Prophets in Order', ic:'📜', intro:'Who came first? Put these prophets in order of time.', s:'Order from the Quran: 57:26, 40:34, 2:246, 61:6, 33:40', steps:[
+      {ic:'🌱', t:'Adam'},
+      {ic:'🚢', t:'Nuh'},
+      {ic:'🔥', t:'Ibrahim'},
+      {ic:'⭐', t:'Yusuf'},
+      {ic:'🌊', t:'Musa'},
+      {ic:'📜', t:'Dawud'},
+      {ic:'🕊️', t:'Isa'},
+      {ic:'🌙', t:'Muhammad ﷺ — the last prophet'}
+    ]},
+    islam: {n:'Pillars of Islam', ic:'🏛️', intro:'Put the 5 pillars of Islam in order.', s:'Sahih Muslim 16 · Sahih al-Bukhari 8', steps:[
+      {ic:'☝️', t:'Shahadah — La ilaha illallah, Muhammadur Rasulullah'},
+      {ic:'🧎', t:'Salah — praying five times a day'},
+      {ic:'💰', t:'Zakah — giving to those in need'},
+      {ic:'🌙', t:'Sawm — fasting in Ramadan'},
+      {ic:'🕋', t:'Hajj — pilgrimage to Makkah'}
+    ]},
+    iman: {n:'Pillars of Iman', ic:'💚', intro:'Put the 6 things we believe in, in the order the Prophet ﷺ said them.', s:'Sahih Muslim 8', steps:[
+      {ic:'✨', t:'Allah'},
+      {ic:'🕊️', t:'His angels'},
+      {ic:'📖', t:'His books'},
+      {ic:'📜', t:'His messengers'},
+      {ic:'⌛', t:'The Last Day'},
+      {ic:'⚖️', t:'Al-Qadar — Allah’s decree, the good and the bad'}
+    ]},
+    months: {n:'Islamic Months', ic:'🌙', intro:'Put the 12 Islamic (Hijri) months in order.', s:'Quran 9:36 (Allah made the months twelve) · the Hijri calendar', steps:[
+      {ic:'1️⃣', t:'Muharram'},{ic:'2️⃣', t:'Safar'},{ic:'3️⃣', t:'Rabi’ al-Awwal'},{ic:'4️⃣', t:'Rabi’ al-Akhir'},
+      {ic:'5️⃣', t:'Jumada al-Ula'},{ic:'6️⃣', t:'Jumada al-Akhirah'},{ic:'7️⃣', t:'Rajab'},{ic:'8️⃣', t:'Sha’ban'},
+      {ic:'🌙', t:'Ramadan — the month of fasting'},{ic:'🎉', t:'Shawwal — Eid al-Fitr'},{ic:'🕊️', t:'Dhul-Qa’dah'},{ic:'🕋', t:'Dhul-Hijjah — Hajj and Eid al-Adha'}
+    ]},
+    surahs: {n:'Last 10 Surahs', ic:'📗', intro:'Put the last ten surahs of the Quran in order (105 to 114).', s:'Order of the mushaf, surahs 105–114', steps:[
+      {ic:'🐘', t:'Al-Fil (105)'},{ic:'🐪', t:'Quraysh (106)'},{ic:'🤲', t:'Al-Ma’un (107)'},{ic:'🌊', t:'Al-Kawthar (108)'},{ic:'✋', t:'Al-Kafirun (109)'},
+      {ic:'🏳️', t:'An-Nasr (110)'},{ic:'🔥', t:'Al-Masad (111)'},{ic:'☝️', t:'Al-Ikhlas (112)'},{ic:'🌅', t:'Al-Falaq (113)'},{ic:'👥', t:'An-Nas (114)'}
+    ]}
+  };
+  var SAY_WHAT = [
+    {ic:'🍽️', sit:'You are about to eat', a:'Bismillah', w:['Alhamdulillah','Astaghfirullah']},
+    {ic:'😋', sit:'You finished your food', a:'Alhamdulillah', w:['Bismillah','InshaAllah']},
+    {ic:'🤧', sit:'You sneezed', a:'Alhamdulillah', w:['MashaAllah','Bismillah']},
+    {ic:'🗣️', sit:'Someone sneezed and said Alhamdulillah', a:'Yarhamukallah', w:['Bismillah','InshaAllah']},
+    {ic:'👋', sit:'You meet someone', a:'As-salamu alaikum', w:['Alhamdulillah','Bye bye']},
+    {ic:'🤝', sit:'Someone says As-salamu alaikum to you', a:'Wa alaikumus-salam', w:['Bismillah','MashaAllah']},
+    {ic:'🌸', sit:'You see something beautiful', a:'MashaAllah', w:['Astaghfirullah','Bismillah']},
+    {ic:'📅', sit:'You plan to do something tomorrow', a:'InshaAllah', w:['Alhamdulillah','Yarhamukallah']},
+    {ic:'😔', sit:'You made a mistake', a:'Astaghfirullah', w:['MashaAllah','InshaAllah']},
+    {ic:'🎁', sit:'Someone gives you a gift or helps you', a:'JazakAllahu khayran', w:['Astaghfirullah','Bismillah']},
+    {ic:'😤', sit:'You feel angry', a:'A’udhu billahi minash-shaytanir-rajim', w:['MashaAllah','Yarhamukallah']},
+    {ic:'💔', sit:'Something sad happens, or you lose something', a:'Inna lillahi wa inna ilayhi raji’un', w:['MashaAllah','Bismillah']},
+    {ic:'🚗', sit:'You start a journey in the car', a:'Subhanal-ladhi sakhkhara lana hadha', w:['Ghufranak','Yarhamukallah']},
+    {ic:'🛏️', sit:'You go to sleep', a:'Bismika Allahumma amutu wa ahya', w:['Ghufranak','JazakAllahu khayran']}
+  ];
+  var LEARN_GAMES = [
+    {id:'wudu', n:'Wudu Steps', ic:'💧', kind:'order', d:'Put wudu in order'},
+    {id:'salah', n:'Salah Steps', ic:'🕌', kind:'order', d:'Steps of the prayer'},
+    {id:'saywhat', n:'What Do We Say?', ic:'🗣️', kind:'say', d:'Bismillah, MashaAllah… (all ages)'},
+    {id:'prayers', n:'5 Daily Prayers', ic:'🕐', kind:'order', d:'Fajr to Isha'},
+    {id:'duamatch', n:'Dua Match', ic:'🤲', kind:'dua', d:'Which dua, when?'},
+    {id:'prophets', n:'Prophets in Order', ic:'📜', kind:'order', d:'Who came first?'},
+    {id:'islam', n:'Pillars of Islam', ic:'🏛️', kind:'order', d:'The 5 pillars'},
+    {id:'iman', n:'Pillars of Iman', ic:'💚', kind:'order', d:'The 6 beliefs'},
+    {id:'surahs', n:'Last 10 Surahs', ic:'\uD83D\uDCD7', kind:'order', d:'Al-Fil to An-Nas'},
+    {id:'months', n:'Islamic Months', ic:'\uD83C\uDF19', kind:'order', d:'Muharram to Dhul-Hijjah'}
+  ];
+  /* ================= LEARN: logic + screens ================= */
+  var LEARN_DEFAULT_PTS = {story:5, perfect:2, little:2, gem:5, dua:3, talk:2, game:2, gameCap:6, review:1};
+  var LEARN_PTS_LABELS = [
+    ['story','Passing a story quiz (first time)'],
+    ['perfect','Extra for a perfect 5/5'],
+    ['little','Little listener finishing a story'],
+    ['gem','Memorising the Hadith/Ayah of the Week'],
+    ['dua','Memorising a dua'],
+    ['talk','Family talk after a story'],
+    ['game','Finishing a learn game (once a day each)'],
+    ['gameCap','Most learn-game points per day'],
+    ['review','Doing today’s Memory Box review']
+  ];
+  var BOX_STEPS = [1, 3, 7, 14, 30];   // days until a remembered item comes back
+  var GEM_EPOCH = new Date(2026, 0, 4).getTime();   // a Sunday
+  var GEMS = (function(){ var out = []; for(var i=0;i<Math.max(WEEK_HADITH.length, WEEK_AYAT.length);i++){ if(WEEK_HADITH[i]) out.push(Object.assign({kind:'hadith'}, WEEK_HADITH[i])); if(WEEK_AYAT[i]) out.push(Object.assign({kind:'ayah'}, WEEK_AYAT[i])); } return out; })();
+
+  function lpts(k){ var lp = state.data.learnPts || {}; return typeof lp[k]==='number' ? lp[k] : LEARN_DEFAULT_PTS[k]; }
+  function learnOf(p){
+    if(!p.learn || typeof p.learn !== 'object') p.learn = {};
+    var L = p.learn;
+    ['read','passed','box','duas','gems','talk'].forEach(function(k){ if(!L[k] || typeof L[k] !== 'object' || Array.isArray(L[k])) L[k] = {}; });
+    if(!L.gameDay || typeof L.gameDay !== 'object' || L.gameDay.date !== todayStr()) L.gameDay = {date: todayStr(), done:{}, pts:0};
+    if(!L.gameDay.done || typeof L.gameDay.done !== 'object') L.gameDay.done = {};
+    return L;
+  }
+  function migrateLearn(d){
+    if(!d.learnPts || typeof d.learnPts !== 'object') d.learnPts = {};
+    Object.keys(LEARN_DEFAULT_PTS).forEach(function(k){ if(typeof d.learnPts[k] !== 'number' || isNaN(d.learnPts[k]) || d.learnPts[k] < 0) d.learnPts[k] = LEARN_DEFAULT_PTS[k]; });
+    if(!d.learnReviewed || typeof d.learnReviewed !== 'object') d.learnReviewed = {};
+    if(typeof d.learnOn !== 'boolean') d.learnOn = true;
+    d.people.forEach(function(p){
+      if(typeof p.lifetime.learn !== 'number') p.lifetime.learn = 0;
+      if(!Array.isArray(p.learnRequests)) p.learnRequests = [];
+      if(p.role === 'kid'){
+        if(p.learnLevel !== 'big' && p.learnLevel !== 'little') p.learnLevel = /^zohrah$/i.test(String(p.name||'').trim()) ? 'little' : 'big';
+        if(!p.learn || typeof p.learn !== 'object') p.learn = {read:{}, passed:{}, box:{}, duas:{}, gems:{}, talk:{}, gameDay:{date:'', done:{}, pts:0}};
+      }
+    });
+  }
+  function isLittle(p){ return p && p.learnLevel === 'little'; }
+  function addDays(n){ return dateKey(Date.now() + n*86400000); }
+
+  /* ---- gem of the week ---- */
+  function gemIndex(){
+    var ws = weekStartKey().split('-');
+    var t = new Date(+ws[0], +ws[1]-1, +ws[2]).getTime();
+    var w = Math.round((t - GEM_EPOCH) / (7*86400000));
+    return ((w % GEMS.length) + GEMS.length) % GEMS.length;
+  }
+  function weekGem(){ return GEMS[gemIndex()]; }
+  function gemById(id){ return GEMS.filter(function(g){ return g.id===id; })[0]; }
+  function duaById(id){ return DUAS.filter(function(x){ return x.id===id; })[0]; }
+  function chapterById(id){ return STORY_CHAPTERS.filter(function(c){ return c.id===id; })[0]; }
+  function pendingLearn(p, kind, ref){ return (p.learnRequests||[]).some(function(r){ return r.kind===kind && r.ref===ref; }); }
+
+  /* ---- read aloud ---- */
+  function lspeak(text, lang){
+    try{
+      if(!('speechSynthesis' in window)){ showToast('Read-aloud isn’t available on this device','error'); return; }
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(String(text||'').replace(/ﷺ/g, 'sallallahu alayhi wa sallam'));
+      u.lang = lang || 'en-GB'; u.rate = lang && lang.indexOf('ar')===0 ? 0.75 : 0.92;
+      var vs = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+      var v = vs.filter(function(x){ return x.lang && x.lang.toLowerCase().indexOf(u.lang.slice(0,2).toLowerCase())===0; })[0];
+      if(v) u.voice = v;
+      window.speechSynthesis.speak(u);
+    }catch(e){ showToast('Read-aloud isn’t available on this device','error'); }
+  }
+  function stopSpeak(){ try{ if('speechSynthesis' in window) window.speechSynthesis.cancel(); }catch(e){} }
+  function sayBtn(text, lang, label){ return '<button class="ln-say" data-action="learn-speak" data-say="'+escapeHtml(text)+'" data-lang="'+(lang||'en-GB')+'">🔊 '+(label||'Listen')+'</button>'; }
+
+  /* ---- chapters ---- */
+  function chapterState(p, idx){
+    var ch = STORY_CHAPTERS[idx], L = learnOf(p);
+    if(L.passed[ch.id]) return 'done';
+    if(!state.data.learnReviewed[ch.id]) return 'review';
+    if(idx > 0 && !L.passed[STORY_CHAPTERS[idx-1].id]) return 'locked';
+    return 'open';
+  }
+  function shuffledQ(src){
+    var idx = src.o.map(function(_, i){ return i; });
+    shuffle(idx);
+    return {q:src.q, o:idx.map(function(i){ return src.o[i]; }), a:idx.indexOf(src.a)};
+  }
+  function boxQuestion(key){
+    var parts = key.split(':');
+    if(parts[0]==='q'){ var ch = chapterById(parts[1]), q = ch && ch.quiz[+parts[2]]; return q ? Object.assign(shuffledQ(q), {from:ch.ic+' '+ch.n}) : null; }
+    if(parts[0]==='g'){ var g = gemById(parts[1]); return g ? Object.assign(shuffledQ(g.q), {from:'💎 '+(g.kind==='ayah'?'Ayah':'Hadith')+' of the Week'}) : null; }
+    if(parts[0]==='d'){
+      var d = duaById(parts[1]); if(!d) return null;
+      var others = shuffle(DUAS.filter(function(x){ return x.id!==d.id && x.tr!==d.tr; })).slice(0,2).map(function(x){ return x.tr; });
+      return Object.assign(shuffledQ({q:'Which dua do we say: '+d.when.toLowerCase()+'?', o:[d.tr].concat(others), a:0}), {from:'🤲 Duas'});
+    }
+    return null;
+  }
+  function boxAdd(p, key){ var L = learnOf(p); if(!L.box[key]) L.box[key] = {lv:0, due:addDays(1)}; }
+  function boxDue(p){
+    var L = learnOf(p), t = todayStr();
+    return Object.keys(L.box).filter(function(k){ return L.box[k] && L.box[k].due <= t && boxQuestion(k); });
+  }
+
+  /* ---- screens ---- */
+  function lv(){ return state.ui.learn || (state.ui.learn = {view:'home', sub:'stories'}); }
+  function setLearnView(o){
+    var cur = lv(); stopSpeak();
+    state.ui.learn = Object.assign({sub:cur.sub||'stories', kid:cur.kid}, o);
+    state.route.tab = o.view + '|' + (o.ch||o.game||'') + '|' + (o.page||0);
+  }
+  function renderLearn(p){
+    var v = lv();
+    if(v.kid !== p.id){ state.ui.learn = v = {view:'home', sub:v.sub||'stories', kid:p.id}; }
+    learnOf(p);
+    if(!state.data.learnOn) return renderKidSwitch() + '<div class="empty-state"><span class="em">📖</span>Learning is switched off in Parent Mode.</div>';
+    if(v.view==='read') return renderStoryReader(p, v);
+    if(v.view==='quiz' || v.view==='review') return renderLearnQuiz(p, v);
+    if(v.view==='game') return renderLearnGame(p, v);
+    return renderLearnHome(p, v);
+  }
+  function renderGemCard(p, compact){
+    var g = weekGem(), L = p ? learnOf(p) : null;
+    var head = g.kind==='ayah' ? '📖 Ayah of the Week' : '💎 Hadith of the Week';
+    if(compact){
+      return '<button class="ln-gem compact" data-action="nav" data-tab="learn"><p class="ln-gem-h">'+head+'</p>'+
+        (g.ar ? '<p class="ln-ar sm">'+g.ar+'</p>' : '')+'<p class="ln-gem-t">“'+escapeHtml(g.en)+'”</p><p class="ln-src">'+escapeHtml(g.s)+'</p></button>';
+    }
+    var btn = '';
+    if(p){
+      if(L.gems[g.id]) btn = '<div class="ln-done">✅ Memorised! MashaAllah</div>';
+      else if(pendingLearn(p, 'gem', g.id)) btn = '<div class="ln-wait">⏳ Waiting for a parent to listen</div>';
+      else btn = '<button class="btn-primary" style="margin-top:10px;" data-action="learn-request" data-kind="gem" data-ref="'+g.id+'" data-person="'+p.id+'">✋ I’ve memorised it (+'+lpts('gem')+')</button>';
+    }
+    return '<div class="ln-gem"><p class="ln-gem-h">'+head+' <span class="ln-wk">ends '+weekEndLabel()+'</span></p>'+
+      (g.ar ? '<p class="ln-ar">'+g.ar+'</p><p class="ln-tr">'+escapeHtml(g.tr)+'</p>' : '')+
+      '<p class="ln-gem-t">“'+escapeHtml(g.en)+'”</p><p class="ln-src">📚 '+escapeHtml(g.s)+'</p>'+
+      '<div class="ln-live">🌱 <b>Live it this week:</b> '+escapeHtml(g.live)+'</div>'+
+      '<div class="ln-row">'+(g.ar ? sayBtn(g.ar, 'ar-SA', 'Arabic') : '')+sayBtn(g.en, 'en-GB', g.ar?'Meaning':'Listen')+'</div>'+btn+'</div>';
+  }
+  function renderLearnHome(p, v){
+    var L = learnOf(p), due = boxDue(p), sub = v.sub || 'stories';
+    var passedN = STORY_CHAPTERS.filter(function(c){ return L.passed[c.id]; }).length;
+    var html = renderKidSwitch()+
+      '<div class="ln-head"><div><p class="eyebrow">'+escapeHtml(p.name)+'’s library</p><h2 class="disp">📖 Learn</h2></div>'+
+        '<div class="ln-pts">⭐ '+fmtNum(p.lifetime.learn||0)+'<small>learning pts</small></div></div>'+
+      renderGemCard(p, false);
+    if(due.length){
+      var reviewed = L.lastReview === todayStr();
+      html += '<button class="ln-box" data-action="learn-review-start" data-person="'+p.id+'"><span class="ln-box-ic">🧠</span><span class="grow"><b>Memory Box</b><small>'+due.length+' thing'+(due.length>1?'s':'')+' to remember today'+(reviewed?'':' · +'+lpts('review'))+'</small></span><span class="ln-go">▶</span></button>';
+    } else if(Object.keys(L.box).length){
+      html += '<div class="ln-box calm"><span class="ln-box-ic">🧠</span><span class="grow"><b>Memory Box</b><small>All caught up — '+Object.keys(L.box).length+' things learned. New review tomorrow!</small></span></div>';
+    }
+    html += '<div class="ln-seg">'+[['stories','📚 Stories'],['duas','🤲 Duas'],['games','🎮 Games']].map(function(s){
+      return '<button class="'+(sub===s[0]?'active':'')+'" data-action="learn-sub" data-sub="'+s[0]+'">'+s[1]+'</button>'; }).join('')+'</div>';
+    if(sub==='duas') return html + renderDuaList(p);
+    if(sub==='games') return html + renderLearnGameList(p);
+    html += '<p class="section-title">Stories of the Prophets · '+passedN+'/'+STORY_CHAPTERS.length+'</p>'+
+      (isLittle(p) ? '<div class="note-box" style="margin-bottom:10px;">👧 Little listener: ask ABBA or Mimi to read (or tap 🔊) — no quiz needed.</div>' : '')+
+      STORY_CHAPTERS.map(function(ch, i){
+        var st = chapterState(p, i), pass = L.passed[ch.id];
+        var tag = st==='done' ? '<span class="ln-tag ok">✅ '+(pass.score>=0 ? pass.score+'/5' : 'Listened')+'</span>'
+          : st==='review' ? '<span class="ln-tag">🔒 Parent check</span>'
+          : st==='locked' ? '<span class="ln-tag">🔒 Finish ch. '+i+'</span>'
+          : '<span class="ln-tag go">▶ '+(L.read[ch.id] && !isLittle(p) ? 'Quiz' : 'Read')+'</span>';
+        var can = st==='open' || st==='done';
+        return '<button class="ln-ch '+st+'" '+(can?'data-action="learn-open" data-ch="'+ch.id+'"':'data-action="learn-locked" data-st="'+st+'"')+'>'+
+          '<span class="ln-ch-ic">'+ch.ic+'</span><span class="grow"><small>Chapter '+(i+1)+'</small><b>'+escapeHtml(ch.n)+'</b><small>'+escapeHtml(ch.sub)+'</small></span>'+tag+'</button>';
+      }).join('')+
+      '<p class="quest-sub" style="margin:8px 4px 0;">Coming next: '+STORY_COMING.join(' · ')+'</p>'+
+      '<p class="section-title">My story badges</p><div class="badges">'+STORY_CHAPTERS.map(function(ch){
+        return '<div class="badge '+(L.passed[ch.id]?'':'locked')+'"><div class="bi">'+ch.ic+'</div>'+escapeHtml(ch.n.replace('Prophet ',''))+'</div>'; }).join('')+'</div>'+
+      '<div class="note-box" style="margin-top:12px;">📚 Every story comes only from the Quran and sahih hadith, with the source under each page. No pictures of prophets are ever shown.</div>';
+    return html;
+  }
+  function renderStoryReader(p, v){
+    var ch = chapterById(v.ch); if(!ch){ setLearnView({view:'home'}); return renderLearnHome(p, lv()); }
+    var n = ch.pages.length, i = clamp(v.page||0, 0, n-1), pg = ch.pages[i], last = i===n-1, L = learnOf(p);
+    var html = '<div class="ln-reader">'+
+      '<div class="ln-top"><button class="btn-ghost" data-action="learn-back">← Library</button><span class="ln-pg">Page '+(i+1)+' of '+n+'</span></div>'+
+      '<p class="ln-ch-title"><span>'+ch.ic+'</span> '+escapeHtml(ch.n)+'</p>'+
+      '<div class="bar" style="margin:6px 0 14px;"><i style="width:'+Math.round((i+1)/n*100)+'%;background:var(--accent);"></i></div>'+
+      '<div class="ln-page"><p class="ln-text">'+escapeHtml(pg.t)+'</p><p class="ln-src">📚 '+escapeHtml(pg.s)+'</p>'+
+        '<div class="ln-row">'+sayBtn(pg.t, 'en-GB', 'Read to me')+'</div></div>';
+    if(last){
+      html += '<div class="ln-lesson">💡 <b>Lesson:</b> '+escapeHtml(ch.lesson)+'</div>';
+      if(ch.dua) html += '<div class="ln-dua"><p class="ln-gem-h">🤲 Dua from this story</p><p class="ln-ar">'+ch.dua.ar+'</p><p class="ln-tr">'+escapeHtml(ch.dua.tr)+'</p><p class="ln-gem-t">'+escapeHtml(ch.dua.en)+'</p><p class="ln-src">📚 '+escapeHtml(ch.dua.s)+'</p><div class="ln-row">'+sayBtn(ch.dua.ar, 'ar-SA', 'Arabic')+'</div></div>';
+    }
+    html += '<div class="ln-nav">'+
+      (i>0 ? '<button class="btn-secondary" data-action="learn-page" data-d="-1">← Back</button>' : '<span></span>')+
+      (!last ? '<button class="btn-primary" data-action="learn-page" data-d="1">Next →</button>'
+        : L.passed[ch.id] && (isLittle(p) || L.passed[ch.id].score>=0)
+          ? (isLittle(p) ? '<button class="btn-primary" data-action="learn-back">✅ Done</button>' : '<button class="btn-primary" data-action="learn-finish-read" data-ch="'+ch.id+'">📝 Quiz again (for fun)</button>')
+          : isLittle(p) ? '<button class="btn-primary" data-action="learn-finish-read" data-ch="'+ch.id+'">⭐ I listened to the story! (+'+lpts('little')+')</button>'
+          : '<button class="btn-primary" data-action="learn-finish-read" data-ch="'+ch.id+'">✅ I finished — start the quiz</button>')+
+    '</div></div>';
+    return html;
+  }
+  function renderLearnQuiz(p, v){
+    var Q = v.qs[v.i], isRev = v.view==='review', ch = !isRev ? chapterById(v.ch) : null;
+    if(v.finished){
+      var total = v.qs.length, sc = v.score, html = '<div class="ln-reader"><div class="ln-result">';
+      if(isRev){
+        html += '<p class="ln-big">🧠</p><h2 class="disp">Memory Box done!</h2><p>'+sc+' of '+total+' remembered. '+(v.awarded?'+'+v.awarded+' pts ⭐':'')+'</p><p class="quest-sub">Things you remembered come back later; the ones you missed come back tomorrow.</p>';
+      } else if(v.pass){
+        html += '<p class="ln-big">🎉</p><h2 class="disp">MashaAllah! '+sc+'/'+total+'</h2><p>You passed <b>'+escapeHtml(ch.n)+'</b>'+(v.awarded?' · +'+v.awarded+' pts':'')+'</p>'+
+          '<div class="ln-talk"><p class="ln-gem-h">🗣️ Family talk time</p>'+ch.talk.map(function(t){ return '<p>• '+escapeHtml(t)+'</p>'; }).join('')+
+          (learnOf(p).talk[ch.id] ? '<div class="ln-done">✅ You talked about it together</div>'
+            : pendingLearn(p, 'talk', ch.id) ? '<div class="ln-wait">⏳ Waiting for a parent</div>'
+            : '<button class="btn-secondary" style="width:100%;margin-top:8px;" data-action="learn-request" data-kind="talk" data-ref="'+ch.id+'" data-person="'+p.id+'">We talked about it as a family (+'+lpts('talk')+')</button>')+'</div>';
+      } else {
+        html += '<p class="ln-big">📖</p><h2 class="disp">'+sc+'/'+total+' — so close!</h2><p>You need 4 out of 5. Read the story again and you’ll get it, InshaAllah!</p>'+
+          '<button class="btn-primary" style="margin-top:10px;" data-action="learn-open" data-ch="'+ch.id+'">📖 Read it again</button>';
+      }
+      return html + '<button class="btn-secondary" style="width:100%;margin-top:10px;" data-action="learn-back">Back to Learn</button></div></div>';
+    }
+    var ans = v.picked != null;
+    return '<div class="ln-reader">'+
+      '<div class="ln-top"><button class="btn-ghost" data-action="learn-back">✕ Stop</button><span class="ln-pg">'+(isRev?'🧠 Memory Box':'📝 Quiz')+' · '+(v.i+1)+' of '+v.qs.length+'</span></div>'+
+      (Q.from ? '<p class="ln-src" style="margin-bottom:4px;">'+escapeHtml(Q.from)+'</p>' : '<p class="ln-src" style="margin-bottom:4px;">'+ch.ic+' '+escapeHtml(ch.n)+'</p>')+
+      '<p class="ln-q">'+escapeHtml(Q.q)+'</p><div class="ln-opts">'+Q.o.map(function(o, i){
+        var cls = !ans ? '' : i===Q.a ? 'right' : i===v.picked ? 'wrong' : 'dim';
+        return '<button class="ln-opt '+cls+'" '+(ans?'disabled':'data-action="learn-pick" data-i="'+i+'"')+'>'+escapeHtml(o)+'</button>';
+      }).join('')+'</div>'+
+      (ans ? '<p class="ln-fb '+(v.picked===Q.a?'ok':'no')+'">'+(v.picked===Q.a?'✅ Correct!':'❌ The answer is: '+escapeHtml(Q.o[Q.a]))+'</p><button class="btn-primary" data-action="learn-next">'+(v.i+1<v.qs.length?'Next →':'See my score')+'</button>' : '')+
+    '</div>';
+  }
+  function renderDuaList(p){
+    var L = learnOf(p), known = DUAS.filter(function(d){ return L.duas[d.id]; }).length;
+    return '<p class="section-title">Daily duas · '+known+'/'+DUAS.length+' memorised</p>'+DUAS.map(function(d){
+      var st = L.duas[d.id] ? '<div class="ln-done">✅ Memorised</div>'
+        : pendingLearn(p, 'dua', d.id) ? '<div class="ln-wait">⏳ Waiting for a parent to listen</div>'
+        : '<button class="btn-secondary" style="width:100%;margin-top:8px;" data-action="learn-request" data-kind="dua" data-ref="'+d.id+'" data-person="'+p.id+'">✋ I know it by heart (+'+lpts('dua')+')</button>';
+      return '<div class="ln-dua"><p class="ln-gem-h">'+d.ic+' '+escapeHtml(d.when)+'</p><p class="ln-ar">'+d.ar+'</p><p class="ln-tr">'+escapeHtml(d.tr)+'</p><p class="ln-gem-t">'+escapeHtml(d.en)+'</p><p class="ln-src">📚 '+escapeHtml(d.s)+'</p>'+
+        '<div class="ln-row">'+sayBtn(d.ar, 'ar-SA', 'Arabic')+sayBtn(d.en, 'en-GB', 'Meaning')+'</div>'+st+'</div>';
+    }).join('');
+  }
+  function renderLearnGameList(p){
+    var L = learnOf(p), gd = L.gameDay;
+    return '<p class="section-title">Learn games</p><p class="quest-sub" style="margin:-4px 4px 10px;">These don’t use up your daily games. +'+lpts('game')+' the first time you finish each one today (up to '+lpts('gameCap')+' a day) · today: '+(gd.pts||0)+'/'+lpts('gameCap')+'</p>'+
+      '<div class="ln-games">'+LEARN_GAMES.map(function(g){
+        return '<button class="ln-game" data-action="learn-game" data-game="'+g.id+'"><span class="ln-game-ic">'+g.ic+'</span><b>'+escapeHtml(g.n)+'</b><small>'+escapeHtml(g.d)+'</small>'+(gd.done[g.id]?'<span class="ln-tick">✓ today</span>':'')+'</button>';
+      }).join('')+'</div>';
+  }
+
+  /* ---- learn games ---- */
+  function startLearnGame(p, id){
+    var g = LEARN_GAMES.filter(function(x){ return x.id===id; })[0]; if(!g) return;
+    var o = {view:'game', game:id, kind:g.kind, mistakes:0, wrong:null, miss:0};
+    if(g.kind==='order'){
+      var set = ORDER_SETS[id];
+      o.left = shuffle(set.steps.map(function(_, i){ return i; }));
+      o.placed = [];
+    } else if(g.kind==='say'){
+      o.qs = shuffle(SAY_WHAT.slice()).slice(0, 6).map(function(s){ var opts = shuffle([s.a].concat(s.w)); return {ic:s.ic, q:s.sit, o:opts, a:opts.indexOf(s.a)}; });
+      o.i = 0; o.score = 0; o.picked = null;
+    } else {
+      o.qs = shuffle(DUAS.slice()).slice(0, 6).map(function(d){
+        var others = shuffle(DUAS.filter(function(x){ return x.id!==d.id && x.tr!==d.tr; })).slice(0, 2).map(function(x){ return x.tr; });
+        var opts = shuffle([d.tr].concat(others)); return {ic:d.ic, q:d.when, o:opts, a:opts.indexOf(d.tr)};
+      });
+      o.i = 0; o.score = 0; o.picked = null;
+    }
+    setLearnView(o);
+  }
+  function finishLearnGame(p, v){
+    v.finished = true;
+    var won = v.kind==='order' ? true : v.score >= 4;
+    v.won = won;
+    if(!won) return;
+    var L = learnOf(p), gd = L.gameDay, give = 0;
+    if(!gd.done[v.game]){
+      gd.done[v.game] = true;
+      give = Math.max(0, Math.min(lpts('game'), lpts('gameCap') - (gd.pts||0)));
+      if(give){ gd.pts = (gd.pts||0) + give; earn(p, give, 'learn'); }
+      var meta = LEARN_GAMES.filter(function(x){ return x.id===v.game; })[0];
+      addHistory({personId:p.id, kind:'daily', category:'learn', label:meta.ic+' Finished '+meta.n, points:give});
+      addSkill(p, 'memory');
+    }
+    v.awarded = give;
+    persist();
+  }
+  function renderLearnGame(p, v){
+    var meta = LEARN_GAMES.filter(function(x){ return x.id===v.game; })[0];
+    var top = '<div class="ln-top"><button class="btn-ghost" data-action="learn-back-games">← Games</button><span class="ln-pg">'+meta.ic+' '+escapeHtml(meta.n)+'</span></div>';
+    if(v.finished){
+      var stars = v.kind==='order' ? (v.mistakes===0 ? 3 : v.mistakes<=2 ? 2 : 1) : (v.score>=6 ? 3 : v.score>=5 ? 2 : v.score>=4 ? 1 : 0);
+      var src = v.kind==='order' ? ORDER_SETS[v.game].s : v.kind==='dua' ? 'Duas from the Quran and sahih hadith' : '';
+      return '<div class="ln-reader">'+top+'<div class="ln-result"><p class="ln-big">'+(v.won?'🎉':'💪')+'</p>'+
+        '<p class="ln-stars">'+'⭐'.repeat(stars)+'<span style="opacity:.25">'+'⭐'.repeat(3-stars)+'</span></p>'+
+        '<h2 class="disp">'+(v.won ? 'MashaAllah!' : 'Good try!')+'</h2>'+
+        '<p>'+(v.kind==='order' ? (v.mistakes ? v.mistakes+' mistake'+(v.mistakes>1?'s':'') : 'No mistakes!') : v.score+' of '+v.qs.length+' right'+(v.won?'':' — get 4 to finish'))+(v.awarded?' · +'+v.awarded+' pts':'')+'</p>'+
+        (v.kind==='order' ? '<div class="ln-list">'+ORDER_SETS[v.game].steps.map(function(s, i){ return '<div class="ln-step ok"><span class="ln-num">'+(i+1)+'</span><span class="ln-sic">'+s.ic+'</span><span>'+escapeHtml(s.t)+'</span></div>'; }).join('')+'</div>' : '')+
+        (src ? '<p class="ln-src" style="margin-top:8px;">📚 '+escapeHtml(src)+'</p>' : '')+
+        '<button class="btn-primary" style="margin-top:12px;" data-action="learn-game" data-game="'+v.game+'">🔁 Play again</button>'+
+        '<button class="btn-secondary" style="width:100%;margin-top:8px;" data-action="learn-back-games">Back to games</button></div></div>';
+    }
+    if(v.kind==='order'){
+      var set = ORDER_SETS[v.game], next = v.placed.length, hint = v.miss >= 2;
+      return '<div class="ln-reader">'+top+'<p class="ln-q" style="font-size:16px;">'+escapeHtml(set.intro)+'</p>'+
+        '<div class="ln-list">'+v.placed.map(function(si, i){ var s = set.steps[si]; return '<div class="ln-step ok"><span class="ln-num">'+(i+1)+'</span><span class="ln-sic">'+s.ic+'</span><span>'+escapeHtml(s.t)+'</span></div>'; }).join('')+
+          '<div class="ln-step slot"><span class="ln-num">'+(next+1)+'</span><span>What comes next?</span></div></div>'+
+        '<div class="ln-cards">'+v.left.map(function(si){ var s = set.steps[si];
+          var cls = (v.wrong===si ? 'wrong' : '') + (hint && si===next ? ' hint' : '');
+          return '<button class="ln-card '+cls+'" data-action="lg-tap" data-i="'+si+'"><span class="ln-sic">'+s.ic+'</span><span>'+escapeHtml(s.t)+'</span></button>'; }).join('')+'</div>'+
+        '<p class="quest-sub" style="text-align:center;margin-top:8px;">Mistakes: '+v.mistakes+(hint?' · 💡 Hint: the glowing card is next':'')+'</p></div>';
+    }
+    var Q = v.qs[v.i], ans = v.picked != null;
+    return '<div class="ln-reader">'+top+'<p class="ln-pg" style="text-align:center;">'+(v.i+1)+' of '+v.qs.length+' · ⭐ '+v.score+'</p>'+
+      '<div class="ln-sit"><span>'+Q.ic+'</span><p>'+(v.kind==='dua' ? 'Which dua do we say: <b>'+escapeHtml(Q.q.toLowerCase())+'</b>?' : escapeHtml(Q.q)+'. What do we say?')+'</p>'+sayBtn(v.kind==='dua' ? 'Which dua do we say, '+Q.q : Q.q+'. What do we say?', 'en-GB', 'Listen')+'</div>'+
+      '<div class="ln-opts">'+Q.o.map(function(o, i){
+        var cls = !ans ? '' : i===Q.a ? 'right' : i===v.picked ? 'wrong' : 'dim';
+        return '<button class="ln-opt big '+cls+'" '+(ans?'disabled':'data-action="lg-pick" data-i="'+i+'"')+'>'+escapeHtml(o)+'</button>';
+      }).join('')+'</div>'+
+      (ans ? '<p class="ln-fb '+(v.picked===Q.a?'ok':'no')+'">'+(v.picked===Q.a?'✅ Yes! MashaAllah':'❌ We say: '+escapeHtml(Q.o[Q.a]))+'</p><button class="btn-primary" data-action="lg-next">'+(v.i+1<v.qs.length?'Next →':'Finish')+'</button>' : '')+
+    '</div>';
+  }
+
+  /* ---- parent side ---- */
+  function renderLearnApprovals(){
+    var rows = [];
+    state.data.people.forEach(function(p){ (p.learnRequests||[]).forEach(function(rq){ rows.push({p:p, rq:rq}); }); });
+    if(!rows.length) return '';
+    return '<div class="card"><p class="field-label">📖 Learning — listen, then approve</p>'+rows.map(function(c){
+      var rq = c.rq, sub = '', ic = '📖';
+      if(rq.kind==='gem'){ var g = gemById(rq.ref); ic = '💎'; sub = g ? 'Ask '+escapeHtml(c.p.name)+' to say: “'+escapeHtml(g.ar ? g.tr : g.en)+'”' : ''; }
+      else if(rq.kind==='dua'){ var d = duaById(rq.ref); ic = '🤲'; sub = d ? escapeHtml(d.when)+': “'+escapeHtml(d.tr)+'”' : ''; }
+      else if(rq.kind==='talk'){ ic = '🗣️'; sub = 'Did you talk about this story together?'; }
+      return '<div class="list-row"><div style="font-size:19px;">'+ic+'</div>'+
+        '<div class="grow"><div class="name">'+escapeHtml(c.p.name)+' · '+escapeHtml(rq.label)+'</div><div class="sub">'+sub+' · +'+rq.pts+' · '+timeAgo(rq.ts)+'</div></div>'+
+        '<button class="icon-btn" style="color:var(--moss);" data-action="learn-approve" data-person="'+c.p.id+'" data-req="'+rq.id+'">✓</button>'+
+        '<button class="icon-btn" style="color:var(--coral);" data-action="learn-decline" data-person="'+c.p.id+'" data-req="'+rq.id+'">✕</button></div>';
+    }).join('')+'</div>';
+  }
+  function renderParentLearn(){
+    var d = state.data, open = state.ui.prevCh, kids = kidsList();
+    var html = '<div class="card"><p class="field-label">📚 Story chapters — read &amp; approve</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">Each chapter stays locked for the kids until a parent reads it and taps Approve. Every page shows its source (Quran surah:ayah or the hadith collection and number) so you — or your local imam or Islamic teacher — can check it. Only the Quran and sahih hadith are used, following the majority view of scholars; no Isra’iliyyat.</p>'+
+      STORY_CHAPTERS.map(function(ch, i){
+        var ok = !!d.learnReviewed[ch.id];
+        var row = '<div class="list-row"><div style="font-size:22px;">'+ch.ic+'</div><div class="grow"><div class="name">'+(i+1)+'. '+escapeHtml(ch.n)+'</div><div class="sub">'+(ok?'✅ Approved — open for the kids':'🔒 Waiting for your review')+'</div></div>'+
+          '<button class="btn-secondary" style="padding:7px 10px;font-size:12.5px;" data-action="learn-prev" data-ch="'+ch.id+'">'+(open===ch.id?'Close':'📖 Read')+'</button></div>';
+        if(open===ch.id){
+          row += '<div class="ln-preview">'+ch.pages.map(function(pg, j){ return '<p><b>'+(j+1)+'.</b> '+escapeHtml(pg.t)+' <span class="ln-src">['+escapeHtml(pg.s)+']</span></p>'; }).join('')+
+            '<p><b>Lesson:</b> '+escapeHtml(ch.lesson)+'</p>'+
+            (ch.dua ? '<p><b>Dua:</b> <span class="ln-ar sm">'+ch.dua.ar+'</span> — '+escapeHtml(ch.dua.tr)+' <span class="ln-src">['+escapeHtml(ch.dua.s)+']</span></p>' : '')+
+            '<p><b>Quiz questions</b> (5 of these are picked; answer in bold):</p>'+ch.quiz.map(function(q){ return '<p>• '+escapeHtml(q.q)+' <b>'+escapeHtml(q.o[q.a])+'</b></p>'; }).join('')+
+            (ok ? '<button class="btn-secondary" style="width:100%;" data-action="learn-unapprove-ch" data-ch="'+ch.id+'">Lock this chapter again</button>'
+                : '<button class="btn-primary" data-action="learn-approve-ch" data-ch="'+ch.id+'">✅ I’ve read it — Approve for the kids</button>')+'</div>';
+        }
+        return row;
+      }).join('')+'</div>';
+    html += '<div class="card"><p class="field-label">👧 Learning level</p><p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Readers take a quiz after each story. Little listeners just listen (a parent reads or taps 🔊).</p>'+
+      kids.map(function(k){ var little = isLittle(k);
+        return '<div class="list-row"><div>'+heroSVG(k,30)+'</div><div class="grow"><div class="name">'+escapeHtml(k.name)+'</div></div>'+
+          '<div class="toggle-row" style="margin:0;"><button class="toggle-btn '+(!little?'active':'')+'" data-action="learn-level" data-person="'+k.id+'" data-level="big">📖 Reader</button>'+
+          '<button class="toggle-btn '+(little?'active':'')+'" data-action="learn-level" data-person="'+k.id+'" data-level="little">👂 Listener</button></div></div>';
+      }).join('')+'</div>';
+    html += '<div class="card"><p class="field-label">⭐ Learning points</p>'+LEARN_PTS_LABELS.map(function(r){
+        return '<div class="list-row"><div class="grow"><div class="name" style="font-size:13px;">'+r[1]+'</div></div>'+
+          '<div class="stepper sm"><button data-action="learn-setpts" data-key="'+r[0]+'" data-d="-1">−</button><span class="val disp">'+lpts(r[0])+'</span><button data-action="learn-setpts" data-key="'+r[0]+'" data-d="1">+</button></div></div>';
+      }).join('')+
+      '<div class="toggle-row" style="margin-top:10px;"><button class="toggle-btn '+(d.learnOn?'active':'')+'" data-action="learn-toggle">'+(d.learnOn?'✅ Learn tab on':'Learn tab on')+'</button>'+
+      '<button class="toggle-btn '+(!d.learnOn?'active':'')+'" data-action="learn-toggle">'+(!d.learnOn?'🔒 Learn tab off':'Learn tab off')+'</button></div></div>';
+    html += '<div class="card"><p class="field-label">📈 Progress</p>'+kids.map(function(k){
+        var L = learnOf(k);
+        var ch = STORY_CHAPTERS.filter(function(c){ return L.passed[c.id]; }).length, du = DUAS.filter(function(x){ return L.duas[x.id]; }).length, ge = Object.keys(L.gems).length;
+        return '<div class="list-row"><div>'+heroSVG(k,30)+'</div><div class="grow"><div class="name">'+escapeHtml(k.name)+'</div><div class="sub">📚 '+ch+'/'+STORY_CHAPTERS.length+' stories · 🤲 '+du+'/'+DUAS.length+' duas · 💎 '+ge+' gems · 🧠 '+Object.keys(L.box).length+' in Memory Box</div></div></div>';
+      }).join('')+'</div>';
+    return html;
+  }
+
+  /* ---- actions ---- */
+  function learnKid(){ return currentKid(); }
+  var learnActions = {};
+  learnActions['learn-sub'] = function(el){ var v = lv(); v.sub = el.dataset.sub; v.view = 'home'; state.route.tab = 'home|'+v.sub; render(); };
+  learnActions['learn-back'] = function(){ setLearnView({view:'home'}); render(); };
+  learnActions['learn-back-games'] = function(){ setLearnView({view:'home', sub:'games'}); state.ui.learn.sub = 'games'; render(); };
+  learnActions['learn-locked'] = function(el){ showToast(el.dataset.st==='review' ? 'A parent needs to read and approve this chapter first 🔒' : 'Finish the chapter before this one first 🔒'); };
+  learnActions['learn-speak'] = function(el){ lspeak(el.dataset.say, el.dataset.lang); };
+  learnActions['learn-open'] = function(el){
+    var p = learnKid(), ch = chapterById(el.dataset.ch); if(!p || !ch) return;
+    var idx = STORY_CHAPTERS.indexOf(ch), st = chapterState(p, idx);
+    if(st!=='open' && st!=='done') return;
+    var L = learnOf(p);
+    if(st==='open' && L.read[ch.id] && !isLittle(p) && el.dataset.reread!=='1' && !(lv().view==='quiz')){ startChapterQuiz(p, ch); render(); return; }
+    setLearnView({view:'read', ch:ch.id, page:0}); render();
+  };
+  learnActions['learn-page'] = function(el){
+    var v = lv(), ch = chapterById(v.ch); if(!ch) return;
+    var np = clamp((v.page||0) + (+el.dataset.d), 0, ch.pages.length-1);
+    setLearnView({view:'read', ch:ch.id, page:np}); render();
+  };
+  function startChapterQuiz(p, ch){
+    var qs = shuffle(ch.quiz.slice()).slice(0, 5).map(shuffledQ);
+    setLearnView({view:'quiz', ch:ch.id, qs:qs, i:0, score:0, picked:null});
+  }
+  learnActions['learn-finish-read'] = function(el){
+    var p = learnKid(), ch = chapterById(el.dataset.ch); if(!p || !ch) return;
+    var L = learnOf(p);
+    if(isLittle(p)){
+      if(!L.passed[ch.id]){
+        L.passed[ch.id] = {score:-1, ts:Date.now()};
+        var pts = lpts('little'); if(pts) earn(p, pts, 'learn');
+        addHistory({personId:p.id, kind:'daily', category:'learn', label:ch.ic+' Listened to the story of '+ch.n, points:pts});
+        burstConfetti(); showToast('MashaAllah! Story badge earned '+ch.ic);
+        persist();
+      }
+      setLearnView({view:'home'}); render(); return;
+    }
+    L.read[ch.id] = true; persist();
+    startChapterQuiz(p, ch); render();
+  };
+  learnActions['learn-pick'] = function(el){
+    var v = lv(); if(v.picked != null || !v.qs) return;
+    v.picked = +el.dataset.i;
+    var Q = v.qs[v.i], ok = v.picked === Q.a;
+    if(ok) v.score++;
+    if(v.view==='review'){
+      var p = learnKid(), L = learnOf(p), it = L.box[v.keys[v.i]];
+      if(it){ if(ok){ it.lv = Math.min(BOX_STEPS.length-1, (it.lv||0)+1); it.due = addDays(BOX_STEPS[it.lv]); } else { it.lv = 0; it.due = addDays(1); } }
+    }
+    render();
+  };
+  learnActions['learn-next'] = function(){
+    var v = lv(), p = learnKid(); if(!p || !v.qs) return;
+    if(v.i + 1 < v.qs.length){ v.i++; v.picked = null; render(); return; }
+    v.finished = true;
+    var L = learnOf(p);
+    if(v.view==='review'){
+      if(L.lastReview !== todayStr()){
+        L.lastReview = todayStr();
+        var rp = lpts('review'); v.awarded = rp;
+        if(rp) earn(p, rp, 'learn');
+        addHistory({personId:p.id, kind:'daily', category:'learn', label:'🧠 Memory Box review ('+v.score+'/'+v.qs.length+')', points:rp});
+      }
+      persist(); render(); return;
+    }
+    var ch = chapterById(v.ch);
+    v.pass = v.score >= 4;
+    if(v.pass){
+      if(!L.passed[ch.id]){
+        var pts = lpts('story') + (v.score===5 ? lpts('perfect') : 0);
+        L.passed[ch.id] = {score:v.score, ts:Date.now()};
+        if(pts) earn(p, pts, 'learn');
+        v.awarded = pts;
+        addHistory({personId:p.id, kind:'daily', category:'learn', label:ch.ic+' Passed the story of '+ch.n+' ('+v.score+'/5)', points:pts});
+        ch.quiz.forEach(function(_, i){ boxAdd(p, 'q:'+ch.id+':'+i); });
+        addSkill(p, 'memory');
+        burstConfetti();
+      } else if(v.score > (L.passed[ch.id].score||0)) L.passed[ch.id].score = v.score;
+    } else if(!L.passed[ch.id]) {
+      delete L.read[ch.id];      // read it again before the next try
+    }
+    persist(); render();
+  };
+  learnActions['learn-review-start'] = function(){
+    var p = learnKid(); if(!p) return;
+    var keys = shuffle(boxDue(p)).slice(0, 5);
+    if(!keys.length){ showToast('Nothing to review today — well done!'); return; }
+    setLearnView({view:'review', keys:keys, qs:keys.map(boxQuestion), i:0, score:0, picked:null}); render();
+  };
+  learnActions['learn-request'] = function(el){
+    var p = getPerson(el.dataset.person), kind = el.dataset.kind, ref = el.dataset.ref; if(!p) return;
+    var L = learnOf(p);
+    if(pendingLearn(p, kind, ref)) return;
+    var label, pts;
+    if(kind==='gem'){ var g = gemById(ref); if(!g || L.gems[ref]) return; label = 'memorised the '+(g.kind==='ayah'?'Ayah':'Hadith')+' of the Week'; pts = lpts('gem'); }
+    else if(kind==='dua'){ var d = duaById(ref); if(!d || L.duas[ref]) return; label = 'knows the dua: '+d.when.toLowerCase(); pts = lpts('dua'); }
+    else if(kind==='talk'){ var ch = chapterById(ref); if(!ch || L.talk[ref]) return; label = 'family talk: '+ch.n; pts = lpts('talk'); }
+    else return;
+    p.learnRequests.push({id:uid('lr'), kind:kind, ref:ref, label:label, pts:pts, ts:Date.now()});
+    showToast('Sent! Say it to ABBA or Mimi so they can approve ⏳'); persist(); render();
+  };
+  learnActions['learn-approve'] = function(el){
+    var p = getPerson(el.dataset.person); if(!p) return;
+    var rq = (p.learnRequests||[]).filter(function(r){ return r.id===el.dataset.req; })[0]; if(!rq) return;
+    p.learnRequests = p.learnRequests.filter(function(r){ return r.id!==rq.id; });
+    var L = learnOf(p), already = false;
+    if(rq.kind==='gem'){ already = !!L.gems[rq.ref]; L.gems[rq.ref] = true; boxAdd(p, 'g:'+rq.ref); }
+    else if(rq.kind==='dua'){ already = !!L.duas[rq.ref]; L.duas[rq.ref] = true; boxAdd(p, 'd:'+rq.ref); }
+    else if(rq.kind==='talk'){ already = !!L.talk[rq.ref]; L.talk[rq.ref] = true; }
+    if(!already){
+      if(rq.pts) earn(p, rq.pts, 'learn');
+      addHistory({personId:p.id, kind:'daily', category:'learn', label:p.name+' '+rq.label, points:rq.pts});
+      if(rq.kind!=='talk') addSkill(p, 'memory');
+    }
+    showToast('Approved for '+p.name+(already?'':' (+'+rq.pts+')')); persist(); render();
+  };
+  learnActions['learn-decline'] = function(el){
+    var p = getPerson(el.dataset.person); if(!p) return;
+    p.learnRequests = (p.learnRequests||[]).filter(function(r){ return r.id!==el.dataset.req; });
+    showToast('Not yet — keep practising!'); persist(); render();
+  };
+  learnActions['learn-game'] = function(el){ var p = learnKid(); if(!p) return; startLearnGame(p, el.dataset.game); render(); };
+  learnActions['lg-tap'] = function(el){
+    var v = lv(), p = learnKid(); if(!p || v.view!=='game' || v.finished) return;
+    var si = +el.dataset.i, next = v.placed.length;
+    if(si === next){
+      v.placed.push(si); v.left = v.left.filter(function(x){ return x!==si; }); v.wrong = null; v.miss = 0;
+      if(!v.left.length) finishLearnGame(p, v);
+    } else {
+      v.mistakes++; v.miss++; v.wrong = si;
+      setTimeout(function(){ if(lv().wrong===si){ lv().wrong = null; render(); } }, 650);
+    }
+    render();
+  };
+  learnActions['lg-pick'] = function(el){
+    var v = lv(); if(v.view!=='game' || v.picked != null) return;
+    v.picked = +el.dataset.i; if(v.picked === v.qs[v.i].a) v.score++;
+    render();
+  };
+  learnActions['lg-next'] = function(){
+    var v = lv(), p = learnKid(); if(!p || v.view!=='game') return;
+    if(v.i + 1 < v.qs.length){ v.i++; v.picked = null; render(); return; }
+    finishLearnGame(p, v); render();
+  };
+  learnActions['learn-prev'] = function(el){ state.ui.prevCh = state.ui.prevCh===el.dataset.ch ? null : el.dataset.ch; render(); };
+  learnActions['learn-approve-ch'] = function(el){ state.data.learnReviewed[el.dataset.ch] = true; state.ui.prevCh = null; showToast('Chapter approved — the kids can read it now ✅'); persist(); render(); };
+  learnActions['learn-unapprove-ch'] = function(el){ delete state.data.learnReviewed[el.dataset.ch]; showToast('Chapter locked again'); persist(); render(); };
+  learnActions['learn-level'] = function(el){ var p = getPerson(el.dataset.person); if(!p) return; p.learnLevel = el.dataset.level==='little' ? 'little' : 'big'; persist(); render(); };
+  learnActions['learn-setpts'] = function(el){
+    var k = el.dataset.key; if(!(k in LEARN_DEFAULT_PTS)) return;
+    state.data.learnPts[k] = clamp(lpts(k) + (+el.dataset.d), 0, k==='gameCap' ? 50 : 30); persist(); render();
+  };
+  learnActions['learn-toggle'] = function(){ state.data.learnOn = !state.data.learnOn; persist(); render(); };
+
   /* ============ bottom tab bar ============ */
   function renderTabbar(active){
     var pending = countAllPending();
@@ -3156,6 +4692,7 @@
     var TABS = [
       {id:'home',    ic:'🏠', l:'Home'},
       {id:'quests',  ic:'✅',       l:'Quests'},
+      {id:'learn',   ic:'\uD83D\uDCD6', l:'Learn'},
       {id:'journey', ic:'🗺️', l:'Journey'},
       {id:'games',   ic:'\uD83C\uDFB2', l:'Games'},
       {id:'shop',    ic:'🎁', l:'Shop'},
@@ -3253,6 +4790,7 @@
       n += (p.convertRequests||[]).length;
       n += (p.quranRequests||[]).length;
       n += (p.passRequests||[]).length;
+      n += (p.learnRequests||[]).length;
     });
     n += state.data.owed.length;
     return n;
@@ -3264,6 +4802,7 @@
       : tab==='items' ? renderParentItems()
       : tab==='rewards' ? renderParentRewards()
       : tab==='adjust' ? renderParentAdjust()
+      : tab==='learn' ? renderParentLearn()
       : renderParentSettings();
     var pendingCount = countAllPending();
     return '<div class="screen parent-screen">'+
@@ -3273,6 +4812,7 @@
         '<button class="ptab '+(tab==='members'?'active':'')+'" data-action="parent-tab" data-tab="members">Members</button>'+
         '<button class="ptab '+(tab==='items'?'active':'')+'" data-action="parent-tab" data-tab="items">Daily Items</button>'+
         '<button class="ptab '+(tab==='rewards'?'active':'')+'" data-action="parent-tab" data-tab="rewards">Rewards</button>'+
+        '<button class="ptab '+(tab==='learn'?'active':'')+'" data-action="parent-tab" data-tab="learn">\uD83D\uDCD6 Learn</button>'+
         '<button class="ptab '+(tab==='adjust'?'active':'')+'" data-action="parent-tab" data-tab="adjust">Adjust</button>'+
         '<button class="ptab '+(tab==='settings'?'active':'')+'" data-action="parent-tab" data-tab="settings">Settings</button>'+
       '</div>'+ content + '</div>';
@@ -3305,6 +4845,7 @@
     }
 
     extra += renderPassApprovals();
+    extra += renderLearnApprovals();
     // Quran reading
     var qRows = [];
     state.data.people.forEach(function(p){ (p.quranRequests||[]).forEach(function(rq){ qRows.push({p:p, rq:rq}); }); });
@@ -3759,10 +5300,10 @@
     if(name==='games'){
       html = '<div class="screen">'+renderGames()+'</div>';
     }
-    else if(name==='quests' || name==='journey' || name==='shop'){
+    else if(name==='quests' || name==='journey' || name==='shop' || name==='learn'){
       var k = currentKid();
       var body = !k ? '<div class="empty-state"><span class="em">🌱</span>No kids yet — add one in Parent Mode → Members.</div>'
-        : name==='quests' ? renderQuests(k) : name==='journey' ? renderJourney(k) : renderShop(k);
+        : name==='quests' ? renderQuests(k) : name==='journey' ? renderJourney(k) : name==='learn' ? renderLearn(k) : renderShop(k);
       html = '<div class="screen" style="--accent:'+(k?ACCENTS[k.accent]:'var(--moss)')+'">'+body+'</div>';
     }
     else if(name==='person') html = renderParentPerson();
@@ -3774,7 +5315,11 @@
     var y = window.scrollY;
     html += renderTabbar(active) + renderModal() + renderToast() + renderConfetti();
     document.getElementById('app').innerHTML = html;
-    if(render.lastKey === key) window.scrollTo(0, y); else window.scrollTo(0, 0);
+    if(render.lastKey === key){
+      window.scrollTo(0, y);
+      // same screen redrawn (e.g. a move in a game): don't replay the fade-in, so nothing flickers
+      Array.prototype.forEach.call(document.querySelectorAll('#app .screen'), function(el){ el.classList.add('still'); });
+    } else window.scrollTo(0, 0);
     render.lastKey = key;
     if(state.modal && state.modal.type==='crop') setupCrop();
   }
@@ -3782,6 +5327,7 @@
   /* ============ actions ============ */
   var actions = {};
   Object.keys(gameActions).forEach(function(k){ actions[k] = gameActions[k]; });
+  Object.keys(learnActions).forEach(function(k){ actions[k] = learnActions[k]; });
   actions['stop'] = function(){};
   actions['close-modal'] = function(){ state.modal = null; render(); };
   actions['go-home'] = function(){ state.route = {name:'home'}; state.ui.pinEntry=''; state.ui.pinError=false; render(); };
@@ -3803,6 +5349,7 @@
       state.route = {name:'parent', tab:'approvals'};
     } else {
       state.route = {name:t};
+      if(t==='learn'){ var lvw = state.ui.learn; state.ui.learn = {view:'home', sub:(lvw&&lvw.sub)||'stories', kid:lvw&&lvw.kid}; stopSpeak(); }
     }
     render();
   };
@@ -4343,11 +5890,13 @@
     var p = getPerson(el.dataset.person);
     if(p){
       p.points=0; p.totalLifetime=0; p.savings=0; p.charityGiven=0;
-      ['prayers','azkar','charity','habits','bonus','quran','games'].forEach(function(c){ p.lifetime[c]=0; });
+      ['prayers','azkar','charity','habits','bonus','quran','games','learn'].forEach(function(c){ p.lifetime[c]=0; });
+      p.learn = null; p.learnRequests = []; learnOf(p);
       p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       p.dayPts = {}; p.convertRequests = []; p.streak = {count:0, last:null}; p.starsWon = 0; p.goalId = null;
       p.excused = {}; p.quran = {page:0, khatms:0, pagesTotal:0}; p.quranRequests = [];
       p.gamesPlayed = []; p.gamePlays = null; p.gamePasses = 0; p.passRequests = []; p.gameDay = null;
+      p.skills = {brain:0, memory:0, decision:0}; p.tourPath = {brain:0, memory:0, decision:0};
       state.data.history = state.data.history.filter(function(h){ return h.personId !== p.id; });
       state.data.owed = state.data.owed.filter(function(o){ return o.personId !== p.id; });
     }
