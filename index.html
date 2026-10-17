@@ -593,6 +593,23 @@
   .ln-preview p{margin-bottom:6px;}
   .ln-preview .ln-src{display:inline;margin:0;}
   .ln-preview .ln-ar.sm{display:block;text-align:right;}
+  /* ===== v17 ===== */
+  .hijri{font-size:12px;font-weight:800;color:#8A6200;margin-top:-2px;}
+  .rm-banner{display:flex;gap:12px;align-items:center;background:linear-gradient(135deg,#1E2A4A,#3B2E6B);color:#fff;border-radius:18px;padding:12px 14px;margin:8px 0 6px;box-shadow:var(--shadow);}
+  .rm-banner.soon{background:linear-gradient(135deg,#2E3B5C,#4A5A7E);}
+  .rm-banner b{display:block;font-size:15px;}
+  .rm-banner small{font-size:12px;opacity:.85;font-weight:700;}
+  .rm-moon{font-size:30px;}
+  .ln-ar.ghost{opacity:.3;font-size:21px;margin-top:6px;}
+  .ln-build{display:flex;flex-wrap:wrap;flex-direction:row-reverse;justify-content:flex-start;gap:6px;min-height:58px;background:#FFFDF6;border:2px dashed #D9CBA0;border-radius:16px;padding:10px;margin:12px 0;}
+  .ln-words{display:flex;flex-wrap:wrap;flex-direction:row-reverse;justify-content:center;gap:8px;}
+  .ln-w{font-family:'Amiri','Scheherazade New','Traditional Arabic',serif;font-size:24px;line-height:1.4;background:#fff;border:2px solid var(--line);border-radius:14px;padding:6px 14px;box-shadow:var(--shadow);direction:rtl;}
+  .ln-w.ok{background:#E6F4E2;border-color:#BFE0B8;box-shadow:none;}
+  .ln-w.slot{color:#B9C4BB;border-style:dashed;box-shadow:none;}
+  .ln-w.wrong{background:#FDE3DE;border-color:#E2705E;animation:shake .3s;}
+  .ln-w.hint{border-color:var(--sun);box-shadow:0 0 0 4px rgba(255,196,61,.45);animation:pulse 1.2s infinite;}
+  .ln-opts.two{flex-direction:row;}
+  .ln-opts.two .ln-opt{flex:1;text-align:center;font-size:18px;}
 </style>
 
 <div id="app-root">
@@ -621,9 +638,10 @@
     bonus:   {title:'Bonus',        icon:'⭐'},
     quran:   {title:'Quran',        icon:'📖'},
     games:   {title:'Games',        icon:'🎲'},
-    learn:   {title:'Learning',     icon:'📚'}
+    learn:   {title:'Learning',     icon:'📚'},
+    ramadan: {title:'Ramadan',      icon:'🌙'}
   };
-  var SECTION_ORDER = ['prayers','azkar','charity','habits'];
+  var SECTION_ORDER = ['prayers','azkar','charity','habits','ramadan'];
 
   var DEFAULT_DAILY_ITEMS = [
     {id:'fajr',    section:'prayers', label:'Fajr',    icon:'🌅', points:5},
@@ -765,7 +783,7 @@
       accent: accent,
       role: role,
       points: 0,
-      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0, games:0, learn:0},
+      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0, games:0, learn:0, ramadan:0},
       learnRequests: [],
       totalLifetime: 0,
       todayLog: {date: todayStr(), done:{}, pending:{}, perfectGiven:false},
@@ -820,7 +838,7 @@
       if(p.role !== 'parent' && p.role !== 'kid') p.role = 'kid';
       if(typeof p.points !== 'number' || isNaN(p.points)) p.points = 0;
       if(!p.lifetime || typeof p.lifetime !== 'object') p.lifetime = {};
-      ['prayers','azkar','charity','habits','bonus','quran','games','learn'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
+      ['prayers','azkar','charity','habits','bonus','quran','games','learn','ramadan'].forEach(function(c){ if(typeof p.lifetime[c] !== 'number') p.lifetime[c] = 0; });
       if(typeof p.totalLifetime !== 'number' || isNaN(p.totalLifetime)) p.totalLifetime = 0;
       if(!p.todayLog || typeof p.todayLog !== 'object') p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       if(!p.todayLog.done || typeof p.todayLog.done !== 'object') p.todayLog.done = {};
@@ -929,6 +947,7 @@
     if(typeof d.pointsPerCurrency !== 'number' || isNaN(d.pointsPerCurrency) || d.pointsPerCurrency < 1) d.pointsPerCurrency = DEFAULT_PTS_PER_CURRENCY;
     if(!Array.isArray(d.history)) d.history = [];
     migrateLearn(d);
+    migrateRamadan(d);
     return d;
   }
 
@@ -1522,7 +1541,8 @@
   }
   function visibleItemsFor(p){
     var dow = new Date().getDay();
-    return state.data.dailyItems.filter(function(it){ return itemForPerson(it, p) && itemOnDay(it, dow); });
+    var rm = ramadanActive();
+    return state.data.dailyItems.filter(function(it){ return itemForPerson(it, p) && itemOnDay(it, dow) && (it.section!=='ramadan' || rm); });
   }
   function pointsFor(it, p){
     return (p && it.kidPoints && typeof it.kidPoints[p.id] === 'number') ? it.kidPoints[p.id] : it.points;
@@ -1605,14 +1625,14 @@
 
     var html = '<div class="screen">'+
       '<div class="home-header">'+
-        '<div><p class="eyebrow">Assalamu alaikum! '+getGreeting()+' ☀️</p><h1 class="disp">Barakah Garden</h1></div>'+
+        '<div><p class="eyebrow">Assalamu alaikum! '+getGreeting()+' ☀️</p><h1 class="disp">Barakah Garden</h1>'+(hijriLabel() ? '<p class="hijri">🌙 '+hijriLabel()+'</p>' : '')+'</div>'+
         '<div class="header-btns">'+(isStandalone() ? '' : '<button class="btn-ghost" data-action="install-app">\uD83D\uDCF2 Install</button>')+
         '<button class="btn-ghost" data-action="manual-sync" aria-label="Refresh">\uD83D\uDD04</button></div>'+
       '</div>'+
       '<div class="star-row">'+
         starCard('week', '🌟 Star of the Week', week, 'this week · ends '+weekEndLabel())+
         starCard('day', '☀️ Daily Star', day, 'today')+
-      '</div>'+ board + monthLine + (state.data.learnOn ? renderGemCard(null, true) : '');
+      '</div>'+ board + monthLine + renderRamadanBanner() + (state.data.learnOn ? renderGemCard(null, true) : '');
 
     if(kids.length){
       html += '<p class="section-title">Kids</p>'+ kids.map(function(k){
@@ -1752,7 +1772,7 @@
     labelsSvg + '</svg>';
     var N = land(li+1);
     var badges = []; for(var b=0;b<=li+2;b++) badges.push({d:land(b), got:b<=li});
-    var chips = SECTION_ORDER.concat(['quran','learn','games','bonus']).map(function(c){
+    var chips = SECTION_ORDER.concat(['quran','learn','games','bonus']).filter(function(c){ return c!=='ramadan' || (p.lifetime.ramadan||0) > 0 || ramadanActive(); }).map(function(c){
       var meta = SECTION_META[c];
       return '<div class="chip">'+meta.icon+' '+meta.title+' <b>'+(p.lifetime[c]||0)+'</b></div>';
     }).join('');
@@ -4160,6 +4180,133 @@
     {id:'surahs', n:'Last 10 Surahs', ic:'\uD83D\uDCD7', kind:'order', d:'Al-Fil to An-Nas'},
     {id:'months', n:'Islamic Months', ic:'\uD83C\uDF19', kind:'order', d:'Muharram to Dhul-Hijjah'}
   ];
+  /* ===== v17: more learn games + Ramadan ===== */
+  ORDER_SETS.ghusl = {n:'Ghusl Steps', ic:'🚿', intro:'Put the steps of ghusl (the full bath) in order, the way the Prophet ﷺ did it.', s:'Sahih al-Bukhari 248, 249 · Sahih Muslim 316', steps:[
+    {ic:'🤲', t:'Make the intention in your heart'},
+    {ic:'✋', t:'Wash both hands'},
+    {ic:'🚿', t:'Wash the private parts'},
+    {ic:'💧', t:'Make wudu, like for salah'},
+    {ic:'💆', t:'Pour water over the head 3 times, rubbing it into the hair'},
+    {ic:'➡️', t:'Wash the whole body — right side first, then left'},
+    {ic:'🦶', t:'Wash the feet'}
+  ]};
+  ORDER_SETS.umrah = {n:'Umrah Steps', ic:'🕋', intro:'Put the steps of Umrah in order.', s:'Sahih al-Bukhari 1623 · Sahih Muslim 1218 · Quran 48:27', steps:[
+    {ic:'🤍', t:'Put on ihram at the miqat and say the Talbiyah: "Labbayk Allahumma labbayk"'},
+    {ic:'🕋', t:'Tawaf: go around the Ka’bah 7 times'},
+    {ic:'🧎', t:'Pray 2 rak’ah behind Maqam Ibrahim'},
+    {ic:'🏃', t:'Sa’i: walk 7 times between Safa and Marwah, starting at Safa'},
+    {ic:'✂️', t:'Shave or cut the hair'}
+  ]};
+  ORDER_SETS.hajj = {n:'Hajj Journey', ic:'⛰️', intro:'Put the main steps of Hajj in order, as the Prophet ﷺ did them.', s:'Sahih Muslim 1218 (Jabir’s description of the Prophet’s ﷺ Hajj)', steps:[
+    {ic:'🤍', t:'Put on ihram and say the Talbiyah'},
+    {ic:'⛺', t:'8th Dhul-Hijjah: go to Mina'},
+    {ic:'⛰️', t:'9th: stand at Arafah, making dua'},
+    {ic:'🌌', t:'Spend the night at Muzdalifah'},
+    {ic:'🪨', t:'10th: throw pebbles at Jamrat al-’Aqabah'},
+    {ic:'🐑', t:'Offer the sacrifice (Qurbani)'},
+    {ic:'✂️', t:'Shave or cut the hair'},
+    {ic:'🕋', t:'Tawaf al-Ifadah around the Ka’bah'},
+    {ic:'🪨', t:'Back at Mina: throw pebbles at the three Jamarat'},
+    {ic:'👋', t:'The farewell Tawaf'}
+  ]};
+  var PROPHET_SIGNS = [
+    {ic:'🚢', q:'Who built the Ark?', a:'Nuh'},
+    {ic:'🔥', q:'Allah made the fire cool and safe for…', a:'Ibrahim'},
+    {ic:'🐋', q:'Who was swallowed by a huge fish?', a:'Yunus'},
+    {ic:'🌊', q:'Who struck the sea with his staff and it split?', a:'Musa'},
+    {ic:'⭐', q:'Who dreamed of 11 stars, the sun and the moon?', a:'Yusuf'},
+    {ic:'🌱', q:'Who was the first human, taught the names of all things?', a:'Adam'},
+    {ic:'🕋', q:'Who built the Ka’bah with his son Ismail?', a:'Ibrahim'},
+    {ic:'🌾', q:'Who was put in charge of Egypt’s food stores?', a:'Yusuf'},
+    {ic:'🐍', q:'Whose staff became a moving snake?', a:'Musa'},
+    {ic:'🌿', q:'Who rested in the shade of a gourd plant?', a:'Yunus'},
+    {ic:'⏳', q:'Who called his people to Allah for 950 years?', a:'Nuh'},
+    {ic:'👋', q:'Who said the very first "As-salamu alaikum"?', a:'Adam'}
+  ];
+  var PROPHET_NAMES = ['Adam','Nuh','Ibrahim','Yusuf','Musa','Yunus'];
+  var GOOD_NOT = [
+    {ic:'🍽️', t:'Eating with your right hand', good:true, s:'Sahih Muslim 2020'},
+    {ic:'👋', t:'Saying salam first', good:true, s:'Sahih Muslim 54'},
+    {ic:'😊', t:'Smiling at your brother or sister', good:true, s:'Sahih Muslim 2626'},
+    {ic:'🛏️', t:'Sleeping on your right side', good:true, s:'Sahih al-Bukhari 247'},
+    {ic:'🥤', t:'Sitting down to drink', good:true, s:'Sahih Muslim 2024'},
+    {ic:'🐱', t:'Giving water to a thirsty animal', good:true, s:'Sahih al-Bukhari 2363'},
+    {ic:'👟', t:'Putting on your right shoe first', good:true, s:'Sahih al-Bukhari 5855 · Sahih Muslim 2097'},
+    {ic:'🪥', t:'Cleaning your teeth (miswak)', good:true, s:'Sahih al-Bukhari 887'},
+    {ic:'🤲', t:'Saying Bismillah before eating', good:true, s:'Sahih al-Bukhari 5376'},
+    {ic:'🧹', t:'Moving something harmful out of the way', good:true, s:'Sahih Muslim 35'},
+    {ic:'💞', t:'Speaking kindly to your parents', good:true, s:'Quran 17:23'},
+    {ic:'🍬', t:'Sharing your sweets with your sibling', good:true, s:'Sahih al-Bukhari 13'},
+    {ic:'👈', t:'Eating with your left hand', good:false, s:'Sahih Muslim 2020'},
+    {ic:'😠', t:'Shouting at your parents', good:false, s:'Quran 17:23'},
+    {ic:'🚰', t:'Wasting water', good:false, s:'Quran 7:31'},
+    {ic:'🤥', t:'Telling a lie', good:false, s:'Sahih al-Bukhari 6094'},
+    {ic:'🧸', t:'Taking a toy that isn’t yours', good:false, s:'Quran 2:188'},
+    {ic:'🌬️', t:'Blowing into your drink', good:false, s:'Sahih al-Bukhari 5630'},
+    {ic:'🗯️', t:'Calling someone a bad name', good:false, s:'Quran 49:11'},
+    {ic:'😝', t:'Making fun of others', good:false, s:'Quran 49:11'}
+  ];
+  LEARN_GAMES.splice(2, 0,
+    {id:'goodnot', n:'Good or Not Good?', ic:'👍', kind:'goodnot', d:'Sunnah manners (all ages)'},
+    {id:'signs', n:'Prophet Signs', ic:'🚢', kind:'match', d:'Who built the Ark?'},
+    {id:'build', n:'Ayah Builder', ic:'🧱', kind:'build', d:'Put the words in order'}
+  );
+  LEARN_GAMES.push(
+    {id:'ghusl', n:'Ghusl Steps', ic:'🚿', kind:'order', d:'The full bath, in order'},
+    {id:'umrah', n:'Umrah Steps', ic:'🕋', kind:'order', d:'Ihram to haircut'},
+    {id:'hajj', n:'Hajj Journey', ic:'⛰️', kind:'order', d:'Mina, Arafah, Muzdalifah…'}
+  );
+  var HIJRI_MONTHS = ['Muharram','Safar','Rabi’ al-Awwal','Rabi’ al-Akhir','Jumada al-Ula','Jumada al-Akhirah','Rajab','Sha’ban','Ramadan','Shawwal','Dhul-Qa’dah','Dhul-Hijjah'];
+  var RAMADAN_ITEMS = [
+    {id:'rm_fast',    section:'ramadan', label:'Fast today (or a practice fast)', icon:'🌙', points:10, scope:'kids'},
+    {id:'rm_prayer',  section:'ramadan', label:'Taraweeh or an extra prayer',      icon:'🕌', points:5,  scope:'kids'},
+    {id:'rm_quran',   section:'ramadan', label:'Extra Quran for Ramadan',          icon:'📖', points:5,  scope:'kids'},
+    {id:'rm_dua',     section:'ramadan', label:'Dua for the family before iftar',  icon:'🤲', points:3,  scope:'kids'},
+    {id:'rm_good',    section:'ramadan', label:'Ramadan good deed or charity',     icon:'💝', points:5,  scope:'kids'}
+  ];
+  /* ---- Hijri date + Ramadan mode ---- */
+  var HIJRI_FMT = null, hijriCache = {};
+  function hijri(ts){
+    var k = dateKey(ts);
+    if(hijriCache[k] !== undefined) return hijriCache[k];
+    var out = null;
+    try{
+      if(!HIJRI_FMT) HIJRI_FMT = new Intl.DateTimeFormat('en-u-ca-islamic-umalqura', {day:'numeric', month:'numeric', year:'numeric'});
+      var o = {};
+      HIJRI_FMT.formatToParts(new Date(ts)).forEach(function(pt){ if(pt.type==='day' || pt.type==='month' || pt.type==='year') o[pt.type] = parseInt(pt.value, 10); });
+      if(o.day && o.month >= 1 && o.month <= 12) out = {d:o.day, m:o.month, y:o.year};
+    }catch(e){ out = null; }
+    hijriCache[k] = out;
+    return out;
+  }
+  function hijriLabel(){ var h = hijri(Date.now()); return h ? h.d+' '+HIJRI_MONTHS[h.m-1]+(h.y ? ' '+h.y+' AH' : '') : ''; }
+  function ramadanMode(){ var m = state.data.ramadanMode; return m==='on' || m==='off' ? m : 'auto'; }
+  function ramadanActive(){
+    var m = ramadanMode();
+    if(m==='on') return true;
+    if(m==='off') return false;
+    var h = hijri(Date.now()); return !!(h && h.m===9);
+  }
+  function ramadanInfo(){
+    var h = hijri(Date.now());
+    if(ramadanActive()) return {active:true, day: h && h.m===9 ? h.d : null};
+    if(ramadanMode()==='off' || !h) return null;
+    for(var i=1;i<=40;i++){ var x = hijri(Date.now() + i*86400000); if(x && x.m===9 && x.d===1) return {active:false, until:i}; }
+    return null;
+  }
+  function renderRamadanBanner(){
+    var r = ramadanInfo(); if(!r) return '';
+    if(r.active) return '<div class="rm-banner"><span class="rm-moon">🌙</span><div><b>Ramadan Mubarak!'+(r.day ? ' · Day '+r.day : '')+'</b><small>Ramadan quests are on in everyone’s Quests. Fast, pray, read and give 🤲</small></div></div>';
+    return '<div class="rm-banner soon"><span class="rm-moon">🌙</span><div><b>Ramadan is about '+r.until+' day'+(r.until>1?'s':'')+' away</b><small>Get ready: practise fasting, learn the duas, plan your good deeds.</small></div></div>';
+  }
+  function migrateRamadan(d){
+    if(d.ramadanMode !== 'on' && d.ramadanMode !== 'off') d.ramadanMode = 'auto';
+    if(!d.ramadanV1){
+      var have = d.dailyItems.map(function(it){ return it.id; });
+      RAMADAN_ITEMS.forEach(function(it){ if(have.indexOf(it.id) === -1) d.dailyItems.push(Object.assign({days:null, forKids:null, kidPoints:{}}, it)); });
+      d.ramadanV1 = true;
+    }
+  }
   /* ================= LEARN: logic + screens ================= */
   var LEARN_DEFAULT_PTS = {story:5, perfect:2, little:2, gem:5, dua:3, talk:2, game:2, gameCap:6, review:1};
   var LEARN_PTS_LABELS = [
@@ -4404,28 +4551,45 @@
   }
 
   /* ---- learn games ---- */
-  function startLearnGame(p, id){
+  // the ayah used by Ayah Builder: this week's ayah, or the most recent one
+  function builderAyah(prev){
+    var pool = WEEK_AYAT.filter(function(a){ return a.ar.split(' ').length >= 3; });
+    var g = weekGem();
+    if(!prev && g.kind==='ayah' && g.ar.split(' ').length >= 3) return g;
+    if(!prev){ var gi = gemIndex(); for(var k=1;k<GEMS.length;k++){ var x = GEMS[(gi - k + GEMS.length) % GEMS.length]; if(x.kind==='ayah' && x.ar.split(' ').length >= 3) return x; } }
+    var choices = pool.filter(function(a){ return !prev || a.id !== prev; });
+    return choices[Math.floor(Math.random()*choices.length)];
+  }
+  function startLearnGame(p, id, opt){
     var g = LEARN_GAMES.filter(function(x){ return x.id===id; })[0]; if(!g) return;
-    var o = {view:'game', game:id, kind:g.kind, mistakes:0, wrong:null, miss:0};
+    var little = isLittle(p), nOpts = little ? 2 : 3;
+    var o = {view:'game', game:id, kind:g.kind, mistakes:0, wrong:null, miss:0, little:little};
+    function mcq(list, n){ return shuffle(list.slice()).slice(0, n); }
+    function cut(opts, a){ var wrong = shuffle(opts.filter(function(x){ return x!==a; })).slice(0, nOpts-1); var all = shuffle([a].concat(wrong)); return {o:all, a:all.indexOf(a)}; }
     if(g.kind==='order'){
       var set = ORDER_SETS[id];
       o.left = shuffle(set.steps.map(function(_, i){ return i; }));
       o.placed = [];
-    } else if(g.kind==='say'){
-      o.qs = shuffle(SAY_WHAT.slice()).slice(0, 6).map(function(s){ var opts = shuffle([s.a].concat(s.w)); return {ic:s.ic, q:s.sit, o:opts, a:opts.indexOf(s.a)}; });
-      o.i = 0; o.score = 0; o.picked = null;
+    } else if(g.kind==='build'){
+      var ay = builderAyah(opt);
+      o.ayah = ay.id; o.words = ay.ar.split(' ');
+      o.left = shuffle(o.words.map(function(_, i){ return i; }));
+      o.placed = [];
     } else {
-      o.qs = shuffle(DUAS.slice()).slice(0, 6).map(function(d){
-        var others = shuffle(DUAS.filter(function(x){ return x.id!==d.id && x.tr!==d.tr; })).slice(0, 2).map(function(x){ return x.tr; });
-        var opts = shuffle([d.tr].concat(others)); return {ic:d.ic, q:d.when, o:opts, a:opts.indexOf(d.tr)};
-      });
-      o.i = 0; o.score = 0; o.picked = null;
+      var qs;
+      if(g.kind==='say') qs = mcq(SAY_WHAT, 6).map(function(s){ var c = cut([s.a].concat(s.w), s.a); return {ic:s.ic, prompt:escapeHtml(s.sit)+'. What do we say?', say:s.sit+'. What do we say?', o:c.o, a:c.a}; });
+      else if(g.kind==='dua') qs = mcq(DUAS, 6).map(function(d){ var c = cut(DUAS.map(function(x){ return x.tr; }).filter(function(t, i, arr){ return arr.indexOf(t)===i; }), d.tr); return {ic:d.ic, prompt:'Which dua do we say: <b>'+escapeHtml(d.when.toLowerCase())+'</b>?', say:'Which dua do we say, '+d.when, o:c.o, a:c.a}; });
+      else if(g.kind==='match') qs = mcq(PROPHET_SIGNS, 6).map(function(s){ var c = cut(PROPHET_NAMES, s.a); return {ic:s.ic, prompt:escapeHtml(s.q), say:s.q, o:c.o.map(function(n){ return 'Prophet '+n; }), a:c.a, src:'From the stories in the Learn tab (Quran)'}; });
+      else qs = (function(){ var good = shuffle(GOOD_NOT.filter(function(x){ return x.good; })).slice(0, 4), bad = shuffle(GOOD_NOT.filter(function(x){ return !x.good; })).slice(0, 4);
+        return shuffle(good.concat(bad)).map(function(x){ return {ic:x.ic, prompt:escapeHtml(x.t), say:x.t+'. Good, or not good?', o:['👍 Good','👎 Not good'], a:x.good?0:1, src:x.s}; }); })();
+      o.qs = qs; o.i = 0; o.score = 0; o.picked = null;
+      o.need = g.kind==='goodnot' ? 6 : 4;
     }
     setLearnView(o);
   }
   function finishLearnGame(p, v){
     v.finished = true;
-    var won = v.kind==='order' ? true : v.score >= 4;
+    var won = (v.kind==='order' || v.kind==='build') ? true : v.score >= v.need;
     v.won = won;
     if(!won) return;
     var L = learnOf(p), gd = L.gameDay, give = 0;
@@ -4440,42 +4604,68 @@
     v.awarded = give;
     persist();
   }
+  function stepsHtml(set, idxs){ return idxs.map(function(si, i){ var s = set.steps[si]; return '<div class="ln-step ok"><span class="ln-num">'+(i+1)+'</span><span class="ln-sic">'+s.ic+'</span><span>'+escapeHtml(s.t)+'</span></div>'; }).join(''); }
   function renderLearnGame(p, v){
     var meta = LEARN_GAMES.filter(function(x){ return x.id===v.game; })[0];
     var top = '<div class="ln-top"><button class="btn-ghost" data-action="learn-back-games">← Games</button><span class="ln-pg">'+meta.ic+' '+escapeHtml(meta.n)+'</span></div>';
+    var ay = v.kind==='build' ? WEEK_AYAT.filter(function(a){ return a.id===v.ayah; })[0] : null;
     if(v.finished){
-      var stars = v.kind==='order' ? (v.mistakes===0 ? 3 : v.mistakes<=2 ? 2 : 1) : (v.score>=6 ? 3 : v.score>=5 ? 2 : v.score>=4 ? 1 : 0);
-      var src = v.kind==='order' ? ORDER_SETS[v.game].s : v.kind==='dua' ? 'Duas from the Quran and sahih hadith' : '';
+      var mcqKind = v.qs != null;
+      var stars = !mcqKind ? (v.mistakes===0 ? 3 : v.mistakes<=2 ? 2 : 1) : (v.score>=v.qs.length ? 3 : v.score>=v.need+1 ? 2 : v.score>=v.need ? 1 : 0);
+      var src = v.kind==='order' ? ORDER_SETS[v.game].s : v.kind==='dua' ? 'Duas from the Quran and sahih hadith' : v.kind==='goodnot' ? 'Each answer shows its source (Quran or sahih hadith)' : v.kind==='build' ? ay.s : '';
+      var body = '';
+      if(v.kind==='order') body = '<div class="ln-list">'+stepsHtml(ORDER_SETS[v.game], ORDER_SETS[v.game].steps.map(function(_, i){ return i; }))+'</div>';
+      if(v.kind==='build') body = '<div class="ln-dua" style="text-align:left;"><p class="ln-ar">'+ay.ar+'</p><p class="ln-tr">'+escapeHtml(ay.tr)+'</p><p class="ln-gem-t">'+escapeHtml(ay.en)+'</p><div class="ln-row">'+sayBtn(ay.ar, 'ar-SA', 'Arabic')+'</div></div>';
       return '<div class="ln-reader">'+top+'<div class="ln-result"><p class="ln-big">'+(v.won?'🎉':'💪')+'</p>'+
         '<p class="ln-stars">'+'⭐'.repeat(stars)+'<span style="opacity:.25">'+'⭐'.repeat(3-stars)+'</span></p>'+
         '<h2 class="disp">'+(v.won ? 'MashaAllah!' : 'Good try!')+'</h2>'+
-        '<p>'+(v.kind==='order' ? (v.mistakes ? v.mistakes+' mistake'+(v.mistakes>1?'s':'') : 'No mistakes!') : v.score+' of '+v.qs.length+' right'+(v.won?'':' — get 4 to finish'))+(v.awarded?' · +'+v.awarded+' pts':'')+'</p>'+
-        (v.kind==='order' ? '<div class="ln-list">'+ORDER_SETS[v.game].steps.map(function(s, i){ return '<div class="ln-step ok"><span class="ln-num">'+(i+1)+'</span><span class="ln-sic">'+s.ic+'</span><span>'+escapeHtml(s.t)+'</span></div>'; }).join('')+'</div>' : '')+
-        (src ? '<p class="ln-src" style="margin-top:8px;">📚 '+escapeHtml(src)+'</p>' : '')+
-        '<button class="btn-primary" style="margin-top:12px;" data-action="learn-game" data-game="'+v.game+'">🔁 Play again</button>'+
+        '<p>'+(!mcqKind ? (v.mistakes ? v.mistakes+' mistake'+(v.mistakes>1?'s':'') : 'No mistakes!') : v.score+' of '+v.qs.length+' right'+(v.won?'':' — get '+v.need+' to finish'))+(v.awarded?' · +'+v.awarded+' pts':'')+'</p>'+
+        body+(src ? '<p class="ln-src" style="margin-top:8px;">📚 '+escapeHtml(src)+'</p>' : '')+
+        (v.kind==='build' ? '<button class="btn-primary" style="margin-top:12px;" data-action="learn-game" data-game="build" data-prev="'+v.ayah+'">🧱 Build another ayah</button>'
+          : '<button class="btn-primary" style="margin-top:12px;" data-action="learn-game" data-game="'+v.game+'">🔁 Play again</button>')+
         '<button class="btn-secondary" style="width:100%;margin-top:8px;" data-action="learn-back-games">Back to games</button></div></div>';
     }
+    var hint = v.little || v.miss >= 2;
     if(v.kind==='order'){
-      var set = ORDER_SETS[v.game], next = v.placed.length, hint = v.miss >= 2;
+      var set = ORDER_SETS[v.game], next = v.placed.length;
       return '<div class="ln-reader">'+top+'<p class="ln-q" style="font-size:16px;">'+escapeHtml(set.intro)+'</p>'+
-        '<div class="ln-list">'+v.placed.map(function(si, i){ var s = set.steps[si]; return '<div class="ln-step ok"><span class="ln-num">'+(i+1)+'</span><span class="ln-sic">'+s.ic+'</span><span>'+escapeHtml(s.t)+'</span></div>'; }).join('')+
+        '<div class="ln-list">'+stepsHtml(set, v.placed)+
           '<div class="ln-step slot"><span class="ln-num">'+(next+1)+'</span><span>What comes next?</span></div></div>'+
         '<div class="ln-cards">'+v.left.map(function(si){ var s = set.steps[si];
           var cls = (v.wrong===si ? 'wrong' : '') + (hint && si===next ? ' hint' : '');
           return '<button class="ln-card '+cls+'" data-action="lg-tap" data-i="'+si+'"><span class="ln-sic">'+s.ic+'</span><span>'+escapeHtml(s.t)+'</span></button>'; }).join('')+'</div>'+
-        '<p class="quest-sub" style="text-align:center;margin-top:8px;">Mistakes: '+v.mistakes+(hint?' · 💡 Hint: the glowing card is next':'')+'</p></div>';
+        '<p class="quest-sub" style="text-align:center;margin-top:8px;">Mistakes: '+v.mistakes+(hint?' · 💡 The glowing card is next':'')+'</p></div>';
+    }
+    if(v.kind==='build'){
+      var nextW = v.words[v.placed.length];
+      return '<div class="ln-reader">'+top+'<p class="ln-q" style="font-size:16px;">Tap the words in order to build the ayah (Arabic reads right to left ←).</p>'+
+        '<div class="ln-dua" style="margin-top:0;"><p class="ln-gem-t">“'+escapeHtml(ay.en)+'”</p><p class="ln-src">📚 '+escapeHtml(ay.s)+'</p>'+
+          (v.little ? '<p class="ln-ar ghost">'+ay.ar+'</p>' : '')+
+          '<div class="ln-row">'+sayBtn(ay.ar, 'ar-SA', 'Hear it')+'</div></div>'+
+        '<div class="ln-build">'+(v.placed.length ? v.placed.map(function(wi){ return '<span class="ln-w ok">'+v.words[wi]+'</span>'; }).join('') : '<span class="ln-w slot">…</span>')+'</div>'+
+        '<div class="ln-words">'+v.left.map(function(wi){
+          var cls = (v.wrong===wi ? 'wrong' : '') + (hint && v.words[wi]===nextW ? ' hint' : '');
+          return '<button class="ln-w '+cls+'" data-action="lg-tap" data-i="'+wi+'">'+v.words[wi]+'</button>'; }).join('')+'</div>'+
+        '<p class="quest-sub" style="text-align:center;margin-top:8px;">Mistakes: '+v.mistakes+(hint?' · 💡 The glowing word is next':'')+'</p></div>';
     }
     var Q = v.qs[v.i], ans = v.picked != null;
     return '<div class="ln-reader">'+top+'<p class="ln-pg" style="text-align:center;">'+(v.i+1)+' of '+v.qs.length+' · ⭐ '+v.score+'</p>'+
-      '<div class="ln-sit"><span>'+Q.ic+'</span><p>'+(v.kind==='dua' ? 'Which dua do we say: <b>'+escapeHtml(Q.q.toLowerCase())+'</b>?' : escapeHtml(Q.q)+'. What do we say?')+'</p>'+sayBtn(v.kind==='dua' ? 'Which dua do we say, '+Q.q : Q.q+'. What do we say?', 'en-GB', 'Listen')+'</div>'+
-      '<div class="ln-opts">'+Q.o.map(function(o, i){
+      '<div class="ln-sit"><span>'+Q.ic+'</span><p>'+Q.prompt+'</p>'+sayBtn(Q.say, 'en-GB', 'Listen')+'</div>'+
+      '<div class="ln-opts'+(v.kind==='goodnot'?' two':'')+'">'+Q.o.map(function(o, i){
         var cls = !ans ? '' : i===Q.a ? 'right' : i===v.picked ? 'wrong' : 'dim';
         return '<button class="ln-opt big '+cls+'" '+(ans?'disabled':'data-action="lg-pick" data-i="'+i+'"')+'>'+escapeHtml(o)+'</button>';
       }).join('')+'</div>'+
-      (ans ? '<p class="ln-fb '+(v.picked===Q.a?'ok':'no')+'">'+(v.picked===Q.a?'✅ Yes! MashaAllah':'❌ We say: '+escapeHtml(Q.o[Q.a]))+'</p><button class="btn-primary" data-action="lg-next">'+(v.i+1<v.qs.length?'Next →':'Finish')+'</button>' : '')+
+      (ans ? '<p class="ln-fb '+(v.picked===Q.a?'ok':'no')+'">'+(v.picked===Q.a?'✅ Yes! MashaAllah':'❌ The answer is: '+escapeHtml(Q.o[Q.a]))+'</p>'+
+        (Q.src && v.kind==='goodnot' ? '<p class="ln-src" style="margin:-4px 0 8px;">📚 '+escapeHtml(Q.src)+'</p>' : '')+
+        '<button class="btn-primary" data-action="lg-next">'+(v.i+1<v.qs.length?'Next →':'Finish')+'</button>' : '')+
     '</div>';
   }
 
+  function renderRamadanModeCtl(){
+    var m = ramadanMode(), r = ramadanInfo();
+    return '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">These quests only appear during Ramadan. <b>Auto</b> switches them on by the Hijri (Umm al-Qura) calendar — if the moon sighting in Qatar differs by a day, use On/Off.'+(r ? (r.active ? ' 🌙 Ramadan is on now.' : ' Ramadan starts in about '+r.until+' days.') : '')+'</p>'+
+      '<div class="toggle-row">'+['auto','on','off'].map(function(x){ return '<button class="toggle-btn '+(m===x?'active':'')+'" data-action="ramadan-mode" data-mode="'+x+'">'+(m===x?'\u2705 ':'')+(x==='auto'?'Auto':x==='on'?'On now':'Off')+'</button>'; }).join('')+'</div>';
+  }
   /* ---- parent side ---- */
   function renderLearnApprovals(){
     var rows = [];
@@ -4533,6 +4723,7 @@
   /* ---- actions ---- */
   function learnKid(){ return currentKid(); }
   var learnActions = {};
+  learnActions['ramadan-mode'] = function(el){ state.data.ramadanMode = el.dataset.mode; persist(); render(); };
   learnActions['learn-sub'] = function(el){ var v = lv(); v.sub = el.dataset.sub; v.view = 'home'; state.route.tab = 'home|'+v.sub; render(); };
   learnActions['learn-back'] = function(){ setLearnView({view:'home'}); render(); };
   learnActions['learn-back-games'] = function(){ setLearnView({view:'home', sub:'games'}); state.ui.learn.sub = 'games'; render(); };
@@ -4652,11 +4843,12 @@
     p.learnRequests = (p.learnRequests||[]).filter(function(r){ return r.id!==el.dataset.req; });
     showToast('Not yet — keep practising!'); persist(); render();
   };
-  learnActions['learn-game'] = function(el){ var p = learnKid(); if(!p) return; startLearnGame(p, el.dataset.game); render(); };
+  learnActions['learn-game'] = function(el){ var p = learnKid(); if(!p) return; startLearnGame(p, el.dataset.game, el.dataset.prev); render(); };
   learnActions['lg-tap'] = function(el){
-    var v = lv(), p = learnKid(); if(!p || v.view!=='game' || v.finished) return;
+    var v = lv(), p = learnKid(); if(!p || v.view!=='game' || v.finished || !v.left) return;
     var si = +el.dataset.i, next = v.placed.length;
-    if(si === next){
+    var right = v.kind==='build' ? v.words[si] === v.words[next] : si === next;
+    if(right){
       v.placed.push(si); v.left = v.left.filter(function(x){ return x!==si; }); v.wrong = null; v.miss = 0;
       if(!v.left.length) finishLearnGame(p, v);
     } else {
@@ -4977,6 +5169,7 @@
       var meta = SECTION_META[key];
       var items = state.data.dailyItems.filter(function(it){ return it.section===key; });
       html += '<div class="card"><p class="field-label">'+meta.icon+' '+meta.title+'</p>';
+      if(key==='ramadan') html += renderRamadanModeCtl();
       if(!items.length) html += '<p style="color:var(--ink-soft);font-size:13px;">No activities in this category yet.</p>';
       items.forEach(function(it){
         var extraPts = Object.keys(it.kidPoints||{}).length ? ' \u00B7 custom points' : '';
@@ -5890,7 +6083,7 @@
     var p = getPerson(el.dataset.person);
     if(p){
       p.points=0; p.totalLifetime=0; p.savings=0; p.charityGiven=0;
-      ['prayers','azkar','charity','habits','bonus','quran','games','learn'].forEach(function(c){ p.lifetime[c]=0; });
+      ['prayers','azkar','charity','habits','bonus','quran','games','learn','ramadan'].forEach(function(c){ p.lifetime[c]=0; });
       p.learn = null; p.learnRequests = []; learnOf(p);
       p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       p.dayPts = {}; p.convertRequests = []; p.streak = {count:0, last:null}; p.starsWon = 0; p.goalId = null;

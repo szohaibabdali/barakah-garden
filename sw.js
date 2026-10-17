@@ -1,7 +1,7 @@
 // Barakah Garden service worker: lets the app install on phones and open
 // even with a weak connection. Always tries the network first so a newly
 // uploaded index.html shows up straight away; the saved copy is only a fallback.
-const CACHE = 'barakah-garden-v16';
+const CACHE = 'barakah-garden-v17';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
