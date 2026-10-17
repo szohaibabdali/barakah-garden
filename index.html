@@ -5089,7 +5089,8 @@
 
   var ACCESS = {data:null, err:null, unsub:null, loaded:false};
   var LOCK = {on:false, timer:null, sent:false, msg:''};
-  function accessRef(){ return db.collection('access').doc(FAMILY_ID); }
+  // the approved-device list lives next to the family data so it works with your existing rules too
+  function accessRef(){ return db.collection('families').doc(FAMILY_ID + '__access'); }
   function devicePending(){ return isOwner() && ACCESS.data && ACCESS.data.requests ? Object.keys(ACCESS.data.requests).length : 0; }
   function myUid(){ return auth && auth.currentUser ? auth.currentUser.uid : null; }
   function googleUser(){ return auth && auth.currentUser && !auth.currentUser.isAnonymous ? auth.currentUser : null; }
@@ -5124,30 +5125,28 @@
     return 'none';
   }
   function securityRules(email){
-    var em = email || 'YOUR_EMAIL@gmail.com';
+    var em = email || 'YOUR_EMAIL@gmail.com', A = FAMILY_ID + '__access';
     return "rules_version = '2';\n"+
 "service cloud.firestore {\n"+
 "  match /databases/{database}/documents {\n"+
 "    function signedIn() { return request.auth != null; }\n"+
-"    // Parent Google accounts (add Mimi's Gmail here too if she will manage devices)\n"+
+"    // Parent Google accounts (add Mimi's Gmail here too if she will approve devices)\n"+
 "    function isOwner() {\n"+
 "      return signedIn() && request.auth.token.email_verified == true\n"+
 "        && request.auth.token.email in ['"+em+"'];\n"+
 "    }\n"+
 "    function isApprovedDevice() {\n"+
 "      return signedIn()\n"+
-"        && exists(/databases/$(database)/documents/access/"+FAMILY_ID+")\n"+
-"        && request.auth.uid in get(/databases/$(database)/documents/access/"+FAMILY_ID+").data.devices;\n"+
+"        && exists(/databases/$(database)/documents/families/"+A+")\n"+
+"        && request.auth.uid in get(/databases/$(database)/documents/families/"+A+").data.devices;\n"+
 "    }\n"+
-"    // family data, weekly backups and live games\n"+
 "    match /families/{docId} {\n"+
-"      allow read, write: if isOwner() || isApprovedDevice();\n"+
-"    }\n"+
-"    // the list of approved devices\n"+
-"    match /access/{familyId} {\n"+
-"      allow read, write: if isOwner();\n"+
+"      // family data, weekly backups and live games\n"+
+"      allow read, write: if docId != '"+A+"' && (isOwner() || isApprovedDevice());\n"+
+"      // the list of approved devices: parents only\n"+
+"      allow read, write: if docId == '"+A+"' && isOwner();\n"+
 "      // a new device may only add its own join request\n"+
-"      allow update: if signedIn()\n"+
+"      allow update: if docId == '"+A+"' && signedIn()\n"+
 "        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['requests'])\n"+
 "        && request.resource.data.requests.diff(resource.data.requests).affectedKeys().hasOnly([request.auth.uid])\n"+
 "        && request.resource.data.requests[request.auth.uid].name is string\n"+
@@ -5156,7 +5155,6 @@
 "  }\n"+
 "}\n";
   }
-
   /* ---- screens ---- */
   function renderDeviceRequestCard(){
     var st = deviceStatus();
@@ -5180,7 +5178,7 @@
       '<p class="quest-sub" style="margin-top:6px;">After signing out, this device will need a parent’s approval again.</p></div>';
   }
   function renderParentDevices(){
-    watchAccess();
+    if(!ACCESS.loaded) watchAccess();
     var html = '<div class="note-box" style="margin-bottom:12px;">🔐 <b>Private family mode.</b> Only devices a parent approves (and the parent Google accounts) can open your family’s data. Strangers who find the app’s link see a locked screen.</div>';
     if(!isOwner()) return html + renderDeviceRequestCard() + renderGoogleCard();
     var d = ACCESS.data || {devices:{}, requests:{}}, uid = myUid();
@@ -5239,6 +5237,7 @@
     });
   };
   learnActions['dev-check'] = function(){
+    ACCESS.loaded = false; watchAccess();
     db.collection('families').doc(FAMILY_ID).get().then(function(){ if(LOCK.on) location.reload(); else showToast('This device can open the family data ✅'); })
       .catch(function(){ showToast('Not approved yet ⏳'); });
   };
