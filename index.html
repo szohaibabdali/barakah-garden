@@ -1537,7 +1537,7 @@
 
   /* ============ shared bits ============ */
   function renderLoading(){
-    return '<div class="loading-screen"><span class="em">🌱</span><p class="disp" style="font-size:18px;color:var(--moss-dark);">Growing your garden...</p></div>';
+    return '<div class="loading-screen"><img src="icon-192.png" alt="Barakah Garden" width="112" height="112" style="border-radius:26px;box-shadow:0 8px 24px rgba(44,94,65,.18);margin-bottom:10px;" onerror="this.style.display=\'none\'"><p class="disp" style="font-size:18px;color:var(--moss-dark);">Growing your garden...</p></div>';
   }
   // Tasks can be limited to certain weekdays and (for kids) to certain kids.
   function itemOnDay(it, dow){ return !it.days || it.days.indexOf(dow) !== -1; }
