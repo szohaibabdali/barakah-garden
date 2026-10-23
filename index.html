@@ -615,6 +615,46 @@
   .join-head{text-align:center;margin-bottom:16px;}
   .join-lock{font-size:54px;}
   .join-head p{color:var(--ink-soft);font-weight:700;margin-top:4px;}
+  /* ===== v24 ===== */
+  .next-prayer{font-size:12.5px;font-weight:700;color:var(--moss-dark,#2C5E41);margin-top:2px;}
+  .pt-strip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:0 0 4px;}
+  .pt{background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 4px;text-align:center;font-size:11.5px;line-height:1.3;}
+  .pt b{display:block;font-size:12px;}
+  .pt.past{opacity:.55;}
+  .pt.next{border-color:var(--sun);background:#FFF8E6;}
+  .pt-city{font-size:11px;color:var(--ink-soft);font-weight:700;margin:0 2px 8px;}
+  .check-item.later{opacity:.55;}
+  .check-item.core{border-color:#E9D9A8;}
+  .core-star{font-size:11px;}
+  .check-label small.opens{display:block;font-size:10.5px;font-weight:700;color:#8A6200;}
+  .core-btn{border:2px solid var(--line);background:#fff;border-radius:10px;padding:3px 8px;font-size:11.5px;font-weight:800;margin:4px 6px 0 0;}
+  .core-btn.on{background:#FFF4D6;border-color:#E9C46A;color:#8A6200;}
+  .trait-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;}
+  .trait{background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 4px;font-size:11.5px;font-weight:800;display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;}
+  .trait span{font-size:22px;}
+  .trait.active{border-color:var(--berry);background:#FBEFF4;}
+  .jar-card{display:block;width:100%;text-align:left;background:#fff;border:2px solid var(--line);border-radius:18px;padding:12px 14px;margin:8px 0 6px;box-shadow:var(--shadow);}
+  .jar-top{display:flex;align-items:center;gap:10px;}
+  .jar-top small{display:block;font-size:11px;font-weight:800;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;}
+  .jar-top b{font-size:15px;}
+  .jar-ic{font-size:30px;}
+  .jar-n{font-family:'Baloo 2',sans-serif;font-size:15px;color:var(--berry);white-space:nowrap;}
+  .jar-bar{position:relative;height:12px;background:var(--line);border-radius:6px;overflow:hidden;margin-top:8px;}
+  .jar-bar i{position:absolute;top:0;bottom:0;}
+  .jar-who{font-size:12px;font-weight:700;color:var(--ink-soft);margin-top:6px;}
+  .report-prompt{display:block;width:100%;background:#EEF0FF;border:2px solid #C9CEF5;border-radius:16px;padding:10px 12px;font-weight:800;font-size:13px;margin:8px 0 4px;text-align:left;}
+  .rp-head{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+  .rp-head b{display:block;font-size:16px;}
+  .rp-head small{font-size:12px;color:var(--ink-soft);font-weight:700;}
+  .rp-bars{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:96px;align-items:end;margin:4px 0 10px;}
+  .rp-col{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:2px;}
+  .rp-col i{display:block;width:70%;border-radius:5px 5px 0 0;min-height:2px;}
+  .rp-col small{font-size:10.5px;font-weight:800;color:var(--ink-soft);}
+  .rp-v{font-size:10px;font-weight:800;color:var(--ink-soft);}
+  .rp-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+  .rp-grid div{background:var(--cream,#FFF7E3);border-radius:12px;padding:8px;text-align:center;}
+  .rp-grid b{display:block;font-family:'Baloo 2',sans-serif;font-size:20px;color:var(--accent);}
+  .rp-grid small{font-size:11px;font-weight:700;color:var(--ink-soft);}
 </style>
 
 <div id="app-root">
@@ -644,7 +684,8 @@
     quran:   {title:'Quran',        icon:'📖'},
     games:   {title:'Games',        icon:'🎲'},
     learn:   {title:'Learning',     icon:'📚'},
-    ramadan: {title:'Ramadan',      icon:'🌙'}
+    ramadan: {title:'Ramadan',      icon:'🌙'},
+    character: {title:'Character',  icon:'🌟'}
   };
   var SECTION_ORDER = ['prayers','azkar','charity','habits','ramadan'];
 
@@ -788,7 +829,7 @@
       accent: accent,
       role: role,
       points: 0,
-      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0, games:0, learn:0, ramadan:0},
+      lifetime: {prayers:0, azkar:0, charity:0, habits:0, bonus:0, quran:0, games:0, learn:0, ramadan:0, character:0},
       learnRequests: [],
       totalLifetime: 0,
       todayLog: {date: todayStr(), done:{}, pending:{}, perfectGiven:false},
@@ -954,6 +995,7 @@
     if(!Array.isArray(d.history)) d.history = [];
     migrateLearn(d);
     migrateRamadan(d);
+    migrateV24(d);
     return d;
   }
 
@@ -976,7 +1018,7 @@
   function cashPriceFor(r){ return (typeof r.cashPrice === 'number' && r.cashPrice > 0) ? r.cashPrice : pointsToCash(r.cost); }
   function allTasksDone(p){
     var log = todayLogFor(p);
-    var items = visibleItemsFor(p);
+    var items = perfectItemsFor(p);
     return items.length > 0 && items.every(function(it){ return !!log.done[it.id]; });
   }
   function addHistory(entry){
@@ -1631,25 +1673,26 @@
 
     var html = '<div class="screen">'+
       '<div class="home-header">'+
-        '<div><p class="eyebrow">Assalamu alaikum! '+getGreeting()+' ☀️</p><h1 class="disp">Barakah Garden</h1>'+(hijriLabel() ? '<p class="hijri">🌙 '+hijriLabel()+'</p>' : '')+'</div>'+
+        '<div><p class="eyebrow">Assalamu alaikum! '+getGreeting()+' ☀️</p><h1 class="disp">Barakah Garden</h1>'+(hijriLabel() ? '<p class="hijri">🌙 '+hijriLabel()+'</p>' : '')+renderNextPrayer()+'</div>'+
         '<div class="header-btns">'+(isStandalone() ? '' : '<button class="btn-ghost" data-action="install-app">\uD83D\uDCF2 Install</button>')+
         '<button class="btn-ghost" data-action="manual-sync" aria-label="Refresh">\uD83D\uDD04</button></div>'+
       '</div>'+
       '<div class="star-row">'+
         starCard('week', '🌟 Star of the Week', week, 'this week · ends '+weekEndLabel())+
         starCard('day', '☀️ Daily Star', day, 'today')+
-      '</div>'+ board + monthLine + renderRamadanBanner() + (state.data.learnOn ? renderGemCard(null, true) : '');
+      '</div>'+ board + monthLine + renderReportPrompt() + renderRamadanBanner() + renderJarHome() + (state.data.learnOn ? renderGemCard(null, true) : '');
 
     if(kids.length){
       html += '<p class="section-title">Kids</p>'+ kids.map(function(k){
         var li = landIndex(k.totalLifetime), g = goalFor(k), log = todayLogFor(k);
         var items = visibleItemsFor(k), done = items.filter(function(it){ return log.done[it.id]; }).length;
+        var coreK = coreItemsFor(k), coreDone = coreK.filter(function(it){ return log.done[it.id]; }).length;
         var pend = Object.keys(log.pending||{}).length;
         return '<button class="player" style="--k:'+ACCENTS[k.accent]+'" data-action="open-person" data-person="'+k.id+'">'+
           heroSVG(k,48)+
           '<span class="m"><span class="nm">'+escapeHtml(k.name)+'</span>'+
           '<span class="sb">Lv '+(li+1)+' · '+land(li).n+'</span>'+
-          '<span class="sb">✅ '+done+'/'+items.length+' today'+(pend?' · ⏳'+pend:'')+(g?' · '+Math.min(100,Math.round(k.points/g.cost*100))+'% to '+escapeHtml(g.label):'')+'</span></span>'+
+          '<span class="sb">'+(coreK.length ? '⭐ '+coreDone+'/'+coreK.length+' core · ' : '')+'✅ '+done+'/'+items.length+' today'+(pend?' · ⏳'+pend:'')+(g?' · '+Math.min(100,Math.round(k.points/g.cost*100))+'% to '+escapeHtml(g.label):'')+'</span></span>'+
           '<span class="r"><span class="pts">⭐ '+fmtNum(k.points)+'</span><span class="fire">🔥 '+streakOf(k)+' days</span></span>'+
         '</button>';
       }).join('');
@@ -1673,7 +1716,7 @@
     var ready = allTasksDone(p);
     return '<div class="star-bonus-card">'+
       '<button class="star-bonus-btn" data-action="claim-perfect-day" data-person="'+p.id+'"'+(ready?'':' disabled')+'>🌟 Claim Perfect Day Bonus +'+PERFECT_DAY_BONUS+'</button>'+
-      '<p class="stage-progress-note" style="margin-top:6px;">'+(ready ? 'Claiming it also grows your 🔥 streak!' : 'Unlocks when every quest today is approved ✅')+'</p>'+
+      '<p class="stage-progress-note" style="margin-top:6px;">'+(ready ? 'Claiming it also grows your 🔥 streak!' : (coreItemsFor(p).length ? 'Unlocks when all '+coreItemsFor(p).length+' ⭐ core quests today are approved' : 'Unlocks when every quest today is approved ✅'))+'</p>'+
     '</div>';
   }
   function renderQuranCard(p){
@@ -1690,10 +1733,10 @@
     '</div>';
   }
   function renderQuests(p){
-    var log = todayLogFor(p), items = visibleItemsFor(p);
-    var done = items.filter(function(it){ return log.done[it.id]; }).length;
+    var log = todayLogFor(p), items = visibleItemsFor(p), core = coreItemsFor(p), ringSet = core.length ? core : items;
+    var done = ringSet.filter(function(it){ return log.done[it.id]; }).length, allDone = items.filter(function(it){ return log.done[it.id]; }).length;
     var pend = Object.keys(log.pending||{}).length;
-    var pct = items.length ? done/items.length : 0, C = 2*Math.PI*25;
+    var pct = ringSet.length ? done/ringSet.length : 0, C = 2*Math.PI*25;
     var dayName = new Date().toLocaleDateString(undefined, {weekday:'long'});
     var html = renderKidSwitch() + renderProfile(p, true)+
       (isExcused(p) ? '<div class="note-box" style="background:#EAF3FF;">\uD83D\uDE37 Today is a rest day \u2014 your \uD83D\uDD25 streak is safe. Get well soon!</div>' : '')+
@@ -1701,18 +1744,18 @@
       '<div class="card ring-row">'+
         '<svg class="ring" viewBox="0 0 62 62" aria-label="'+done+' of '+items.length+' quests done"><circle cx="31" cy="31" r="25" fill="none" stroke="#DCE9D6" stroke-width="7"/>'+
           '<circle cx="31" cy="31" r="25" fill="none" stroke="'+ACCENTS[p.accent]+'" stroke-width="7" stroke-linecap="round" stroke-dasharray="'+(C*pct).toFixed(1)+' '+C.toFixed(1)+'" transform="rotate(-90 31 31)"/>'+
-          '<text x="31" y="36" text-anchor="middle" font-family="Baloo 2" font-size="15" fill="#1F2E23">'+done+'/'+items.length+'</text></svg>'+
-        '<div><p class="quest-head">Today’s Quests</p><p class="quest-sub">'+(pend?pend+' waiting for a parent ⏳ · ':'')+'Tap a quest when you’ve done it — a parent approves it.</p></div>'+
+          '<text x="31" y="36" text-anchor="middle" font-family="Baloo 2" font-size="15" fill="#1F2E23">'+done+'/'+ringSet.length+'</text></svg>'+
+        '<div><p class="quest-head">'+(core.length ? '⭐ Core quests' : 'Today’s Quests')+'</p><p class="quest-sub">'+(core.length ? done+' of '+core.length+' core done · all quests '+allDone+'/'+items.length+'<br>' : '')+(pend?pend+' waiting for a parent ⏳ · ':'')+'Tap a quest when you’ve done it — a parent approves it.</p></div>'+
       '</div>';
     SECTION_ORDER.forEach(function(key){
       var meta = SECTION_META[key];
       var list = items.filter(function(it){ return it.section===key; });
       if(!list.length) return;
-      html += '<p class="section-title">'+meta.icon+' '+meta.title+'</p><div class="check-grid">'+
+      html += '<p class="section-title">'+meta.icon+' '+meta.title+'</p>'+(key==='prayers' ? renderPrayerStrip() : '')+'<div class="check-grid">'+
         list.map(function(it){
-          var isDone = !!log.done[it.id], isPend = !isDone && !!log.pending[it.id];
-          return '<button class="check-item '+(isDone?'done':isPend?'pending':'')+'" data-action="toggle-item" data-person="'+p.id+'" data-item="'+it.id+'">'+
-            '<span class="check-icon">'+it.icon+'</span><span class="check-label">'+escapeHtml(it.label)+'</span>'+
+          var isDone = !!log.done[it.id], isPend = !isDone && !!log.pending[it.id], opens = (!isDone && !isPend) ? itemOpensAt(it) : null;
+          return '<button class="check-item '+(isDone?'done':isPend?'pending':opens!=null?'later':'')+(isCore(it)?' core':'')+'" data-action="toggle-item" data-person="'+p.id+'" data-item="'+it.id+'">'+
+            '<span class="check-icon">'+it.icon+'</span><span class="check-label">'+escapeHtml(it.label)+(isCore(it)?' <span class="core-star" title="Core quest">⭐</span>':'')+(opens!=null?'<small class="opens">opens '+fmtMins(opens)+'</small>':'')+'</span>'+
             '<span class="check-pts">'+(isDone?'✓':isPend?'⏳':'+'+pointsFor(it, p))+'</span></button>';
         }).join('')+'</div>';
     });
@@ -1778,7 +1821,7 @@
     labelsSvg + '</svg>';
     var N = land(li+1);
     var badges = []; for(var b=0;b<=li+2;b++) badges.push({d:land(b), got:b<=li});
-    var chips = SECTION_ORDER.concat(['quran','learn','games','bonus']).filter(function(c){ return c!=='ramadan' || (p.lifetime.ramadan||0) > 0 || ramadanActive(); }).map(function(c){
+    var chips = SECTION_ORDER.concat(['quran','learn','character','games','bonus']).filter(function(c){ return c!=='ramadan' || (p.lifetime.ramadan||0) > 0 || ramadanActive(); }).map(function(c){
       var meta = SECTION_META[c];
       return '<div class="chip">'+meta.icon+' '+meta.title+' <b>'+(p.lifetime[c]||0)+'</b></div>';
     }).join('');
@@ -1789,7 +1832,7 @@
       '</div>'+
       '<p class="section-title">Land badges</p>'+
       '<div class="badges">'+badges.map(function(u){ return '<div class="badge '+(u.got?'':'locked')+'"><div class="bi">'+u.d.i+'</div>'+u.d.n+'</div>'; }).join('')+'</div>'+
-      renderSkillsCard(p)+
+      renderSkillsCard(p)+ renderBadgesCard(p)+
       '<p class="section-title">Growth by type</p><div class="chip-row" style="justify-content:flex-start;">'+chips+'</div>'+
       '<div class="note-box" style="margin-top:14px;">💡 Your <b>journey</b> is every point you’ve ever earned, so it only goes forward, even after the top reward. Your <b>points</b> are what you can spend in the Shop.</div>';
   }
@@ -1804,7 +1847,7 @@
         '<div class="money-stat"><span class="money-label">💰 Money</span><span class="money-val disp" style="color:var(--teal);">'+escapeHtml(cur)+' '+fmtMoney(p.savings)+'</span></div>'+
       '</div>'+
       '<button class="btn-secondary" style="width:100%;" data-action="open-convert" data-person="'+p.id+'">🔄 Ask to convert points to money ('+ptsLabel(state.data.pointsPerCurrency)+' = '+escapeHtml(cur)+' 1)</button>'+
-      convertRequestNote(p);
+      convertRequestNote(p) + renderJarShop(p);
     if(g){
       var pct = Math.min(100, Math.round(spend/g.cost*100)), ready = spend >= g.cost;
       html += '<div class="card goal-card" style="margin-top:12px;--accent:'+ACCENTS[p.accent]+'">'+
@@ -5276,6 +5319,397 @@
     else { t.select(); document.execCommand('copy'); showToast('Rules copied 📋'); }
   };
 
+  /* ================= v24: core quests, prayer times, weekly report, character badges, family jar ================= */
+
+  /* ---- 1. core vs bonus quests ---- */
+  function isCore(it){ return !!(it && it.core); }
+  function coreItemsFor(p){ return visibleItemsFor(p).filter(isCore); }
+  // Perfect Day counts the core quests; if a family marks none, every quest counts (old behaviour).
+  function perfectItemsFor(p){ var c = coreItemsFor(p); return c.length ? c : visibleItemsFor(p); }
+
+  /* ---- 2. prayer times (computed on the phone, no internet needed) ---- */
+  var PT_CITIES = [
+    {id:'doha', n:'Doha, Qatar', lat:25.2854, lng:51.5310},
+    {id:'dubai', n:'Dubai, UAE', lat:25.2048, lng:55.2708},
+    {id:'abudhabi', n:'Abu Dhabi, UAE', lat:24.4539, lng:54.3773},
+    {id:'riyadh', n:'Riyadh, Saudi Arabia', lat:24.7136, lng:46.6753},
+    {id:'jeddah', n:'Jeddah, Saudi Arabia', lat:21.4858, lng:39.1925},
+    {id:'makkah', n:'Makkah, Saudi Arabia', lat:21.3891, lng:39.8579},
+    {id:'madinah', n:'Madinah, Saudi Arabia', lat:24.5247, lng:39.5692},
+    {id:'kuwait', n:'Kuwait City', lat:29.3759, lng:47.9774},
+    {id:'manama', n:'Manama, Bahrain', lat:26.2235, lng:50.5876},
+    {id:'muscat', n:'Muscat, Oman', lat:23.5880, lng:58.3829},
+    {id:'karachi', n:'Karachi, Pakistan', lat:24.8607, lng:67.0011},
+    {id:'lahore', n:'Lahore, Pakistan', lat:31.5204, lng:74.3587},
+    {id:'islamabad', n:'Islamabad, Pakistan', lat:33.6844, lng:73.0479},
+    {id:'london', n:'London, UK', lat:51.5074, lng:-0.1278},
+    {id:'newyork', n:'New York, USA', lat:40.7128, lng:-74.0060},
+    {id:'toronto', n:'Toronto, Canada', lat:43.6532, lng:-79.3832}
+  ];
+  var PT_METHODS = {
+    qatar:     {n:'Qatar (Fajr 18°, Isha 90 min)', fajr:18,   isha:{min:90}},
+    ummalqura: {n:'Umm al-Qura (Makkah)',               fajr:18.5, isha:{min:90}},
+    mwl:       {n:'Muslim World League',                fajr:18,   isha:{deg:17}},
+    karachi:   {n:'Karachi (University of Islamic Sciences)', fajr:18, isha:{deg:18}},
+    isna:      {n:'North America (ISNA)',               fajr:15,   isha:{deg:15}},
+    egypt:     {n:'Egyptian General Authority',         fajr:19.5, isha:{deg:17.5}}
+  };
+  var PRAYERS = [
+    {key:'fajr', n:'Fajr'}, {key:'dhuhr', n:'Dhuhr'}, {key:'asr', n:'Asr'}, {key:'maghrib', n:'Maghrib'}, {key:'isha', n:'Isha'}
+  ];
+  function ptSettings(){ var s = state.data.prayer || {}; return {city: s.city || 'doha', method: s.method || 'qatar', asr: s.asr === 2 ? 2 : 1, gate: s.gate !== false}; }
+  function ptCity(){ var id = ptSettings().city; return PT_CITIES.filter(function(c){ return c.id === id; })[0] || PT_CITIES[0]; }
+  // Standard astronomical method (same maths as the PrayTimes.org reference). Returns minutes after local midnight.
+  var ptCache = {};
+  function prayerTimesFor(ts){
+    var s = ptSettings(), c = ptCity(), key = dateKey(ts)+'|'+s.city+'|'+s.method+'|'+s.asr;
+    if(ptCache[key]) return ptCache[key];
+    var d = new Date(ts); d.setHours(12, 0, 0, 0);
+    var tz = -d.getTimezoneOffset() / 60;
+    var y = d.getFullYear(), m = d.getMonth() + 1, day = d.getDate();
+    if(m <= 2){ y -= 1; m += 12; }
+    var A = Math.floor(y / 100), B = 2 - A + Math.floor(A / 4);
+    var jd = Math.floor(365.25 * (y + 4716)) + Math.floor(30.6001 * (m + 1)) + day + B - 1524.5 - c.lng / (15 * 24);
+    var rad = Math.PI / 180;
+    function fixA(a){ a = a - 360 * Math.floor(a / 360); return a < 0 ? a + 360 : a; }
+    function fixH(h){ h = h - 24 * Math.floor(h / 24); return h < 0 ? h + 24 : h; }
+    function sun(j){
+      var D = j - 2451545.0, g = fixA(357.529 + 0.98560028 * D), q = fixA(280.459 + 0.98564736 * D);
+      var L = fixA(q + 1.915 * Math.sin(g * rad) + 0.020 * Math.sin(2 * g * rad)), e = 23.439 - 0.00000036 * D;
+      var RA = Math.atan2(Math.cos(e * rad) * Math.sin(L * rad), Math.cos(L * rad)) / rad / 15;
+      return {decl: Math.asin(Math.sin(e * rad) * Math.sin(L * rad)) / rad, eqt: q / 15 - fixH(RA)};
+    }
+    function noon(t){ return fixH(12 - sun(jd + t).eqt); }
+    function angleTime(angle, t, before){
+      var sp = sun(jd + t), n = noon(t);
+      var x = (-Math.sin(angle * rad) - Math.sin(sp.decl * rad) * Math.sin(c.lat * rad)) / (Math.cos(sp.decl * rad) * Math.cos(c.lat * rad));
+      x = Math.max(-1, Math.min(1, x));
+      var v = Math.acos(x) / rad / 15;
+      return n + (before ? -v : v);
+    }
+    function asrTime(factor, t){
+      var decl = sun(jd + t).decl;
+      var angle = -Math.atan(1 / (factor + Math.tan(Math.abs(c.lat - decl) * rad))) / rad;
+      return angleTime(angle, t, false);
+    }
+    var M = PT_METHODS[s.method] || PT_METHODS.qatar;
+    var fajr = angleTime(M.fajr, 5 / 24, true), sunrise = angleTime(0.833, 6 / 24, true);
+    var dhuhr = noon(12 / 24), asr = asrTime(s.asr, 13 / 24), maghrib = angleTime(0.833, 18 / 24, false);
+    var isha = M.isha.min ? maghrib + M.isha.min / 60 : angleTime(M.isha.deg, 18 / 24, false);
+    var adj = tz - c.lng / 15;
+    function mins(h){ return Math.round((h + adj) * 60); }
+    var out = {fajr: mins(fajr), sunrise: mins(sunrise), dhuhr: mins(dhuhr) + 1, asr: mins(asr), maghrib: mins(maghrib) + 1, isha: mins(isha)};
+    ptCache[key] = out;
+    return out;
+  }
+  function fmtMins(mn){ var d = new Date(); d.setHours(0, mn, 0, 0); return d.toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); }
+  function nowMins(){ var d = new Date(); return d.getHours() * 60 + d.getMinutes(); }
+  function prayerOfItem(it){
+    if(!it) return null;
+    var id = String(it.id || '').toLowerCase(), lab = String(it.label || '').toLowerCase();
+    for(var i = 0; i < PRAYERS.length; i++){ var k = PRAYERS[i].key; if(id === k || (it.section === 'prayers' && lab.indexOf(k) !== -1)) return k; }
+    if(it.section === 'prayers' && (lab.indexOf('zuhr') !== -1 || lab.indexOf('zohr') !== -1 || lab.indexOf('duhr') !== -1)) return 'dhuhr';
+    return null;
+  }
+  // a salah quest opens at its adhan time (parents can switch this off)
+  function itemOpensAt(it){
+    if(!ptSettings().gate) return null;
+    var k = prayerOfItem(it); if(!k) return null;
+    var t = prayerTimesFor(Date.now())[k];
+    return nowMins() < t ? t : null;
+  }
+  function nextPrayer(){
+    var t = prayerTimesFor(Date.now()), n = nowMins();
+    for(var i = 0; i < PRAYERS.length; i++){ var k = PRAYERS[i].key; if(t[k] > n) return {name: PRAYERS[i].n, at: t[k], inMin: t[k] - n}; }
+    var tm = prayerTimesFor(Date.now() + 86400000);
+    return {name:'Fajr', at: tm.fajr, inMin: tm.fajr + 1440 - n, tomorrow:true};
+  }
+  function renderNextPrayer(){
+    var np = nextPrayer(), h = Math.floor(np.inMin / 60), m = np.inMin % 60;
+    return '<p class="next-prayer">🕌 Next: <b>'+np.name+'</b> at '+fmtMins(np.at)+(np.tomorrow?' (tomorrow)':'')+' · in '+(h ? h+'h ' : '')+m+'m</p>';
+  }
+  function renderPrayerStrip(){
+    var t = prayerTimesFor(Date.now()), n = nowMins(), np = nextPrayer();
+    return '<div class="pt-strip">'+PRAYERS.map(function(p){
+      var past = t[p.key] <= n, next = !np.tomorrow && np.name === p.n;
+      return '<div class="pt '+(next?'next':past?'past':'')+'"><b>'+p.n+'</b><span>'+fmtMins(t[p.key])+'</span></div>';
+    }).join('')+'</div><p class="pt-city">'+escapeHtml(ptCity().n)+' · '+escapeHtml((PT_METHODS[ptSettings().method]||PT_METHODS.qatar).n)+'</p>';
+  }
+  function renderPrayerSettings(){
+    var s = ptSettings();
+    return '<div class="card"><p class="field-label">🕌 Prayer times</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Used for the next-prayer line on Home and to open each salah quest at its time. Please compare with your local masjid timetable once.</p>'+
+      '<p class="field-label">City</p><select class="text-input" id="ptCity" data-action="stop">'+PT_CITIES.map(function(c){ return '<option value="'+c.id+'"'+(c.id===s.city?' selected':'')+'>'+escapeHtml(c.n)+'</option>'; }).join('')+'</select>'+
+      '<p class="field-label">Calculation method</p><select class="text-input" id="ptMethod" data-action="stop">'+Object.keys(PT_METHODS).map(function(k){ return '<option value="'+k+'"'+(k===s.method?' selected':'')+'>'+escapeHtml(PT_METHODS[k].n)+'</option>'; }).join('')+'</select>'+
+      '<p class="field-label">Asr</p><div class="toggle-row"><button class="toggle-btn '+(s.asr===1?'active':'')+'" data-action="pt-asr" data-v="1">'+(s.asr===1?'✅ ':'')+'Standard (Shafi’i, Maliki, Hanbali)</button><button class="toggle-btn '+(s.asr===2?'active':'')+'" data-action="pt-asr" data-v="2">'+(s.asr===2?'✅ ':'')+'Hanafi</button></div>'+
+      '<div class="toggle-row"><button class="toggle-btn '+(s.gate?'active':'')+'" data-action="pt-gate">'+(s.gate?'✅ ':'')+'Salah quests open at prayer time</button><button class="toggle-btn '+(!s.gate?'active':'')+'" data-action="pt-gate">'+(!s.gate?'✅ ':'')+'Always open</button></div>'+
+      '<button class="btn-primary" data-action="pt-save">Save prayer settings</button>'+
+      renderPrayerStrip()+'</div>';
+  }
+
+  /* ---- 5. caught being good ---- */
+  var TRAITS = [
+    {id:'truthful', ic:'💎', n:'Truthful', why:'Truthfulness leads to goodness (Bukhari 6094)'},
+    {id:'kind', ic:'💗', n:'Kind', why:'Allah loves kindness in all things (Bukhari 6024)'},
+    {id:'patient', ic:'🌱', n:'Patient', why:'Allah is with the patient (Quran 2:153)'},
+    {id:'helpful', ic:'🤲', n:'Helpful', why:'Help one another in goodness (Quran 5:2)'},
+    {id:'generous', ic:'🍬', n:'Generous', why:'The giving hand is better (Bukhari 1429)'},
+    {id:'respectful', ic:'🙇', n:'Respectful', why:'Be excellent to your parents (Quran 17:23)'},
+    {id:'calm', ic:'🧘', n:'Calm when angry', why:'The strong control their anger (Bukhari 6114)'},
+    {id:'tidy', ic:'✨', n:'Clean and tidy', why:'Cleanliness is half of faith (Muslim 223)'}
+  ];
+  function traitById(id){ return TRAITS.filter(function(t){ return t.id === id; })[0]; }
+  function badgeCount(p, id){ return (p.badges && typeof p.badges[id] === 'number') ? p.badges[id] : 0; }
+  function renderBadgeAward(){
+    var kids = kidsList(), ui = state.ui.badge || (state.ui.badge = {kid: kids[0] ? kids[0].id : null, trait:'truthful', pts:5});
+    var t = traitById(ui.trait) || TRAITS[0];
+    return '<div class="card"><p class="field-label">🌟 Caught being good</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">Saw something good? Give a character badge with a few points — it rewards who they are, not just tasks done.</p>'+
+      '<div class="seg-row" style="margin-bottom:8px;">'+kids.map(function(k){ return '<button class="seg-btn '+(ui.kid===k.id?'active':'')+'" data-action="badge-kid" data-person="'+k.id+'">'+escapeHtml(k.name)+'</button>'; }).join('')+'</div>'+
+      '<div class="trait-grid">'+TRAITS.map(function(x){ return '<button class="trait '+(ui.trait===x.id?'active':'')+'" data-action="badge-trait" data-trait="'+x.id+'"><span>'+x.ic+'</span>'+escapeHtml(x.n)+'</button>'; }).join('')+'</div>'+
+      '<p class="quest-sub" style="margin:6px 2px 8px;">📚 '+escapeHtml(t.why)+'</p>'+
+      '<input class="text-input" id="badgeNote" type="text" maxlength="80" placeholder="What did they do? (optional) e.g. shared a toy with a sibling" value="'+escapeHtml(ui.note||'')+'">'+
+      '<div class="stepper sm" style="justify-content:flex-start;"><button data-action="badge-pts" data-d="-1">−</button><span class="val disp">'+ui.pts+'</span><button data-action="badge-pts" data-d="1">+</button><span style="font-size:13px;color:var(--ink-soft);">points</span></div>'+
+      '<button class="btn-primary" data-action="badge-give">'+t.ic+' Give “'+escapeHtml(t.n)+'” badge</button></div>';
+  }
+  function renderBadgesCard(p){
+    var any = TRAITS.some(function(t){ return badgeCount(p, t.id) > 0; });
+    return '<p class="section-title">🌟 Character badges</p><div class="badges">'+TRAITS.map(function(t){
+      var n = badgeCount(p, t.id);
+      return '<div class="badge '+(n?'':'locked')+'"><div class="bi">'+t.ic+'</div>'+escapeHtml(t.n)+(n?' ×'+n:'')+'</div>';
+    }).join('')+'</div>'+(any ? '' : '<p class="quest-sub" style="margin:2px 4px 0;">Parents give these when they catch you being good.</p>');
+  }
+
+  /* ---- 6. family goal jar ---- */
+  var JAR_ICONS = ['🏝️','🍕','🎠','🤲','🕌','🎁','🎮','📚'];
+  function jar(){ var j = state.data.familyJar; return j && j.title ? j : null; }
+  function jarTotal(j){ return (j.gifts || []).reduce(function(s, g){ return s + (g.pts || 0); }, 0); }
+  function jarShares(j){ var out = {}; (j.gifts || []).forEach(function(g){ out[g.personId] = (out[g.personId] || 0) + g.pts; }); return out; }
+  function renderJarBar(j){
+    var total = jarTotal(j), sh = jarShares(j), x = 0;
+    var segs = kidsList().map(function(k){
+      var v = sh[k.id] || 0; if(!v) return '';
+      var w = Math.min(100 - x, v / j.target * 100); var s = '<i style="left:'+x+'%;width:'+w+'%;background:'+ACCENTS[k.accent]+'"></i>'; x += w; return s;
+    }).join('');
+    return '<div class="jar-bar">'+segs+'</div>';
+  }
+  function renderJarHome(){
+    var j = jar(); if(!j) return '';
+    var total = jarTotal(j), done = total >= j.target, sh = jarShares(j);
+    return '<button class="jar-card" data-action="nav" data-tab="shop"><div class="jar-top"><span class="jar-ic">'+escapeHtml(j.icon||'🏺')+'</span><span class="grow"><small>Family goal jar</small><b>'+escapeHtml(j.title)+'</b></span><span class="jar-n">'+fmtNum(Math.min(total, j.target))+' / '+fmtNum(j.target)+'</span></div>'+
+      renderJarBar(j)+
+      '<p class="jar-who">'+(done ? '🎉 Goal reached, MashaAllah! Ask a parent to make it happen.' : kidsList().map(function(k){ return '<span style="color:'+ACCENTS[k.accent]+'">●</span> '+escapeHtml(k.name)+' '+fmtNum(sh[k.id]||0); }).join('   '))+'</p></button>';
+  }
+  function renderJarShop(p){
+    var j = jar(); if(!j) return '';
+    var total = jarTotal(j), left = Math.max(0, j.target - total), spend = spendablePoints(p);
+    if(total >= j.target) return '<div class="card jar-shop"><p class="field-label">'+escapeHtml(j.icon||'🏺')+' Family goal jar</p><p><b>'+escapeHtml(j.title)+'</b> is full — '+fmtNum(total)+' pts together. 🎉</p></div>';
+    var amts = [5, 10, 20, 50].filter(function(a){ return a <= spend && a <= left; });
+    return '<div class="card jar-shop"><p class="field-label">'+escapeHtml(j.icon||'🏺')+' Family goal jar · work together</p>'+
+      '<p style="font-size:14px;margin-bottom:6px;"><b>'+escapeHtml(j.title)+'</b> — '+fmtNum(total)+' of '+fmtNum(j.target)+' pts ('+fmtNum(left)+' to go)</p>'+renderJarBar(j)+
+      (amts.length ? '<p class="eyebrow" style="margin:10px 0 6px;">Put some of your points in:</p><div class="seg-row" style="margin-bottom:0;">'+amts.map(function(a){ return '<button class="seg-btn" data-action="jar-give" data-person="'+p.id+'" data-amt="'+a+'">+'+a+'</button>'; }).join('')+'</div>'
+        : '<p class="quest-sub" style="margin-top:8px;">Earn more points to add to the jar.</p>')+'</div>';
+  }
+  function renderJarParent(){
+    var j = jar(), ui = state.ui.jarNew || (state.ui.jarNew = {icon: JAR_ICONS[0], target: 300});
+    if(j){
+      var total = jarTotal(j), sh = jarShares(j);
+      return '<div class="card"><p class="field-label">🏺 Family goal jar</p><p style="font-size:15px;"><b>'+escapeHtml((j.icon||'')+' '+j.title)+'</b></p>'+
+        '<p class="quest-sub" style="margin:4px 0 8px;">'+fmtNum(total)+' / '+fmtNum(j.target)+' pts · '+kidsList().map(function(k){ return escapeHtml(k.name)+' '+fmtNum(sh[k.id]||0); }).join(' · ')+'</p>'+renderJarBar(j)+
+        '<div class="toggle-row" style="margin-top:12px;"><button class="toggle-btn" data-action="jar-close" data-mode="done">✅ Done — we did it</button><button class="toggle-btn" data-action="jar-close" data-mode="cancel">Cancel and refund</button></div></div>';
+    }
+    return '<div class="card"><p class="field-label">🏺 Family goal jar</p>'+
+      '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:8px;">One shared goal all the kids fill with their own points — a family trip, a pizza night, or sadaqah for others.</p>'+
+      '<input class="text-input" id="jarTitle" type="text" maxlength="40" placeholder="e.g. Family trip to the beach, Sadaqah for an orphan" value="'+escapeHtml(ui.title||'')+'">'+
+      '<div class="seg-row">'+JAR_ICONS.map(function(ic){ return '<button class="seg-btn '+(ui.icon===ic?'active':'')+'" data-action="jar-icon" data-icon="'+ic+'">'+ic+'</button>'; }).join('')+'</div>'+
+      '<div class="stepper"><button data-action="jar-target" data-d="-50">−</button><span class="val disp">'+ui.target+'</span><button data-action="jar-target" data-d="50">+</button></div>'+
+      '<p class="stage-progress-note" style="text-align:center;margin-top:-8px;">points the kids fill together</p>'+
+      '<button class="btn-primary" data-action="jar-start">Start the family jar</button></div>';
+  }
+
+  /* ---- 4. weekly report ---- */
+  function weekRange(offset){
+    var d = new Date(); d.setHours(0, 0, 0, 0); d.setDate(d.getDate() - d.getDay() - 7 * (offset || 0));
+    var start = d.getTime(), end = start + 7 * 86400000, days = [];
+    for(var i = 0; i < 7; i++) days.push(dateKey(start + i * 86400000 + 3600000));
+    return {start: start, end: end, days: days};
+  }
+  function weekReport(p, offset){
+    var w = weekRange(offset), H = state.data.history.filter(function(h){ return h.personId === p.id && h.ts >= w.start && h.ts < w.end; });
+    var r = {quests:0, salah:0, perfect:0, quran:0, stories:0, duas:0, gems:0, badges:0, games:0, spent:0, earned:0, daily:[]};
+    H.forEach(function(h){
+      var undone = /\(undone\)$/.test(h.label || '');
+      if(h.kind === 'daily' && SECTION_ORDER.indexOf(h.category) !== -1 && h.points){ r.quests += undone ? -1 : 1; if(h.category === 'prayers') r.salah += undone ? -1 : 1; }
+      if(h.kind === 'bonus' && h.label === 'Perfect Day!') r.perfect++;
+      if(h.kind === 'bonus' && h.label === 'Perfect Day bonus removed') r.perfect--;
+      if(h.category === 'quran'){ var m = /Read (\d+) page/.exec(h.label || ''); if(m) r.quran += +m[1]; }
+      if(h.category === 'learn'){ if(/Passed the story|Listened to the story/.test(h.label)) r.stories++; if(/knows the dua/.test(h.label)) r.duas++; if(/of the Week/.test(h.label)) r.gems++; }
+      if(h.kind === 'badge') r.badges++;
+      if(h.kind === 'game' && h.points > 0) r.games++;
+      if(h.kind === 'redeem' || h.kind === 'jar') r.spent += h.points || 0;
+    });
+    var today = todayStr(), daysSoFar = w.days.filter(function(k){ return k <= today; });
+    r.daily = w.days.map(function(k){ return {k:k, pts: (p.dayPts && p.dayPts[k]) || 0}; });
+    r.earned = r.daily.reduce(function(s, d){ return s + Math.max(0, d.pts); }, 0);
+    var possibleDays = daysSoFar.filter(function(k){ return !(p.excused && p.excused[k]); }).length;
+    r.salahPossible = 5 * possibleDays; r.daysSoFar = possibleDays;
+    ['quests','salah','perfect'].forEach(function(k){ if(r[k] < 0) r[k] = 0; });
+    return r;
+  }
+  function weekLabel(offset){
+    var w = weekRange(offset), a = new Date(w.start), b = new Date(w.end - 86400000);
+    var f = function(d){ return d.toLocaleDateString(undefined, {day:'numeric', month:'short'}); };
+    return f(a)+' – '+f(b);
+  }
+  function renderReportBars(r, accent){
+    var max = Math.max(10, Math.max.apply(null, r.daily.map(function(d){ return d.pts; })));
+    return '<div class="rp-bars">'+r.daily.map(function(d, i){
+      var h = Math.max(0, d.pts) / max * 100;
+      return '<div class="rp-col"><span class="rp-v">'+(d.pts||'')+'</span><i style="height:'+h+'%;background:'+accent+'"></i><small>'+DAY_NAMES[i].charAt(0)+'</small></div>';
+    }).join('')+'</div>';
+  }
+  function renderParentReport(){
+    var off = state.ui.reportWeek || 0;
+    var html = '<div class="toggle-row"><button class="toggle-btn '+(off===0?'active':'')+'" data-action="report-week" data-w="0">This week</button><button class="toggle-btn '+(off===1?'active':'')+'" data-action="report-week" data-w="1">Last week</button></div>'+
+      '<p class="eyebrow" style="margin:-6px 2px 10px;">📅 '+weekLabel(off)+' (Sunday to Saturday)</p>';
+    html += kidsList().map(function(k){
+      var r = weekReport(k, off), acc = ACCENTS[k.accent];
+      var salahPct = r.salahPossible ? Math.round(Math.min(r.salah, r.salahPossible) / r.salahPossible * 100) : 0;
+      return '<div class="card rp-card" style="--accent:'+acc+'"><div class="rp-head">'+heroSVG(k, 40)+'<div class="grow"><b>'+escapeHtml(k.name)+'</b><small>'+fmtNum(r.earned)+' points earned · '+fmtNum(r.spent)+' spent</small></div></div>'+
+        renderReportBars(r, acc)+
+        '<div class="rp-grid">'+
+          '<div><b>'+r.salah+'</b><small>🕌 Salah'+(r.salahPossible?' · '+salahPct+'%':'')+'</small></div>'+
+          '<div><b>'+r.perfect+'</b><small>🌟 Perfect days</small></div>'+
+          '<div><b>'+r.quests+'</b><small>✅ Quests approved</small></div>'+
+          '<div><b>'+r.quran+'</b><small>📖 Quran pages</small></div>'+
+          '<div><b>'+(r.stories + r.duas + r.gems)+'</b><small>📚 Learning</small></div>'+
+          '<div><b>'+r.badges+'</b><small>💎 Character</small></div>'+
+        '</div></div>';
+    }).join('');
+    html += '<button class="btn-secondary" style="width:100%;" data-action="report-share">📤 Share this report (WhatsApp, etc.)</button>'+
+      '<p class="quest-sub" style="margin:8px 4px;">Built from the activity the app keeps (about the last few weeks).</p>';
+    return html;
+  }
+  function reportText(off){
+    var lines = ['Barakah Garden — week of '+weekLabel(off)];
+    kidsList().forEach(function(k){
+      var r = weekReport(k, off);
+      lines.push('', k.name+': '+r.earned+' pts earned', '  Salah '+r.salah+(r.salahPossible?'/'+r.salahPossible:'')+' · Perfect days '+r.perfect+' · Quests '+r.quests, '  Quran pages '+r.quran+' · Learning '+(r.stories + r.duas + r.gems)+' · Character badges '+r.badges);
+    });
+    return lines.join('\n');
+  }
+  function renderReportPrompt(){
+    if(new Date().getDay() !== 6) return '';
+    return '<button class="report-prompt" data-action="open-report">📊 This week’s family report is ready — tap to see it (Parent Mode)</button>';
+  }
+
+  /* ---- actions ---- */
+  learnActions['item-core'] = function(el){ var it = getItem(el.dataset.item); if(!it) return; it.core = !it.core; showToast(it.core ? '⭐ '+it.label+' is now a core quest' : it.label+' is now a bonus quest'); persist(); render(); };
+  learnActions['pt-asr'] = function(el){ state.ui.ptAsr = +el.dataset.v; var s = state.data.prayer = state.data.prayer || {}; s.asr = +el.dataset.v; ptCache = {}; persist(); render(); };
+  learnActions['pt-gate'] = function(){ var s = state.data.prayer = state.data.prayer || {}; s.gate = !ptSettings().gate; persist(); render(); };
+  learnActions['pt-save'] = function(){
+    var s = state.data.prayer = state.data.prayer || {}, c = document.getElementById('ptCity'), m = document.getElementById('ptMethod');
+    if(c) s.city = c.value; if(m) s.method = m.value; ptCache = {};
+    showToast('Prayer times saved 🕌'); persist(); render();
+  };
+  learnActions['badge-kid'] = function(el){ keepBadgeNote(); (state.ui.badge = state.ui.badge || {}).kid = el.dataset.person; render(); };
+  learnActions['badge-trait'] = function(el){ keepBadgeNote(); (state.ui.badge = state.ui.badge || {}).trait = el.dataset.trait; render(); };
+  learnActions['badge-pts'] = function(el){ keepBadgeNote(); var b = state.ui.badge = state.ui.badge || {pts:5}; b.pts = clamp((b.pts||5) + (+el.dataset.d), 0, 20); render(); };
+  learnActions['badge-give'] = function(){
+    var b = state.ui.badge || {}, p = getPerson(b.kid), t = traitById(b.trait);
+    if(!p || !t){ showToast('Pick a kid and a badge','error'); return; }
+    var noteEl = document.getElementById('badgeNote'), note = noteEl ? noteEl.value.trim().slice(0, 80) : '';
+    var pts = typeof b.pts === 'number' ? b.pts : 5;
+    if(!p.badges || typeof p.badges !== 'object') p.badges = {};
+    p.badges[t.id] = badgeCount(p, t.id) + 1;
+    if(pts) earn(p, pts, 'character');
+    addHistory({personId:p.id, kind:'badge', category:'character', label:t.ic+' Caught being '+t.n.toLowerCase()+(note ? ': '+note : ''), points:pts});
+    b.note = '';
+    burstConfetti(); showToast(t.ic+' '+p.name+' earned “'+t.n+'”'+(pts ? ' (+'+pts+')' : ''));
+    persist(); render();
+  };
+  function keepJarTitle(){ var i = document.getElementById('jarTitle'); if(i) (state.ui.jarNew = state.ui.jarNew || {}).title = i.value; }
+  function keepBadgeNote(){ var i = document.getElementById('badgeNote'); if(i) (state.ui.badge = state.ui.badge || {}).note = i.value; }
+  learnActions['jar-icon'] = function(el){ keepJarTitle(); (state.ui.jarNew = state.ui.jarNew || {}).icon = el.dataset.icon; render(); };
+  learnActions['jar-target'] = function(el){ keepJarTitle(); var u = state.ui.jarNew = state.ui.jarNew || {target:300}; u.target = clamp((u.target||300) + (+el.dataset.d), 50, 10000); render(); };
+  learnActions['jar-start'] = function(){
+    var inp = document.getElementById('jarTitle'), title = inp ? inp.value.trim().slice(0, 40) : '';
+    if(!title){ showToast('Give the goal a name first','error'); return; }
+    var u = state.ui.jarNew || {};
+    state.data.familyJar = {id: uid('jar'), title: title, icon: u.icon || JAR_ICONS[0], target: u.target || 300, gifts: [], startedAt: Date.now()};
+    u.title = '';
+    showToast('Family jar started 🏺'); persist(); render();
+  };
+  learnActions['jar-give'] = function(el){
+    var p = getPerson(el.dataset.person), j = jar(), amt = +el.dataset.amt;
+    if(!p || !j || !amt) return;
+    var left = j.target - jarTotal(j); amt = Math.min(amt, left, spendablePoints(p));
+    if(amt <= 0) return;
+    p.points -= amt;
+    j.gifts.push({id: uid('jg'), personId: p.id, pts: amt, ts: Date.now()});
+    addHistory({personId:p.id, kind:'jar', category:'custom', label:(j.icon||'🏺')+' Family jar: '+j.title, points:amt});
+    if(jarTotal(j) >= j.target){ burstConfetti(); showToast('🎉 The family jar is full! '+j.title); }
+    else showToast('+'+amt+' in the family jar 🏺');
+    persist(); render();
+  };
+  learnActions['jar-close'] = function(el){
+    var j = jar(); if(!j) return;
+    if(el.dataset.mode === 'cancel'){
+      (j.gifts || []).forEach(function(g){ var p = getPerson(g.personId); if(p) p.points += g.pts; });
+      kidsList().forEach(function(k){ var v = jarShares(j)[k.id]; if(v) addHistory({personId:k.id, kind:'bonus', category:'bonus', label:'Family jar refunded: '+j.title, points:0}); });
+      showToast('Jar cancelled — points returned');
+    } else {
+      (state.data.jarHistory = Array.isArray(state.data.jarHistory) ? state.data.jarHistory : []).unshift({id: j.id, title: j.title, icon: j.icon, target: j.target, doneAt: Date.now()});
+      showToast('MashaAllah! ✅ '+j.title);
+      burstConfetti();
+    }
+    state.data.familyJar = null;
+    persist(); render();
+  };
+  learnActions['report-week'] = function(el){ state.ui.reportWeek = +el.dataset.w; render(); };
+  learnActions['open-report'] = function(){
+    state.ui.reportWeek = 0;
+    if(state.parentUnlocked){ state.route = {name:'parent', tab:'report'}; render(); return; }
+    state.ui.afterUnlock = 'report';
+    state.ui.pinEntry=''; state.ui.pinError=false; state.route = {name:'parent', tab:'report'}; render();
+  };
+  learnActions['report-share'] = function(){
+    var txt = reportText(state.ui.reportWeek || 0);
+    if(navigator.share){ navigator.share({title:'Barakah Garden weekly report', text: txt}).catch(function(){}); return; }
+    if(navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(function(){ showToast('Report copied — paste it in WhatsApp 📋'); });
+  };
+  learnActions['approve-kid'] = function(el){
+    var p = getPerson(el.dataset.person); if(!p) return;
+    var log = todayLogFor(p), batch = [];
+    Object.keys(log.pending || {}).forEach(function(itemId){
+      var item = getItem(itemId); delete log.pending[itemId]; if(!item) return;
+      awardItem(p, item, log); batch.push({pid: p.id, item: itemId});
+    });
+    if(!batch.length) return;
+    state.ui.lastBatch = batch;
+    showToast('Approved '+batch.length+' for '+p.name+' ✅'); persist(); render();
+  };
+  learnActions['undo-batch'] = function(){
+    var b = state.ui.lastBatch || []; if(!b.length) return;
+    b.forEach(function(x){ var p = getPerson(x.pid), item = getItem(x.item); if(!p || !item) return; var log = todayLogFor(p); if(log.done[item.id]){ unawardItem(p, item, log); log.pending[item.id] = true; } });
+    state.ui.lastBatch = null;
+    showToast('Undone — back in the waiting list'); persist(); render();
+  };
+  function migrateV24(d){
+    if(!d.coreV1){
+      // one-time: the five daily prayers start as the core quests (parents can change it in Daily Items)
+      d.dailyItems.forEach(function(it){ if(it.section === 'prayers') it.core = true; });
+      d.coreV1 = true;
+    }
+    d.dailyItems.forEach(function(it){ if(typeof it.core !== 'boolean') it.core = false; });
+    if(!d.prayer || typeof d.prayer !== 'object') d.prayer = {city:'doha', method:'qatar', asr:1, gate:true};
+    if(d.familyJar && (typeof d.familyJar !== 'object' || !Array.isArray(d.familyJar.gifts))) d.familyJar = d.familyJar && d.familyJar.title ? Object.assign(d.familyJar, {gifts: []}) : null;
+    d.people.forEach(function(p){
+      if(typeof p.lifetime.character !== 'number') p.lifetime.character = 0;
+      if(!p.badges || typeof p.badges !== 'object') p.badges = {};
+    });
+  }
+
   /* ============ bottom tab bar ============ */
   function renderTabbar(active){
     var pending = countAllPending();
@@ -5336,7 +5770,7 @@
     var cur = state.data.currency;
     return '<div class="activity-list">'+ items.map(function(h){
       var icon, main, cls;
-      if(h.kind==='redeem'){ icon=(REWARD_CATS[h.category]||REWARD_CATS.custom).icon; main='-'+h.points; cls='neg'; }
+      if(h.kind==='redeem' || h.kind==='jar'){ icon=(REWARD_CATS[h.category]||REWARD_CATS.custom).icon; main='-'+h.points; cls='neg'; }
       else if(h.kind==='redeem_cash'){ icon=(REWARD_CATS[h.category]||REWARD_CATS.custom).icon; main='-'+cur+' '+fmtMoney(h.amount); cls='neg'; }
       else if(h.kind==='convert'){ icon='🔄'; main='-'+h.points+' → +'+cur+' '+fmtMoney(h.amount); cls='pos'; }
       else if(h.kind==='savings' || h.kind==='charity_money'){ icon = h.kind==='savings' ? '\uD83D\uDCB0' : '\uD83E\uDD32'; main='+'+cur+' '+fmtMoney(h.amount); cls='pos'; }
@@ -5392,16 +5826,18 @@
     var content = tab==='approvals' ? renderParentApprovals()
       : tab==='members' ? renderParentMembers()
       : tab==='items' ? renderParentItems()
-      : tab==='rewards' ? renderParentRewards()
-      : tab==='adjust' ? renderParentAdjust()
+      : tab==='rewards' ? renderJarParent() + renderParentRewards()
+      : tab==='adjust' ? renderBadgeAward() + renderParentAdjust()
       : tab==='learn' ? renderParentLearn()
       : tab==='devices' ? renderParentDevices()
+      : tab==='report' ? renderParentReport()
       : renderParentSettings();
     var pendingCount = countAllPending();
     return '<div class="screen parent-screen">'+
       '<div class="parent-topbar"><h2 class="disp">\uD83D\uDCD3 Parent Mode</h2><button class="btn-ghost" data-action="exit-parent">Exit</button></div>'+
       '<div class="parent-tabs">'+
         '<button class="ptab '+(tab==='approvals'?'active':'')+'" data-action="parent-tab" data-tab="approvals">Approvals'+(pendingCount?' ('+pendingCount+')':'')+'</button>'+
+        '<button class="ptab '+(tab==='report'?'active':'')+'" data-action="parent-tab" data-tab="report">\uD83D\uDCCA Report</button>'+
         '<button class="ptab '+(tab==='members'?'active':'')+'" data-action="parent-tab" data-tab="members">Members</button>'+
         '<button class="ptab '+(tab==='items'?'active':'')+'" data-action="parent-tab" data-tab="items">Daily Items</button>'+
         '<button class="ptab '+(tab==='rewards'?'active':'')+'" data-action="parent-tab" data-tab="rewards">Rewards</button>'+
@@ -5486,6 +5922,7 @@
       '</div>';
     }
 
+    if(state.ui.lastBatch && state.ui.lastBatch.length) extra = '<button class="btn-secondary" style="width:100%;margin-bottom:12px;" data-action="undo-batch">↩️ Undo the last approve-all ('+state.ui.lastBatch.length+')</button>' + extra;
     if(!rows.length){
       return (extra || '<div class="empty-state"><span class="em">\u2705</span>All caught up \u2014 no approvals waiting.</div>') + undoHtml;
     }
@@ -5498,7 +5935,8 @@
         '<button class="icon-btn" style="color:var(--coral);" data-action="decline-item" data-person="'+r.p.id+'" data-item="'+r.item.id+'">\u2715</button>'+
       '</div>';
     }).join('');
-    return '<div class="card"><p class="field-label">Waiting for approval</p>'+listHtml+'</div>'+
+    var perKid = kidsList().map(function(k){ var n = rows.filter(function(r){ return r.p.id===k.id; }).length; return n ? '<button class="seg-btn" data-action="approve-kid" data-person="'+k.id+'">✓ All for '+escapeHtml(k.name)+' ('+n+')</button>' : ''; }).join('');
+    return '<div class="card"><p class="field-label">Waiting for approval</p>'+listHtml+(perKid ? '<div class="seg-row" style="margin:10px 0 0;">'+perKid+'</div>' : '')+'</div>'+
       '<button class="btn-primary" data-action="approve-all" style="margin-bottom:14px;">Approve all tasks ('+rows.length+')</button>'+
       extra + undoHtml;
   }
@@ -5577,6 +6015,7 @@
       items.forEach(function(it){
         var extraPts = Object.keys(it.kidPoints||{}).length ? ' \u00B7 custom points' : '';
         html += '<div class="list-row"><div class="grow"><div class="name">'+it.icon+' '+escapeHtml(it.label)+(it.scope==='kids'?' <span style="font-size:10.5px;color:var(--berry);font-weight:800;">KIDS ONLY</span>':'')+'</div>'+
+          '<button class="core-btn '+(it.core?'on':'')+'" data-action="item-core" data-item="'+it.id+'">'+(it.core?'⭐ Core':'☆ Bonus')+'</button>'+
           '<button class="sched-btn" data-action="open-schedule" data-item="'+it.id+'">\uD83D\uDCC5 '+escapeHtml(daysLabel(it))+' \u00B7 \uD83D\uDC67 '+escapeHtml(kidsLabel(it))+extraPts+' \u270E</button></div>'+
           '<div class="stepper sm"><button data-action="item-pts-dec" data-item="'+it.id+'">\u2212</button>'+
           '<span class="val disp">'+it.points+'</span>'+
@@ -5585,6 +6024,7 @@
       });
       html += '</div>';
     });
+    html += '<div class="note-box">⭐ <b>Core quests</b> are the must-dos: the Perfect Day and the 🔥 streak only need these. Everything else is a ☆ bonus quest for extra points. Tap ⭐ Core / ☆ Bonus on any activity to switch it. (If none are core, every quest counts.)</div>';
     html += '<div class="note-box">Perfect Day bonus: once every task <b>scheduled for that day</b> is approved, the kid’s <b>Claim Perfect Day Bonus</b> button unlocks for an extra <b>'+PERFECT_DAY_BONUS+' pts</b> (once a day).</div>';
 
     var catBtns = SECTION_ORDER.map(function(c){
@@ -5708,6 +6148,7 @@
         '<div class="stepper"><button data-action="rate-dec">−</button><span class="val disp">'+state.data.pointsPerCurrency+'</span><button data-action="rate-inc">+</button></div>'+
         '<p class="stage-progress-note" style="text-align:center;">'+ptsLabel(state.data.pointsPerCurrency)+' = '+escapeHtml(state.data.currency)+' 1 · 2,000 pts = '+escapeHtml(state.data.currency)+' '+fmtMoney(pointsToCash(2000))+'</p></div>'+
       renderGameSettings()+
+      renderPrayerSettings()+
       '<div class="card"><p class="field-label">\uD83D\uDCD6 Quran points</p>'+
         '<p style="font-size:13px;color:var(--ink-soft);margin-bottom:10px;">Points per page read (approved by a parent). Finishing the whole Quran (khatm) adds a +'+KHATM_BONUS+' bonus.</p>'+
         '<div class="stepper"><button data-action="quranrate-dec">\u2212</button><span class="val disp">'+state.data.quranPtsPerPage+'</span><button data-action="quranrate-inc">+</button></div></div>'+
@@ -6023,6 +6464,8 @@
         showToast('Already approved \u2014 ask a parent to change this');
         return;
       }
+      var opensAt = !log.pending[item.id] ? itemOpensAt(item) : null;
+      if(opensAt != null){ showToast('\uD83D\uDD4C '+item.label+' opens at '+fmtMins(opensAt)); return; }
       if(log.pending[item.id]){
         delete log.pending[item.id]; // cancel their own pending request
         showToast('Request canceled');
@@ -6065,7 +6508,7 @@
     persist(); render();
   };
   actions['approve-all'] = function(){
-    var count = 0;
+    var count = 0, batch = [];
     state.data.people.forEach(function(p){
       var log = todayLogFor(p);
       Object.keys(log.pending).forEach(function(itemId){
@@ -6073,10 +6516,11 @@
         if(!item) { delete log.pending[itemId]; return; }
         delete log.pending[itemId];
         awardItem(p, item, log);
+        batch.push({pid: p.id, item: itemId});
         count++;
       });
     });
-    if(count){ showToast('Approved '+count+' item'+(count===1?'':'s')+' \u2705'); persist(); render(); }
+    if(count){ state.ui.lastBatch = batch; showToast('Approved '+count+' item'+(count===1?'':'s')+' \u2705'); persist(); render(); }
   };
 
   actions['open-parent-lock'] = function(){ state.parentUnlocked=false; state.ui.pinEntry=''; state.ui.pinError=false; state.route={name:'parent-lock'}; render(); };
@@ -6088,7 +6532,7 @@
     if(state.ui.pinEntry.length===4){
       if(pinHash(state.ui.pinEntry)===state.data.pinHash){
         state.parentUnlocked=true; state.ui.pinEntry='';
-        state.route={name:'parent', tab:'approvals'}; render(); return;
+        state.route={name:'parent', tab:(state.route.tab || 'approvals')}; render(); return;
       } else {
         state.ui.pinError=true; render();
         setTimeout(function(){ state.ui.pinEntry=''; state.ui.pinError=false; render(); }, 700);
@@ -6487,7 +6931,8 @@
     var p = getPerson(el.dataset.person);
     if(p){
       p.points=0; p.totalLifetime=0; p.savings=0; p.charityGiven=0;
-      ['prayers','azkar','charity','habits','bonus','quran','games','learn','ramadan'].forEach(function(c){ p.lifetime[c]=0; });
+      ['prayers','azkar','charity','habits','bonus','quran','games','learn','ramadan','character'].forEach(function(c){ p.lifetime[c]=0; });
+      p.badges = {};
       p.learn = null; p.learnRequests = []; learnOf(p);
       p.todayLog = {date: todayStr(), done:{}, pending:{}, perfectGiven:false};
       p.dayPts = {}; p.convertRequests = []; p.streak = {count:0, last:null}; p.starsWon = 0; p.goalId = null;
@@ -6595,6 +7040,12 @@
     });
   }
   init();
+  // keep the next-prayer line and the salah quests current
+  setInterval(function(){
+    var a = document.activeElement;
+    if(state.modal || (a && /INPUT|TEXTAREA|SELECT/.test(a.tagName))) return;
+    if(state.route.name === 'home' || state.route.name === 'quests') render();
+  }, 60000);
 
 })();
 </script>

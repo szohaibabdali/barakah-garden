@@ -1,7 +1,7 @@
 // Barakah Garden service worker: lets the app install on phones and open
 // even with a weak connection. Always tries the network first so a newly
 // uploaded index.html shows up straight away; the saved copy is only a fallback.
-const CACHE = 'barakah-garden-v21';
+const CACHE = 'barakah-garden-v24';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png'];
 
 self.addEventListener('install', e => {
@@ -15,7 +15,7 @@ self.addEventListener('fetch', e => {
   const req = e.request;
   if (req.method !== 'GET' || new URL(req.url).origin !== location.origin) return;  // Firebase etc. go straight to the network
   e.respondWith(
-    fetch(req).then(res => {
+    fetch(req, {cache: 'no-cache'}).then(res => {   // always ask the server for the newest copy
       const copy = res.clone();
       caches.open(CACHE).then(c => c.put(req, copy));
       return res;
